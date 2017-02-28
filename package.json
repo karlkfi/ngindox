@@ -1,0 +1,27 @@
+{
+	"name": "ngindox",
+	"version": "0.1.0",
+	"description": "Documentation generator for NGINX configurations",
+	"license": "MIT",
+	"keywords": [ "nginx", "configuration", "documentation", "generator" ],
+	"author": "Karl Isenberg <karlkfi@gmail.com> (http://karl.isenberg.us/)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/karlkfi/ngindox.git"
+	},
+	"directories": {
+		"lib": "src"
+	},
+	"files": [
+		"src",
+		"index.js",
+		"cli.js"
+	],
+	"scripts": {
+		"ngindox": "./cli.js"
+	},
+	"dependencies": {
+		"nginx-conf": "1.3.0",
+		"cli": "1.0.1"
+	}
+}
