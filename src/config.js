@@ -8,20 +8,28 @@ Config.prototype.toMarkdown = function() {
 	var out = "";
 
 	out += "## Upstreams\n\n";
-	out += "| Name | Server | Description |\n";
-	out += "|------|--------|-------------|\n";
+//	out += "| Name | Server | Description |\n";
+//	out += "|------|--------|-------------|\n";
+	out += "|------|\n";
 
 	var upstreams = this.upstreams;
 	// TODO: sort upstreams
 	for (var i = 0, len = upstreams.length; i < len; i++) {
 		var upstream = upstreams[i];
-		out += "| `" + upstream.name + "` | `" + upstream.server + "` | " + upstream.description + " |\n";
+		out += "| ";
+		out += "Name: " + upstream.name;
+		out += "<br/>Server: " + upstream.server;
+		if (upstream.description != '') {
+			out += "<br/>" + upstream.description.trim();
+		}
+		out += " |\n";
 	}
 
 
 	out += "\n## Locations\n\n";
-	out += "| Path | ProxyPass | Description |\n";
-	out += "|------|-----------|-------------|\n";
+//	out += "| Path | ProxyPass | Description |\n";
+//	out += "|------|-----------|-------------|\n";
+	out += "|------|\n";
 
 	var locations = this.locations;
 	// TODO: sort locations
@@ -45,12 +53,17 @@ Config.prototype.toMarkdown = function() {
 				}
 			}
 		}
-
-		if (location.proxyPass == '') {
-			out += "| `" + path + "` |   | " + location.description + " |\n";
-		} else {
-			out += "| `" + path + "` | `" + location.proxyPass + "` | " + location.description + " |\n";
+		
+		out += "| ";
+		out += "Path: " +path;
+		if (location.proxyPass != '') {
+			out += "<br/>ProxyPass: " + location.proxyPass;
 		}
+		if (location.description != '') {
+			out += "<br/>" + location.description.trim();
+		}
+		out += " |\n";
+		
 	}
 
 	return out;
