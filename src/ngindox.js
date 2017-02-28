@@ -13,7 +13,7 @@ Ngindox.prototype.parse = function(source, callback) {
 			return;
 		}
 
-		var _https = find('http', src);
+		var _https = findChild('http', src);
 		if (_https.length == 0) {
 			callback('Directive not found: http');
 			return;
@@ -21,7 +21,7 @@ Ngindox.prototype.parse = function(source, callback) {
 
 		var _http = _https[0];
 
-		var _upstreams = find('upstream', _http);
+		var _upstreams = findChild('upstream', _http);
 		if (_upstreams.length == 0) {
 			callback('Directive not found: http.upstream');
 			return;
@@ -31,22 +31,27 @@ Ngindox.prototype.parse = function(source, callback) {
 
 		for (var i = 0, len = _upstreams.length; i < len; i++) {
 			var _upstream = _upstreams[i];
-			
-			var _servers = find('server', _upstream);
+
+			// server is required
+			var _servers = findChild('server', _upstream);
 			if (_servers.length == 0) {
 				callback('Directive not found: http.upstream[' + _upstream.value + '].server');
 				return;
 			}
+
+			// description is optional
+			var description = parseDescription(_upstream);
 			
 			upstreams.push(
 				new _config.Upstream(
 					_upstream.value,
-					_servers[0].value
+					_servers[0].value,
+					description
 				)
 			);
 		}
 
-		var _servers = find('server', _http);
+		var _servers = findChild('server', _http);
 		if (_servers.length == 0) {
 			callback('Directive not found: http.server');
 			return;
@@ -54,7 +59,7 @@ Ngindox.prototype.parse = function(source, callback) {
 		
 		var _server = _servers[0];
 		
-		var _locations = find('location', _server);
+		var _locations = findChild('location', _server);
 		if (_locations.length == 0) {
 			callback('Directive not found: http.server.location');
 			return;
@@ -66,21 +71,22 @@ Ngindox.prototype.parse = function(source, callback) {
 			var _location = _locations[i];
 
 			// proxy_pass is optional
-			var _proxy_passes = find('proxy_pass', _location);
-            if (_proxy_passes.length == 0) {
-            	locations.push(
-                	new _config.Location(
-                		_location.value
-                	)
-                );
-            } else {
-            	locations.push(
-                	new _config.Location(
-                		_location.value,
-                		_proxy_passes[0].value
-                	)
-                );
-            }
+			var proxy_pass = ''
+			var _proxy_passes = findChild('proxy_pass', _location);
+			if (_proxy_passes.length > 0) {
+				proxy_pass = _proxy_passes[0].value;
+			}
+
+			// description is optional
+			var description = parseDescription(_location);
+
+			locations.push(
+				new _config.Location(
+					_location.value,
+					proxy_pass,
+					description
+				)
+			);
 		}
 
 		// TODO: parse base file name
@@ -93,7 +99,7 @@ Ngindox.prototype.parse = function(source, callback) {
 	});
 }
 
-function find(name, node) {
+function findChild(name, node) {
 	var results = [];
 	for (var i = 0, len = node.children.length; i < len; i++) {
 		var child = node.children[i];
@@ -102,6 +108,10 @@ function find(name, node) {
 		}
 	}
 	return results;
+}
+
+function parseDescription(node) {
+	return node.comments.join(' ');
 }
 
 exports.Ngindox = Ngindox;
