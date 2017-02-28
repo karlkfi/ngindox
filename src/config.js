@@ -8,8 +8,6 @@ Config.prototype.toMarkdown = function() {
 	var out = "";
 
 	out += "## Upstreams\n\n";
-//	out += "| Name | Server | Description |\n";
-//	out += "|------|--------|-------------|\n";
 	out += "| Upstreams |\n";
 	out += "|-----------|\n";
 
@@ -18,8 +16,8 @@ Config.prototype.toMarkdown = function() {
 	for (var i = 0, len = upstreams.length; i < len; i++) {
 		var upstream = upstreams[i];
 		out += "| ";
-		out += "Name: " + upstream.name;
-		out += "<br/>Server: " + upstream.server;
+		out += "Name: `" + upstream.name + "`";;
+		out += "<br/>Server: `" + upstream.server + "`";;
 		if (upstream.description != '') {
 			out += "<br/>" + upstream.description.trim();
 		}
@@ -28,8 +26,6 @@ Config.prototype.toMarkdown = function() {
 
 
 	out += "\n## Locations\n\n";
-//	out += "| Path | ProxyPass | Description |\n";
-//	out += "|------|-----------|-------------|\n";
 	out += "| Locations |\n";
 	out += "|-----------|\n";
 
@@ -57,9 +53,9 @@ Config.prototype.toMarkdown = function() {
 		}
 		
 		out += "| ";
-		out += "Path: " +path;
+		out += "Path: `" + path + "`";
 		if (location.proxyPass != '') {
-			out += "<br/>ProxyPass: " + location.proxyPass;
+			out += "<br/>ProxyPass: `" + location.proxyPass + "`";
 		}
 		if (location.description != '') {
 			out += "<br/>" + location.description.trim();
