@@ -10,7 +10,8 @@ Config.prototype.toMarkdown = function() {
 	out += "## Upstreams\n\n";
 //	out += "| Name | Server | Description |\n";
 //	out += "|------|--------|-------------|\n";
-//	out += "|------|\n";
+	out += "| Upstreams |\n";
+	out += "|-----------|\n";
 
 	var upstreams = this.upstreams;
 	// TODO: sort upstreams
@@ -29,7 +30,8 @@ Config.prototype.toMarkdown = function() {
 	out += "\n## Locations\n\n";
 //	out += "| Path | ProxyPass | Description |\n";
 //	out += "|------|-----------|-------------|\n";
-//	out += "|------|\n";
+	out += "| Locations |\n";
+	out += "|-----------|\n";
 
 	var locations = this.locations;
 	// TODO: sort locations
