@@ -1,6 +1,5 @@
 ## Upstreams
 
-|------|
 | Name: mesos<br/>Server: leader.mesos:5050<br/>Component: Apache Mesos |
 | Name: marathon<br/>Server: master.mesos:8080<br/>Component: Marathon |
 | Name: dcos_history_service<br/>Server: leader.mesos:15055<br/>Component: DC/OS History |
@@ -14,7 +13,6 @@
 
 ## Locations
 
-|------|
 | Path: /login<br/>Login |
 | Path: /acs/api/v1/auth/<br/>ProxyPass: http://auth<br/>Component: DC/OS Authentication (OAuth) |
 | Path: /acs/api/v1<br/>ProxyPass: http://auth<br/>Component: DC/OS Authentication (OAuth) |
