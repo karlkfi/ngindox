@@ -11,13 +11,14 @@ $ npm run -s ngindox < examples/nginx.master.conf
 
 | Name | Server |
 |------|--------|
-| `mesos` | `leader.mesos:5050` |
+| `mesos` | `leader.mesos:5050` |  Component: Apache Mesos |
 
 ## Locations
 
 | Path | ProxyPass |
 |------|--------|
-| `/mesos/` | `http://mesos/` |
+| `/mesos` |   |  Redirect: /mesos/ |
+| `/mesos/` | `http://mesos/` |  Component: Apache Mesos Master (Leader) |
 ```
 
 ## Example
