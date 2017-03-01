@@ -18,8 +18,8 @@
 | Path: `/mesos`<br/>Redirect: `/mesos/` |
 | Path: `/mesos/`<br/>ProxyPass: `http://mesos/`<br/>Component: Apache Mesos Master (Leader) |
 | Path: `/metadata`<br/> |
-| Path: `/pkgpanda/`<br/>ProxyPass: `http://pkgpanda/`<br/>Component: Pkgpanda |
-| Path: `/pkgpanda/active.buildinfo.full.json`<br/> |
+| Path: `/pkgpanda/`<br/>ProxyPass: `http://pkgpanda/`<br/>Component: DC/OS Component Package Manager (Pkgpanda) |
+| Path: `/pkgpanda/active.buildinfo.full.json`<br/>Component: DC/OS Component Package Manager (Pkgpanda) |
 
 ### Container Orchestration
 
