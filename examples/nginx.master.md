@@ -17,7 +17,7 @@
 
 |   |
 |---|
-| Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)`<br/>Redirect: /agent/<agentid>/ |
+| Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)`<br/>Redirect: /agent/{agentid}/ |
 | Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/>ProxyPass: `$agentaddr:$agentport`<br/>Component: Apache Mesos Agent |
 | Path: `/acs/api/v1`<br/>ProxyPass: `http://auth`<br/>Component: DC/OS Authentication (OAuth) |
 | Path: `/acs/api/v1/auth/`<br/>ProxyPass: `http://auth`<br/>Component: DC/OS Authentication (OAuth) |
@@ -30,7 +30,7 @@
 | Path: `/dcos-metadata/ui-config.json`<br/>ProxyPass: `http://auth`<br/> |
 | Path: `/exhibitor`<br/>Redirect: /exhibitor/ |
 | Path: `/exhibitor/`<br/>ProxyPass: `http://exhibitor/`<br/>Component: Exhibitor (Zookeeper) |
-| Path: `/login`<br/>Description: undefined<br/>Redirect: <authhost> |
+| Path: `/login`<br/>Description: undefined<br/>Redirect: To OpenID Connect Server |
 | Path: `/marathon`<br/>Redirect: /marathon/<br/>Deprecated: Use /service/marathon/ |
 | Path: `/marathon/`<br/>ProxyPass: `http://marathon/`<br/>Component: Marathon<br/>Deprecated: Use /service/marathon/ |
 | Path: `/mesos`<br/>Redirect: /mesos/ |
@@ -42,10 +42,10 @@
 | Path: `/package/`<br/>ProxyPass: `http://cosmos/package/`<br/>Component: DC/OS Package Manager (Cosmos) |
 | Path: `/pkgpanda/`<br/>ProxyPass: `http://pkgpanda/`<br/>Component: Pkgpanda |
 | Path: `/pkgpanda/active.buildinfo.full.json` |
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: /service/<serviceid>/ |
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>ProxyPass: `$serviceurl`<br/>Description: undefined<br/>Proxy: <servicescheme>://<servicehost>:<serviceport>/ |
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: /service/{serviceid}/ |
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>ProxyPass: `$serviceurl`<br/>Description: undefined<br/>Proxy: To Service Address |
 | Path: `/system/health/v1`<br/>ProxyPass: `http://dddt`<br/>Component: DC/OS Diagnostics (3DT) |
-| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>ProxyPass: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: <agentaddr>:61001/system/v1/ |
+| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>ProxyPass: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: {agentaddr}:61001/system/v1/ |
 | Path: `/system/v1/leader/marathon(?<url>.*)`<br/>ProxyPass: `$mleader_host/system/v1$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: marathon.mesos/system/v1/ |
 | Path: `/system/v1/leader/mesos(?<url>.*)`<br/>ProxyPass: `http://leader.mesos/system/v1$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: leader.mesos/system/v1/ |
 | Path: `/system/v1/logs/v1/`<br/>ProxyPass: `http://log/`<br/>Component: DC/OS Log |
