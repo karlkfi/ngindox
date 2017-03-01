@@ -12,7 +12,17 @@ Config.prototype.toMarkdown = function() {
 	out += "|-----------|\n";
 
 	var upstreams = this.upstreams;
-	// TODO: sort upstreams
+
+	upstreams.sort(function(a, b) {
+		if (a.name < b.name) {
+			return -1;
+		}
+		if (a.name > b.name) {
+			return 1;
+		}
+		return 0;
+	});
+
 	for (var i = 0, len = upstreams.length; i < len; i++) {
 		var upstream = upstreams[i];
 		out += "| ";
@@ -30,7 +40,8 @@ Config.prototype.toMarkdown = function() {
 	out += "|-----------|\n";
 
 	var locations = this.locations;
-	// TODO: sort locations
+
+	// modify the path prior to sorting
 	for (var i = 0, len = locations.length; i < len; i++) {
 		var location = locations[i];
 
@@ -51,9 +62,24 @@ Config.prototype.toMarkdown = function() {
 				}
 			}
 		}
-		
+		location.path = path;
+	}
+
+	locations.sort(function(a, b) {
+		if (a.path < b.path) {
+			return -1;
+		}
+		if (a.path > b.path) {
+			return 1;
+		}
+		return 0;
+	});
+
+	for (var i = 0, len = locations.length; i < len; i++) {
+		var location = locations[i];
+
 		out += "| ";
-		out += "Path: `" + path + "`";
+		out += "Path: `" + location.path + "`";
 		if (location.proxyPass != '') {
 			out += "<br/>ProxyPass: `" + location.proxyPass + "`";
 		}
@@ -61,10 +87,9 @@ Config.prototype.toMarkdown = function() {
 			out += "<br/>" + location.description.trim();
 		}
 		out += " |\n";
-		
 	}
 
-	return out;
+	return out.replace(/\n$/, '');
 }
 
 function Upstream(name, server, description) {
