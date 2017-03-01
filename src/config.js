@@ -1,3 +1,4 @@
+var YAML = require('yamljs');
 
 function Config() {
 	this.upstreams = []
@@ -8,8 +9,8 @@ Config.prototype.toMarkdown = function() {
 	var out = "";
 
 	out += "## Upstreams\n\n";
-	out += "| Upstreams |\n";
-	out += "|-----------|\n";
+	out += "|   |\n";
+	out += "|---|\n";
 
 	var upstreams = this.upstreams;
 
@@ -28,16 +29,16 @@ Config.prototype.toMarkdown = function() {
 		out += "| ";
 		out += "Name: `" + upstream.name + "`";;
 		out += "<br/>Server: `" + upstream.server + "`";;
-		if (upstream.description != '') {
-			out += "<br/>" + upstream.description.trim();
+		if (upstream.metadata) {
+			out += "<br/>" + toHTML(upstream.metadata);
 		}
 		out += " |\n";
 	}
 
 
 	out += "\n## Locations\n\n";
-	out += "| Locations |\n";
-	out += "|-----------|\n";
+	out += "|   |\n";
+	out += "|---|\n";
 
 	var locations = this.locations;
 
@@ -83,8 +84,8 @@ Config.prototype.toMarkdown = function() {
 		if (location.proxyPass != '') {
 			out += "<br/>ProxyPass: `" + location.proxyPass + "`";
 		}
-		if (location.description != '') {
-			out += "<br/>" + location.description.trim();
+		if (location.metadata) {
+			out += "<br/>" + toHTML(location.metadata);
 		}
 		out += " |\n";
 	}
@@ -92,16 +93,42 @@ Config.prototype.toMarkdown = function() {
 	return out.replace(/\n$/, '');
 }
 
-function Upstream(name, server, description) {
-	this.name = name || '';
-	this.server = server || '';
-	this.description = description || '';
+function toHTML(metadata) {
+	var lines = []
+	if (metadata.Name) {
+		lines.push("Name: " + metadata.Component)
+	}
+	if (metadata.Description) {
+		lines.push("Description: " + metadata.Component)
+	}
+	if (metadata.Component) {
+		lines.push("Component: " + metadata.Component)
+	}
+	if (metadata.Proxy) {
+		lines.push("Proxy: " + metadata.Proxy)
+	}
+	if (metadata.Redirect) {
+		lines.push("Redirect: " + metadata.Redirect)
+	}
+	if (metadata.Cache) {
+		lines.push("Cache: " + metadata.Proxy)
+	}
+	if (metadata.Deprecated) {
+		lines.push("Deprecated: " + metadata.Deprecated)
+	}
+	return lines.join("<br/>");
 }
 
-function Location(path, proxyPass, description) {
+function Upstream(name, server, metadata) {
+	this.name = name || '';
+	this.server = server || '';
+	this.metadata = metadata || YAML.parse('');
+}
+
+function Location(path, proxyPass, metadata) {
 	this.path = path || '';
 	this.proxyPass = proxyPass || '';
-	this.description = description || '';
+	this.metadata = metadata || YAML.parse('');
 }
 
 exports.Config = Config;

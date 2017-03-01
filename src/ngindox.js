@@ -1,6 +1,7 @@
 var NginxConf = require('nginx-conf'),
 	_config = require('./config'),
-	util = require('util');
+	util = require('util'),
+	YAML = require('yamljs');
 
 function Ngindox() {
 
@@ -39,14 +40,14 @@ Ngindox.prototype.parse = function(source, callback) {
 				return;
 			}
 
-			// description is optional
-			var description = parseDescription(_upstream);
-			
+			// metadata is optional
+			var metadata = parseMetadata(_upstream);
+
 			upstreams.push(
 				new _config.Upstream(
 					_upstream.value,
 					_servers[0].value,
-					description
+					metadata
 				)
 			);
 		}
@@ -56,9 +57,9 @@ Ngindox.prototype.parse = function(source, callback) {
 			callback('Directive not found: http.server');
 			return;
 		}
-		
+
 		var _server = _servers[0];
-		
+
 		var _locations = findChild('location', _server);
 		if (_locations.length == 0) {
 			callback('Directive not found: http.server.location');
@@ -77,14 +78,14 @@ Ngindox.prototype.parse = function(source, callback) {
 				proxy_pass = _proxy_passes[0].value;
 			}
 
-			// description is optional
-			var description = parseDescription(_location);
+			// metadata is optional
+			var metadata = parseMetadata(_location);
 
 			locations.push(
 				new _config.Location(
 					_location.value,
 					proxy_pass,
-					description
+					metadata
 				)
 			);
 		}
@@ -110,8 +111,8 @@ function findChild(name, node) {
 	return results;
 }
 
-function parseDescription(node) {
-	return node.comments.join(' ');
+function parseMetadata(node) {
+	return YAML.parse(node.comments.join("\n"));
 }
 
 exports.Ngindox = Ngindox;
