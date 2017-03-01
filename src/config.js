@@ -8,37 +8,7 @@ function Config() {
 Config.prototype.toMarkdown = function() {
 	var out = "";
 
-	out += "## Upstreams\n\n";
-	out += "|   |\n";
-	out += "|---|\n";
-
-	var upstreams = this.upstreams;
-
-	upstreams.sort(function(a, b) {
-		if (a.name < b.name) {
-			return -1;
-		}
-		if (a.name > b.name) {
-			return 1;
-		}
-		return 0;
-	});
-
-	for (var i = 0, len = upstreams.length; i < len; i++) {
-		var upstream = upstreams[i];
-		out += "| ";
-		out += "Name: `" + upstream.name + "`";;
-		out += "<br/>Server: `" + upstream.server + "`";;
-		if (upstream.metadata) {
-			out += "<br/>" + toHTML(upstream.metadata);
-		}
-		out += " |\n";
-	}
-
-
-	out += "\n## Locations\n\n";
-	out += "|   |\n";
-	out += "|---|\n";
+	out += "## Locations\n\n";
 
 	var locations = this.locations;
 
@@ -67,6 +37,12 @@ Config.prototype.toMarkdown = function() {
 	}
 
 	locations.sort(function(a, b) {
+		if (a.metadata.Group < b.metadata.Group) {
+			return -1;
+		}
+		if (a.metadata.Group > b.metadata.Group) {
+			return 1;
+		}
 		if (a.path < b.path) {
 			return -1;
 		}
@@ -76,8 +52,17 @@ Config.prototype.toMarkdown = function() {
 		return 0;
 	});
 
+	var group = ''
+
 	for (var i = 0, len = locations.length; i < len; i++) {
 		var location = locations[i];
+
+		if ((location.metadata.Group || 'Other') != group) {
+			group = location.metadata.Group || 'Other'
+			out += "\n### " + group + "\n\n"
+			out += "|   |\n";
+			out += "|---|\n";
+		}
 
 		out += "| ";
 		out += "Path: `" + location.path + "`";
@@ -90,11 +75,47 @@ Config.prototype.toMarkdown = function() {
 		out += " |\n";
 	}
 
+
+	out += "\n\n## Upstreams\n\n";
+	// ignore groups in upstreams, just list alphabetically for easy lookup
+	out += "|   |\n";
+	out += "|---|\n";
+
+	var upstreams = this.upstreams;
+
+	upstreams.sort(function(a, b) {
+		if (a.name < b.name) {
+			return -1;
+		}
+		if (a.name > b.name) {
+			return 1;
+		}
+		return 0;
+	});
+
+	var group = '';
+
+	for (var i = 0, len = upstreams.length; i < len; i++) {
+		var upstream = upstreams[i];
+
+		out += "| ";
+		out += "Name: `" + upstream.name + "`";;
+		out += "<br/>Server: `" + upstream.server + "`";;
+		if (upstream.metadata) {
+			out += "<br/>" + toHTML(upstream.metadata);
+		}
+		out += " |\n";
+	}
+
 	return out.replace(/\n$/, '');
 }
 
 function toHTML(metadata) {
 	var lines = []
+	// Group is shown by headers
+//	if (metadata.Group) {
+//		lines.push("Group: " + metadata.Group)
+//	}
 	if (metadata.Name) {
 		lines.push("Name: " + metadata.Component)
 	}
