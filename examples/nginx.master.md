@@ -7,7 +7,7 @@
 |---|
 | Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)`<br/>Redirect: `/agent/<agentid>/` |
 | Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/>ProxyPass: `$agentaddr:$agentport`<br/>Component: Apache Mesos Agent |
-| Path: `/cache/master/`<br/>ProxyPass: `http://mesos/master/`<br/>Proxy: `/mesos/master/`<br/>Cache: `/mesos/master/` |
+| Path: `/cache/master/`<br/>ProxyPass: `http://mesos/master/`<br/>Proxy: `/mesos/master/`<br/>Cache: 5 seconds |
 | Path: `/capabilities`<br/>ProxyPass: `http://cosmos/capabilities`<br/>Component: DC/OS Package Manager (Cosmos) |
 | Path: `/dcos-history-service/`<br/>ProxyPass: `http://dcos_history_service/`<br/>Component: DC/OS History |
 | Path: `/dcos-metadata/`<br/> |
@@ -34,16 +34,16 @@
 |---|
 | Path: `/acs/api/v1`<br/>ProxyPass: `http://auth`<br/>Component: DC/OS Authentication (OAuth) |
 | Path: `/acs/api/v1/auth/`<br/>ProxyPass: `http://auth`<br/>Component: DC/OS Authentication (OAuth) |
-| Path: `/login`<br/>Description: undefined<br/>Redirect: To OpenID Connect Server |
+| Path: `/login`<br/>Description: User Login<br/>Redirect: To OpenID Connect Server |
 
 ### Logging & Metrics
 
 |   |
 |---|
 | Path: `/system/health/v1`<br/>ProxyPass: `http://dddt`<br/>Component: DC/OS Diagnostics (3DT) |
-| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>ProxyPass: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: `<agentaddr>:61001/system/v1/` |
-| Path: `/system/v1/leader/marathon(?<url>.*)`<br/>ProxyPass: `$mleader_host/system/v1$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: `marathon.mesos/system/v1/` |
-| Path: `/system/v1/leader/mesos(?<url>.*)`<br/>ProxyPass: `http://leader.mesos/system/v1$url$is_args$query_string`<br/>Description: undefined<br/>Proxy: `leader.mesos/system/v1/` |
+| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>ProxyPass: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: Proxy to DC/OS Agent<br/>Proxy: `<agentaddr>:61001/system/v1/` |
+| Path: `/system/v1/leader/marathon(?<url>.*)`<br/>ProxyPass: `$mleader_host/system/v1$url$is_args$query_string`<br/>Description: Proxy to Marathon Leader<br/>Proxy: `marathon.mesos/system/v1/` |
+| Path: `/system/v1/leader/mesos(?<url>.*)`<br/>ProxyPass: `http://leader.mesos/system/v1$url$is_args$query_string`<br/>Description: Proxy to Mesos Leader<br/>Proxy: `leader.mesos/system/v1/` |
 | Path: `/system/v1/logs/v1/`<br/>ProxyPass: `http://log/`<br/>Component: DC/OS Log |
 | Path: `/system/v1/metrics/`<br/>ProxyPass: `http://metrics/`<br/>Component: DC/OS Metrics |
 
@@ -67,7 +67,7 @@
 |   |
 |---|
 | Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: `/service/<serviceid>/` |
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>ProxyPass: `$serviceurl`<br/>Description: undefined<br/>Proxy: To Service Address |
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>ProxyPass: `$serviceurl`<br/>Description: Proxy to DC/OS Services<br/>Proxy: To Service Address |
 
 
 ## Upstreams

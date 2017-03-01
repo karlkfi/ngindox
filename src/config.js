@@ -120,7 +120,7 @@ function toHTML(metadata) {
 		lines.push("Name: " + metadata.Component)
 	}
 	if (metadata.Description) {
-		lines.push("Description: " + metadata.Component)
+		lines.push("Description: " + metadata.Description)
 	}
 	if (metadata.Component) {
 		lines.push("Component: " + metadata.Component)
@@ -132,7 +132,7 @@ function toHTML(metadata) {
 		lines.push("Redirect: " + metadata.Redirect)
 	}
 	if (metadata.Cache) {
-		lines.push("Cache: " + metadata.Proxy)
+		lines.push("Cache: " + metadata.Cache)
 	}
 	if (metadata.Deprecated) {
 		lines.push("Deprecated: " + metadata.Deprecated)
