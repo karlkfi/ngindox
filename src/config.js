@@ -48,9 +48,9 @@ Config.prototype.toMarkdown = function() {
 		if (location.proxyPass) {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
-				location.metadata.Backend = match[1];
+				location.metadata.Backend = "`" + match[1] + "`";
 			} else {
-				location.metadata.Backend = location.proxyPass;
+				location.metadata.Backend = "`" + location.proxyPass + "`";
 			}
 		}
 
