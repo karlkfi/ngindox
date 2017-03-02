@@ -122,14 +122,11 @@ function findUpstream(upstreams, proxyPass) {
 
 function toHTML(metadata) {
 	var lines = []
-	if (metadata.Name) {
-		lines.push("Name: " + metadata.Name)
-	}
-	if (metadata.Description) {
-		lines.push("Description: " + metadata.Description)
-	}
 	if (metadata.Redirect) {
 		lines.push("Redirect: " + metadata.Redirect)
+	}
+	if (metadata.Backend) {
+		lines.push("Backend: " + metadata.Backend)
 	}
 	if (metadata.Cache) {
 		lines.push("Cache: " + metadata.Cache)
@@ -137,8 +134,8 @@ function toHTML(metadata) {
 	if (metadata.Deprecated) {
 		lines.push("Deprecated: " + metadata.Deprecated)
 	}
-	if (metadata.Backend) {
-		lines.push("Backend: " + metadata.Backend)
+	if (metadata.Description) {
+		lines.push("Description: " + metadata.Description)
 	}
 	return lines.join("<br/>");
 }
