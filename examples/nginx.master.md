@@ -1,86 +1,105 @@
 ## Locations
 
 
-### Cluster Management
+### Apache Mesos
 
 |   |
 |---|
 | Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)`<br/>Redirect: `/agent/<agentid>/` |
-| Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/>ProxyPass: `$agentaddr:$agentport`<br/>Component: Apache Mesos Agent |
-| Path: `/cache/master/`<br/>ProxyPass: `http://mesos/master/`<br/>Proxy: `/mesos/master/`<br/>Cache: 5 seconds |
-| Path: `/capabilities`<br/>ProxyPass: `http://cosmos/capabilities`<br/>Component: DC/OS Package Manager (Cosmos) |
-| Path: `/dcos-history-service/`<br/>ProxyPass: `http://dcos_history_service/`<br/>Component: DC/OS History |
-| Path: `/dcos-metadata/`<br/> |
-| Path: `/dcos-metadata/dcos-version.json`<br/> |
-| Path: `/dcos-metadata/ui-config.json`<br/>ProxyPass: `http://auth`<br/> |
-| Path: `/exhibitor`<br/>Redirect: `/exhibitor/` |
-| Path: `/exhibitor/`<br/>ProxyPass: `http://exhibitor/`<br/>Component: Exhibitor (Zookeeper) |
+| Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/> |
+| Path: `/cache/master/`<br/>Cache: 5 seconds<br/>Backend: http://leader.mesos:5050/master/ |
 | Path: `/mesos`<br/>Redirect: `/mesos/` |
-| Path: `/mesos/`<br/>ProxyPass: `http://mesos/`<br/>Component: Apache Mesos Master (Leader) |
-| Path: `/metadata`<br/> |
-| Path: `/pkgpanda/`<br/>ProxyPass: `http://pkgpanda/`<br/>Component: DC/OS Component Package Manager (Pkgpanda) |
-| Path: `/pkgpanda/active.buildinfo.full.json`<br/>Component: DC/OS Component Package Manager (Pkgpanda) |
+| Path: `/mesos/`<br/>Backend: http://leader.mesos:5050/ |
 
-### Container Orchestration
+### DC/OS Authentication (OAuth)
+
+|   |
+|---|
+| Path: `/acs/api/v1`<br/>Backend: http://127.0.0.1:8101 |
+| Path: `/acs/api/v1/auth/`<br/>Backend: http://127.0.0.1:8101 |
+| Path: `/login`<br/>Description: User Login<br/>Redirect: To OpenID Connect Server |
+
+### DC/OS Component Package Manager (Pkgpanda)
+
+|   |
+|---|
+| Path: `/pkgpanda/`<br/> |
+| Path: `/pkgpanda/active.buildinfo.full.json`<br/> |
+
+### DC/OS Diagnostics (3DT)
+
+|   |
+|---|
+| Path: `/system/health/v1`<br/>Backend: http://127.0.0.1:1050 |
+
+### DC/OS History
+
+|   |
+|---|
+| Path: `/dcos-history-service/`<br/>Backend: http://leader.mesos:15055/ |
+
+### DC/OS Log
+
+|   |
+|---|
+| Path: `/system/v1/logs/v1/`<br/> |
+
+### DC/OS Metrics
+
+|   |
+|---|
+| Path: `/system/v1/metrics/`<br/>Backend: http://unix:/run/dcos/dcos-metrics-master.sock/ |
+
+### DC/OS Package Manager (Cosmos)
+
+|   |
+|---|
+| Path: `/capabilities`<br/>Backend: http://127.0.0.1:7070/capabilities |
+| Path: `/cosmos/service/`<br/>Backend: http://127.0.0.1:7070/service/ |
+| Path: `/package/`<br/>Backend: http://127.0.0.1:7070/package/ |
+
+### Exhibitor (Zookeeper)
+
+|   |
+|---|
+| Path: `/exhibitor`<br/>Redirect: `/exhibitor/` |
+| Path: `/exhibitor/`<br/>Backend: http://127.0.0.1:8181/ |
+
+### Marathon
 
 |   |
 |---|
 | Path: `/marathon`<br/>Redirect: `/marathon/`<br/>Deprecated: Use `/service/marathon/` |
-| Path: `/marathon/`<br/>ProxyPass: `http://marathon/`<br/>Component: Marathon<br/>Deprecated: Use `/service/marathon/` |
+| Path: `/marathon/`<br/>Deprecated: Use `/service/marathon/`<br/>Backend: http://master.mesos:8080/ |
 
-### Identity & Access Management
-
-|   |
-|---|
-| Path: `/acs/api/v1`<br/>ProxyPass: `http://auth`<br/>Component: DC/OS Authentication (OAuth) |
-| Path: `/acs/api/v1/auth/`<br/>ProxyPass: `http://auth`<br/>Component: DC/OS Authentication (OAuth) |
-| Path: `/login`<br/>Description: User Login<br/>Redirect: To OpenID Connect Server |
-
-### Logging & Metrics
-
-|   |
-|---|
-| Path: `/system/health/v1`<br/>ProxyPass: `http://dddt`<br/>Component: DC/OS Diagnostics (3DT) |
-| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>ProxyPass: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: Proxy to DC/OS Agent<br/>Proxy: `<agentaddr>:61001/system/v1/` |
-| Path: `/system/v1/leader/marathon(?<url>.*)`<br/>ProxyPass: `$mleader_host/system/v1$url$is_args$query_string`<br/>Description: Proxy to Marathon Leader<br/>Proxy: `marathon.mesos/system/v1/` |
-| Path: `/system/v1/leader/mesos(?<url>.*)`<br/>ProxyPass: `http://leader.mesos/system/v1$url$is_args$query_string`<br/>Description: Proxy to Mesos Leader<br/>Proxy: `leader.mesos/system/v1/` |
-| Path: `/system/v1/logs/v1/`<br/>ProxyPass: `http://log/`<br/>Component: DC/OS Log |
-| Path: `/system/v1/metrics/`<br/>ProxyPass: `http://metrics/`<br/>Component: DC/OS Metrics |
-
-### Networking
+### Mesos DNS
 
 |   |
 |---|
 | Path: `/mesos_dns`<br/>Redirect: `/mesos_dns/` |
-| Path: `/mesos_dns/`<br/>ProxyPass: `http://mesos_dns/`<br/>Component: Mesos DNS |
-| Path: `/navstar/lashup/key`<br/>ProxyPass: `http://navstar/lashup/key`<br/>Component: Navstar |
+| Path: `/mesos_dns/`<br/>Backend: http://leader.mesos:5050_dns/ |
 
-### Package Management
+### Navstar
 
 |   |
 |---|
-| Path: `/cosmos/service/`<br/>ProxyPass: `http://cosmos/service/`<br/>Component: DC/OS Package Manager (Cosmos) |
-| Path: `/package/`<br/>ProxyPass: `http://cosmos/package/`<br/>Component: DC/OS Package Manager (Cosmos) |
+| Path: `/navstar/lashup/key`<br/>Backend: http://127.0.0.1:62080/lashup/key |
 
-### Platform Services
+### Other
 
 |   |
 |---|
 | Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: `/service/<serviceid>/` |
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>ProxyPass: `$serviceurl`<br/>Description: Proxy to DC/OS Services<br/>Proxy: To Service Address |
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>Description: Proxy to Services running on DC/OS |
 
-
-## Upstreams
+### System
 
 |   |
 |---|
-| Name: `auth`<br/>Server: `127.0.0.1:8101`<br/>Component: DC/OS Authentication (OAuth) |
-| Name: `cosmos`<br/>Server: `127.0.0.1:7070`<br/>Component: DC/OS Package Manager (Cosmos) |
-| Name: `dcos_history_service`<br/>Server: `leader.mesos:15055`<br/>Component: DC/OS History |
-| Name: `dddt`<br/>Server: `127.0.0.1:1050`<br/>Component: DC/OS Diagnostics (3DT) |
-| Name: `exhibitor`<br/>Server: `127.0.0.1:8181`<br/>Component: Exhibitor (Zookeeper) |
-| Name: `marathon`<br/>Server: `master.mesos:8080`<br/>Component: Marathon |
-| Name: `mesos`<br/>Server: `leader.mesos:5050`<br/>Component: Apache Mesos |
-| Name: `mesos_dns`<br/>Server: `master.mesos:8123`<br/>Component: Mesos DNS |
-| Name: `metrics`<br/>Server: `unix:/run/dcos/dcos-metrics-master.sock`<br/>Component: DC/OS Metrics |
-| Name: `navstar`<br/>Server: `127.0.0.1:62080`<br/>Component: Navstar |
+| Path: `/dcos-metadata/`<br/> |
+| Path: `/dcos-metadata/dcos-version.json`<br/> |
+| Path: `/dcos-metadata/ui-config.json`<br/>Backend: http://127.0.0.1:8101 |
+| Path: `/metadata`<br/> |
+| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>Description: Proxy to DC/OS Agent<br/>Backend: `<agentaddr>:61001/system/v1/` |
+| Path: `/system/v1/leader/marathon(?<url>.*)`<br/>Description: Proxy to Marathon Leader<br/>Backend: `marathon.mesos/system/v1/` |
+| Path: `/system/v1/leader/mesos(?<url>.*)`<br/>Description: Proxy to Mesos Leader API<br/>Backend: `leader.mesos/system/v1/` |

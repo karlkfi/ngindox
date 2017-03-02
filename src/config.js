@@ -6,13 +6,13 @@ function Config() {
 }
 
 Config.prototype.toMarkdown = function() {
+	var locations = this.locations;
+    var upstreams = this.upstreams;
 	var out = "";
 
 	out += "## Locations\n\n";
 
-	var locations = this.locations;
-
-	// modify the path prior to sorting
+	// process fields prior to sorting
 	for (var i = 0, len = locations.length; i < len; i++) {
 		var location = locations[i];
 
@@ -34,6 +34,17 @@ Config.prototype.toMarkdown = function() {
 			}
 		}
 		location.path = path;
+
+		if (location.proxyPass) {
+			var match = findUpstream(upstreams, location.proxyPass)
+			if (match) {
+				location.metadata.Backend = match[1];
+			}
+		}
+
+		if (!location.metadata.Group) {
+			location.metadata.Group = 'Other';
+		}
 	}
 
 	locations.sort(function(a, b) {
@@ -57,8 +68,8 @@ Config.prototype.toMarkdown = function() {
 	for (var i = 0, len = locations.length; i < len; i++) {
 		var location = locations[i];
 
-		if ((location.metadata.Group || 'Other') != group) {
-			group = location.metadata.Group || 'Other'
+		if (location.metadata.Group != group) {
+			group = location.metadata.Group
 			out += "\n### " + group + "\n\n"
 			out += "|   |\n";
 			out += "|---|\n";
@@ -66,43 +77,8 @@ Config.prototype.toMarkdown = function() {
 
 		out += "| ";
 		out += "Path: `" + location.path + "`";
-		if (location.proxyPass != '') {
-			out += "<br/>ProxyPass: `" + location.proxyPass + "`";
-		}
 		if (location.metadata) {
 			out += "<br/>" + toHTML(location.metadata);
-		}
-		out += " |\n";
-	}
-
-
-	out += "\n\n## Upstreams\n\n";
-	// ignore groups in upstreams, just list alphabetically for easy lookup
-	out += "|   |\n";
-	out += "|---|\n";
-
-	var upstreams = this.upstreams;
-
-	upstreams.sort(function(a, b) {
-		if (a.name < b.name) {
-			return -1;
-		}
-		if (a.name > b.name) {
-			return 1;
-		}
-		return 0;
-	});
-
-	var group = '';
-
-	for (var i = 0, len = upstreams.length; i < len; i++) {
-		var upstream = upstreams[i];
-
-		out += "| ";
-		out += "Name: `" + upstream.name + "`";;
-		out += "<br/>Server: `" + upstream.server + "`";;
-		if (upstream.metadata) {
-			out += "<br/>" + toHTML(upstream.metadata);
 		}
 		out += " |\n";
 	}
@@ -110,23 +86,32 @@ Config.prototype.toMarkdown = function() {
 	return out.replace(/\n$/, '');
 }
 
+// Find the Upstream that matches a Location's ProxyPass
+// and merge the ProxyPass with the Upstream Server into a "Backend".
+// Returns [upstream, backend] if found.
+// Returns null if not found.
+function findUpstream(upstreams, proxyPass) {
+	for (var i = 0, len = upstreams.length; i < len; i++) {
+		var upstream = upstreams[i];
+		var matches = proxyPass.match("^(https?://)" + upstream.name + "(.*)$");
+		if (matches) {
+			var backend = matches[1] + upstream.server + matches[2]
+			return [
+				upstream,
+				backend
+			]
+		}
+	}
+	return null
+}
+
 function toHTML(metadata) {
 	var lines = []
-	// Group is shown by headers
-//	if (metadata.Group) {
-//		lines.push("Group: " + metadata.Group)
-//	}
 	if (metadata.Name) {
-		lines.push("Name: " + metadata.Component)
+		lines.push("Name: " + metadata.Name)
 	}
 	if (metadata.Description) {
 		lines.push("Description: " + metadata.Description)
-	}
-	if (metadata.Component) {
-		lines.push("Component: " + metadata.Component)
-	}
-	if (metadata.Proxy) {
-		lines.push("Proxy: " + metadata.Proxy)
 	}
 	if (metadata.Redirect) {
 		lines.push("Redirect: " + metadata.Redirect)
@@ -136,6 +121,9 @@ function toHTML(metadata) {
 	}
 	if (metadata.Deprecated) {
 		lines.push("Deprecated: " + metadata.Deprecated)
+	}
+	if (metadata.Backend) {
+		lines.push("Backend: " + metadata.Backend)
 	}
 	return lines.join("<br/>");
 }
