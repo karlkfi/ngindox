@@ -7,10 +7,20 @@ function Config() {
 
 Config.prototype.toMarkdown = function() {
 	var locations = this.locations;
-    var upstreams = this.upstreams;
-	var out = "";
+	var upstreams = this.upstreams;
 
-	out += "## Locations\n\n";
+	// sort upstreams by name (backwards)
+	// allows longer names to be matched first using findUpstream
+	// ex: mesos_dns & mesos
+	upstreams.sort(function(a, b) {
+		if (a.name > b.name) {
+			return -1;
+		}
+		if (a.name < b.name) {
+			return 1;
+		}
+		return 0;
+	});
 
 	// process fields prior to sorting
 	for (var i = 0, len = locations.length; i < len; i++) {
@@ -39,6 +49,8 @@ Config.prototype.toMarkdown = function() {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
 				location.metadata.Backend = match[1];
+			} else {
+				location.metadata.Backend = location.proxyPass;
 			}
 		}
 
@@ -62,6 +74,9 @@ Config.prototype.toMarkdown = function() {
 		}
 		return 0;
 	});
+
+	var out = "";
+	out += "## Locations\n\n";
 
 	var group = ''
 

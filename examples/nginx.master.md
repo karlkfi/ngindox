@@ -6,7 +6,7 @@
 |   |
 |---|
 | Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)`<br/>Redirect: `/agent/<agentid>/` |
-| Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/> |
+| Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/>Backend: $agentaddr:$agentport |
 | Path: `/cache/master/`<br/>Cache: 5 seconds<br/>Backend: http://leader.mesos:5050/master/ |
 | Path: `/mesos`<br/>Redirect: `/mesos/` |
 | Path: `/mesos/`<br/>Backend: http://leader.mesos:5050/ |
@@ -23,7 +23,7 @@
 
 |   |
 |---|
-| Path: `/pkgpanda/`<br/> |
+| Path: `/pkgpanda/`<br/>Backend: http://pkgpanda/ |
 | Path: `/pkgpanda/active.buildinfo.full.json`<br/> |
 
 ### DC/OS Diagnostics (3DT)
@@ -42,7 +42,7 @@
 
 |   |
 |---|
-| Path: `/system/v1/logs/v1/`<br/> |
+| Path: `/system/v1/logs/v1/`<br/>Backend: http://log/ |
 
 ### DC/OS Metrics
 
@@ -77,7 +77,7 @@
 |   |
 |---|
 | Path: `/mesos_dns`<br/>Redirect: `/mesos_dns/` |
-| Path: `/mesos_dns/`<br/>Backend: http://leader.mesos:5050_dns/ |
+| Path: `/mesos_dns/`<br/>Backend: http://master.mesos:8123/ |
 
 ### Navstar
 
@@ -90,7 +90,7 @@
 |   |
 |---|
 | Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: `/service/<serviceid>/` |
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>Description: Proxy to Services running on DC/OS |
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>Description: Proxy to Services running on DC/OS<br/>Backend: $serviceurl |
 
 ### System
 
@@ -100,6 +100,6 @@
 | Path: `/dcos-metadata/dcos-version.json`<br/> |
 | Path: `/dcos-metadata/ui-config.json`<br/>Backend: http://127.0.0.1:8101 |
 | Path: `/metadata`<br/> |
-| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>Description: Proxy to DC/OS Agent<br/>Backend: `<agentaddr>:61001/system/v1/` |
-| Path: `/system/v1/leader/marathon(?<url>.*)`<br/>Description: Proxy to Marathon Leader<br/>Backend: `marathon.mesos/system/v1/` |
-| Path: `/system/v1/leader/mesos(?<url>.*)`<br/>Description: Proxy to Mesos Leader API<br/>Backend: `leader.mesos/system/v1/` |
+| Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>Description: Proxy to DC/OS Agent<br/>Backend: $agentaddr:61001/system/v1$type$url$is_args$query_string |
+| Path: `/system/v1/leader/marathon(?<url>.*)`<br/>Description: Proxy to Marathon Leader<br/>Backend: $mleader_host/system/v1$url$is_args$query_string |
+| Path: `/system/v1/leader/mesos(?<url>.*)`<br/>Description: Proxy to Mesos Leader API<br/>Backend: http://leader.mesos/system/v1$url$is_args$query_string |
