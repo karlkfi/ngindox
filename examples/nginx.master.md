@@ -55,7 +55,7 @@
 
 |   |
 |---|
-| Path: `/system/v1/metrics/`<br/>Backend: `http://unix:/run/dcos/dcos-metrics-master.sock/` |
+| Path: `/system/v1/metrics/`<br/>Backend: `http://<socket>/`<br/>Socket: `/run/dcos/dcos-metrics-master.sock` |
 
 ### DC/OS Package Manager (Cosmos)
 

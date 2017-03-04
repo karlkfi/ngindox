@@ -49,6 +49,9 @@ Config.prototype.toMarkdown = function() {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
 				location.metadata.Backend = "`" + match[1] + "`";
+				if (match.length > 2) {
+					location.metadata.Socket = "`" + match[2] + "`";
+				}
 			} else {
 				location.metadata.Backend = "`" + location.proxyPass + "`";
 			}
@@ -108,13 +111,28 @@ Config.prototype.toMarkdown = function() {
 // Find the Upstream that matches a Location's ProxyPass
 // and merge the ProxyPass with the Upstream Server into a "Backend".
 // Returns [upstream, backend] if found.
+// Returns [upstream, backend, socket] if found and server is a unix socket.
 // Returns null if not found.
 function findUpstream(upstreams, proxyPass) {
 	for (var i = 0, len = upstreams.length; i < len; i++) {
 		var upstream = upstreams[i];
 		var matches = proxyPass.match("^(https?://)" + upstream.name + "(.*)$");
 		if (matches) {
-			var backend = matches[1] + upstream.server + matches[2]
+			var scheme = matches[1];
+			var path = matches[2];
+			var backend = scheme + upstream.server + path;
+
+			matches = upstream.server.match("^unix:(.*)$");
+			if (matches) {
+				backend = scheme + '<socket>' + path;
+				var socket = matches[1];
+				return [
+					upstream,
+					backend,
+					socket
+				]
+			}
+
 			return [
 				upstream,
 				backend
@@ -134,6 +152,9 @@ function toHTML(metadata) {
 	}
 	if (metadata.Backend) {
 		lines.push("Backend: " + metadata.Backend)
+	}
+	if (metadata.Socket) {
+		lines.push("Socket: " + metadata.Socket)
 	}
 	if (metadata.Cache) {
 		lines.push("Cache: " + metadata.Cache)
