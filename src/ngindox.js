@@ -78,6 +78,13 @@ Ngindox.prototype.parse = function(source, callback) {
 				proxy_pass = _proxy_passes[0].value;
 			}
 
+			// alias is optional
+			var alias = ''
+			var _aliases = findChild('alias', _location);
+			if (_aliases.length > 0) {
+				alias = _aliases[0].value;
+			}
+
 			// metadata is optional
 			var metadata = parseMetadata(_location);
 
@@ -85,6 +92,7 @@ Ngindox.prototype.parse = function(source, callback) {
 				new _config.Location(
 					_location.value,
 					proxy_pass,
+					alias,
 					metadata
 				)
 			);

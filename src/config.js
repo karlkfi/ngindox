@@ -54,6 +54,10 @@ Config.prototype.toMarkdown = function() {
 			}
 		}
 
+		if (location.alias) {
+			location.metadata.File = "`" + location.alias + "`";
+		}
+
 		if (!location.metadata.Group) {
 			location.metadata.Group = 'Other';
 		}
@@ -125,6 +129,9 @@ function toHTML(metadata) {
 	if (metadata.Redirect) {
 		lines.push("Redirect: " + metadata.Redirect)
 	}
+	if (metadata.File) {
+		lines.push("File: " + metadata.File)
+	}
 	if (metadata.Backend) {
 		lines.push("Backend: " + metadata.Backend)
 	}
@@ -146,9 +153,10 @@ function Upstream(name, server, metadata) {
 	this.metadata = metadata || YAML.parse('');
 }
 
-function Location(path, proxyPass, metadata) {
+function Location(path, proxyPass, alias, metadata) {
 	this.path = path || '';
 	this.proxyPass = proxyPass || '';
+	this.alias = alias || '';
 	this.metadata = metadata || YAML.parse('');
 }
 

@@ -24,7 +24,7 @@
 |   |
 |---|
 | Path: `/pkgpanda/`<br/>Backend: `http://pkgpanda/` |
-| Path: `/pkgpanda/active.buildinfo.full.json`<br/> |
+| Path: `/pkgpanda/active.buildinfo.full.json`<br/>File: `/opt/mesosphere/active.buildinfo.full.json` |
 
 ### DC/OS Diagnostics (3DT)
 
@@ -96,8 +96,8 @@
 
 |   |
 |---|
-| Path: `/dcos-metadata/`<br/> |
-| Path: `/dcos-metadata/dcos-version.json`<br/> |
+| Path: `/dcos-metadata/`<br/>File: `/opt/mesosphere/active/dcos-metadata/etc/` |
+| Path: `/dcos-metadata/dcos-version.json`<br/>File: `/opt/mesosphere/active/dcos-metadata/etc/dcos-version.json` |
 | Path: `/dcos-metadata/ui-config.json`<br/>Backend: `http://127.0.0.1:8101` |
 | Path: `/metadata`<br/> |
 | Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>Backend: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: Proxy to DC/OS Agent |
