@@ -1,6 +1,13 @@
 ## Locations
 
 
+### Admin Router
+
+|   |
+|---|
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: `/service/<serviceid>/` |
+| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>Backend: `$serviceurl`<br/>Description: Proxy to Services running on DC/OS |
+
 ### Apache Mesos
 
 |   |
@@ -84,13 +91,6 @@
 |   |
 |---|
 | Path: `/navstar/lashup/key`<br/>Backend: `http://127.0.0.1:62080/lashup/key` |
-
-### Other
-
-|   |
-|---|
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>Redirect: `/service/<serviceid>/` |
-| Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>Backend: `$serviceurl`<br/>Description: Proxy to Services running on DC/OS |
 
 ### System
 
