@@ -61,6 +61,10 @@ Config.prototype.toMarkdown = function() {
 			location.metadata.File = "`" + location.alias + "`";
 		}
 
+		if (location.path) {
+			location.metadata.Path = "`" + location.path + "`";
+		}
+
 		if (!location.metadata.Group) {
 			location.metadata.Group = 'Other';
 		}
@@ -93,16 +97,18 @@ Config.prototype.toMarkdown = function() {
 		if (location.metadata.Group != group) {
 			group = location.metadata.Group
 			out += "\n### " + group + "\n\n"
-			out += "|   |\n";
-			out += "|---|\n";
+			out += "<table>\n";
 		}
 
-		out += "| ";
-		out += "Path: `" + location.path + "`";
-		if (location.metadata) {
-			out += "<br/>" + toHTML(location.metadata);
+		out += "  <tr>\n";
+		out += "    <td>\n";
+		out += "      " + toHTML(location.metadata).replace("<br/>", "<br/>\n      ") + "\n";
+		out += "    </td>\n";
+		out += "  </tr>\n";
+
+		if (i+1 == len || locations[i+1].metadata.Group != group) {
+			out += "</table>\n";
 		}
-		out += " |\n";
 	}
 
 	return out.replace(/\n$/, '');
@@ -143,27 +149,22 @@ function findUpstream(upstreams, proxyPass) {
 }
 
 function toHTML(metadata) {
+	var fields = [
+		'Path',
+		'Redirect',
+		'File',
+		'Backend',
+		'Socket',
+		'Cache',
+		'Deprecated',
+		'Description',
+	]
 	var lines = []
-	if (metadata.Redirect) {
-		lines.push("Redirect: " + metadata.Redirect)
-	}
-	if (metadata.File) {
-		lines.push("File: " + metadata.File)
-	}
-	if (metadata.Backend) {
-		lines.push("Backend: " + metadata.Backend)
-	}
-	if (metadata.Socket) {
-		lines.push("Socket: " + metadata.Socket)
-	}
-	if (metadata.Cache) {
-		lines.push("Cache: " + metadata.Cache)
-	}
-	if (metadata.Deprecated) {
-		lines.push("Deprecated: " + metadata.Deprecated)
-	}
-	if (metadata.Description) {
-		lines.push("Description: " + metadata.Description)
+	for (var i = 0, len = fields.length; i < len; i++) {
+		var field = fields[i];
+		if (metadata[field]) {
+			lines.push(field + ": " + metadata[field])
+		}
 	}
 	return lines.join("<br/>");
 }

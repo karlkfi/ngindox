@@ -1,15 +1,26 @@
 #!/usr/bin/env node
 
 var cli = require('cli'),
+	fs = require('fs'),
 	ngindox = require('./src/ngindox');
 
-cli.withStdin(function(input) {
-	var print = this.output
-	ngindox.parse(input, function(err, config) {
+cli.parse({
+    file: [ 'f', 'Path to NGINX config file to parse', 'file'],
+    encoding: [ 'e', 'File encoding', 'as-is', 'utf8']
+});
+
+cli.main(function (args, options) {
+	var fatal = this.fatal;
+
+	if (!options.file) {
+		return fatal('Must specify input file (-f)');
+	}
+
+    ngindox.parseFile(options.file, options.encoding, function(err, config) {
 		if (err) {
-			print("Error: " + err);
-			return;
+			return fatal(err);
 		}
-		print(config.toMarkdown());
+
+		process.stdout.write(config.toMarkdown());
 	});
 });
