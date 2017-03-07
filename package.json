@@ -24,6 +24,6 @@
 		"nginx-conf": "1.3.0",
 		"cli": "1.0.1",
 		"yamljs": "0.2.8",
-		"escape-html": "1.0.3"
+		"markdown-it": "8.3.1"
 	}
 }

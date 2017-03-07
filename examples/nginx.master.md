@@ -7,7 +7,7 @@
   <tr>
     <td>
       Path: <code>/service/(?&lt;serviceid&gt;[0-9a-zA-Z-.]+)</code><br/>
-      Redirect: `/service/<serviceid>/`
+      Redirect: <code>/service/&lt;serviceid&gt;/</code>
     </td>
   </tr>
   <tr>
@@ -24,7 +24,7 @@
   <tr>
     <td>
       Path: <code>/(slave|agent)/(?&lt;agentid&gt;[0-9a-zA-Z-]+)</code><br/>
-      Redirect: `/agent/<agentid>/`
+      Redirect: <code>/agent/&lt;agentid&gt;/</code>
     </td>
   </tr>
   <tr>
@@ -42,7 +42,7 @@
   <tr>
     <td>
       Path: <code>/mesos</code><br/>
-      Redirect: `/mesos/`
+      Redirect: <code>/mesos/</code>
     </td>
   </tr>
   <tr>
@@ -166,7 +166,7 @@
   <tr>
     <td>
       Path: <code>/exhibitor</code><br/>
-      Redirect: `/exhibitor/`
+      Redirect: <code>/exhibitor/</code>
     </td>
   </tr>
   <tr>
@@ -183,13 +183,13 @@
   <tr>
     <td>
       Path: <code>/marathon</code><br/>
-      Redirect: `/marathon/`<br/>Deprecated: Use `/service/marathon/`
+      Redirect: <code>/marathon/</code><br/>Deprecated: Use <code>/service/marathon/</code>
     </td>
   </tr>
   <tr>
     <td>
       Path: <code>/marathon/</code><br/>
-      Backend: <code>http://master.mesos:8080/</code><br/>Deprecated: Use `/service/marathon/`
+      Backend: <code>http://master.mesos:8080/</code><br/>Deprecated: Use <code>/service/marathon/</code>
     </td>
   </tr>
 </table>
@@ -200,7 +200,7 @@
   <tr>
     <td>
       Path: <code>/mesos_dns</code><br/>
-      Redirect: `/mesos_dns/`
+      Redirect: <code>/mesos_dns/</code>
     </td>
   </tr>
   <tr>

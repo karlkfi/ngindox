@@ -1,5 +1,5 @@
 var YAML = require('yamljs'),
-	escapeHtml = require('escape-html');
+	MarkdownIt = require('markdown-it');
 
 function Config() {
 	this.upstreams = []
@@ -49,21 +49,21 @@ Config.prototype.toMarkdown = function() {
 		if (location.proxyPass) {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
-				location.metadata.Backend = "<code>" + escapeHtml(match[1]) + "</code>";
+				location.metadata.Backend = "`" + match[1] + "`";
 				if (match.length > 2) {
-					location.metadata.Socket = "<code>" + escapeHtml(match[2]) + "</code>";
+					location.metadata.Socket = "`" + match[2] + "`";
 				}
 			} else {
-				location.metadata.Backend = "<code>" + escapeHtml(location.proxyPass) + "</code>";
+				location.metadata.Backend = "`" + location.proxyPass + "`";
 			}
 		}
 
 		if (location.alias) {
-			location.metadata.File = "<code>" + escapeHtml(location.alias) + "</code>";
+			location.metadata.File = "`" + location.alias + "`";
 		}
 
 		if (location.path) {
-			location.metadata.Path = "<code>" + escapeHtml(location.path) + "</code>";
+			location.metadata.Path = "`" + location.path + "`";
 		}
 
 		if (!location.metadata.Group) {
@@ -160,11 +160,15 @@ function toHTML(metadata) {
 		'Deprecated',
 		'Description',
 	]
+	var md = new MarkdownIt({
+		html: false
+	});
 	var lines = []
 	for (var i = 0, len = fields.length; i < len; i++) {
 		var field = fields[i];
 		if (metadata[field]) {
-			lines.push(field + ": " + metadata[field])
+			// parse field values as markdown
+			lines.push(field + ": " + md.renderInline(metadata[field]));
 		}
 	}
 	return lines.join("<br/>");
