@@ -48,21 +48,21 @@ Config.prototype.toMarkdown = function() {
 		if (location.proxyPass) {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
-				location.metadata.Backend = "`" + match[1] + "`";
+				location.metadata.Backend = "<code>" + match[1] + "</code>";
 				if (match.length > 2) {
-					location.metadata.Socket = "`" + match[2] + "`";
+					location.metadata.Socket = "<code>" + match[2] + "</code>";
 				}
 			} else {
-				location.metadata.Backend = "`" + location.proxyPass + "`";
+				location.metadata.Backend = "<code>" + location.proxyPass + "</code>";
 			}
 		}
 
 		if (location.alias) {
-			location.metadata.File = "`" + location.alias + "`";
+			location.metadata.File = "<code>" + location.alias + "</code>";
 		}
 
 		if (location.path) {
-			location.metadata.Path = "`" + location.path + "`";
+			location.metadata.Path = "<code>" + location.path + "</code>";
 		}
 
 		if (!location.metadata.Group) {
@@ -111,7 +111,7 @@ Config.prototype.toMarkdown = function() {
 		}
 	}
 
-	return out.replace(/\n$/, '');
+	return out;
 }
 
 // Find the Upstream that matches a Location's ProxyPass

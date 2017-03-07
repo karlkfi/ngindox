@@ -6,14 +6,14 @@
 <table>
   <tr>
     <td>
-      Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)`<br/>
+      Path: <code>/service/(?<serviceid>[0-9a-zA-Z-.]+)</code><br/>
       Redirect: `/service/<serviceid>/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)`<br/>
-      Backend: `$serviceurl`<br/>Description: Proxy to Services running on DC/OS
+      Path: <code>/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)</code><br/>
+      Backend: <code>$serviceurl</code><br/>Description: Proxy to Services running on DC/OS
     </td>
   </tr>
 </table>
@@ -23,32 +23,32 @@
 <table>
   <tr>
     <td>
-      Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)`<br/>
+      Path: <code>/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)</code><br/>
       Redirect: `/agent/<agentid>/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)`<br/>
-      Backend: `$agentaddr:$agentport`
+      Path: <code>/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)</code><br/>
+      Backend: <code>$agentaddr:$agentport</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/cache/master/`<br/>
-      Backend: `http://leader.mesos:5050/master/`<br/>Cache: 5 seconds
+      Path: <code>/cache/master/</code><br/>
+      Backend: <code>http://leader.mesos:5050/master/</code><br/>Cache: 5 seconds
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/mesos`<br/>
+      Path: <code>/mesos</code><br/>
       Redirect: `/mesos/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/mesos/`<br/>
-      Backend: `http://leader.mesos:5050/`
+      Path: <code>/mesos/</code><br/>
+      Backend: <code>http://leader.mesos:5050/</code>
     </td>
   </tr>
 </table>
@@ -58,19 +58,19 @@
 <table>
   <tr>
     <td>
-      Path: `/acs/api/v1`<br/>
-      Backend: `http://127.0.0.1:8101`
+      Path: <code>/acs/api/v1</code><br/>
+      Backend: <code>http://127.0.0.1:8101</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/acs/api/v1/auth/`<br/>
-      Backend: `http://127.0.0.1:8101`
+      Path: <code>/acs/api/v1/auth/</code><br/>
+      Backend: <code>http://127.0.0.1:8101</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/login`<br/>
+      Path: <code>/login</code><br/>
       Redirect: To OpenID Connect Server<br/>Description: User Login
     </td>
   </tr>
@@ -81,14 +81,14 @@
 <table>
   <tr>
     <td>
-      Path: `/pkgpanda/`<br/>
-      Backend: `http://<socket>/`<br/>Socket: `/run/dcos/pkgpanda-api.sock`
+      Path: <code>/pkgpanda/</code><br/>
+      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/pkgpanda-api.sock</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/pkgpanda/active.buildinfo.full.json`<br/>
-      File: `/opt/mesosphere/active.buildinfo.full.json`
+      Path: <code>/pkgpanda/active.buildinfo.full.json</code><br/>
+      File: <code>/opt/mesosphere/active.buildinfo.full.json</code>
     </td>
   </tr>
 </table>
@@ -98,8 +98,8 @@
 <table>
   <tr>
     <td>
-      Path: `/system/health/v1`<br/>
-      Backend: `http://127.0.0.1:1050`
+      Path: <code>/system/health/v1</code><br/>
+      Backend: <code>http://127.0.0.1:1050</code>
     </td>
   </tr>
 </table>
@@ -109,8 +109,8 @@
 <table>
   <tr>
     <td>
-      Path: `/dcos-history-service/`<br/>
-      Backend: `http://leader.mesos:15055/`
+      Path: <code>/dcos-history-service/</code><br/>
+      Backend: <code>http://leader.mesos:15055/</code>
     </td>
   </tr>
 </table>
@@ -120,8 +120,8 @@
 <table>
   <tr>
     <td>
-      Path: `/system/v1/logs/v1/`<br/>
-      Backend: `http://<socket>/`<br/>Socket: `/run/dcos/dcos-log.sock`
+      Path: <code>/system/v1/logs/v1/</code><br/>
+      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/dcos-log.sock</code>
     </td>
   </tr>
 </table>
@@ -131,8 +131,8 @@
 <table>
   <tr>
     <td>
-      Path: `/system/v1/metrics/`<br/>
-      Backend: `http://<socket>/`<br/>Socket: `/run/dcos/dcos-metrics-master.sock`
+      Path: <code>/system/v1/metrics/</code><br/>
+      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/dcos-metrics-master.sock</code>
     </td>
   </tr>
 </table>
@@ -142,20 +142,20 @@
 <table>
   <tr>
     <td>
-      Path: `/capabilities`<br/>
-      Backend: `http://127.0.0.1:7070/capabilities`
+      Path: <code>/capabilities</code><br/>
+      Backend: <code>http://127.0.0.1:7070/capabilities</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/cosmos/service/`<br/>
-      Backend: `http://127.0.0.1:7070/service/`
+      Path: <code>/cosmos/service/</code><br/>
+      Backend: <code>http://127.0.0.1:7070/service/</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/package/`<br/>
-      Backend: `http://127.0.0.1:7070/package/`
+      Path: <code>/package/</code><br/>
+      Backend: <code>http://127.0.0.1:7070/package/</code>
     </td>
   </tr>
 </table>
@@ -165,14 +165,14 @@
 <table>
   <tr>
     <td>
-      Path: `/exhibitor`<br/>
+      Path: <code>/exhibitor</code><br/>
       Redirect: `/exhibitor/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/exhibitor/`<br/>
-      Backend: `http://127.0.0.1:8181/`
+      Path: <code>/exhibitor/</code><br/>
+      Backend: <code>http://127.0.0.1:8181/</code>
     </td>
   </tr>
 </table>
@@ -182,14 +182,14 @@
 <table>
   <tr>
     <td>
-      Path: `/marathon`<br/>
+      Path: <code>/marathon</code><br/>
       Redirect: `/marathon/`<br/>Deprecated: Use `/service/marathon/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/marathon/`<br/>
-      Backend: `http://master.mesos:8080/`<br/>Deprecated: Use `/service/marathon/`
+      Path: <code>/marathon/</code><br/>
+      Backend: <code>http://master.mesos:8080/</code><br/>Deprecated: Use `/service/marathon/`
     </td>
   </tr>
 </table>
@@ -199,14 +199,14 @@
 <table>
   <tr>
     <td>
-      Path: `/mesos_dns`<br/>
+      Path: <code>/mesos_dns</code><br/>
       Redirect: `/mesos_dns/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/mesos_dns/`<br/>
-      Backend: `http://master.mesos:8123/`
+      Path: <code>/mesos_dns/</code><br/>
+      Backend: <code>http://master.mesos:8123/</code>
     </td>
   </tr>
 </table>
@@ -216,8 +216,8 @@
 <table>
   <tr>
     <td>
-      Path: `/navstar/lashup/key`<br/>
-      Backend: `http://127.0.0.1:62080/lashup/key`
+      Path: <code>/navstar/lashup/key</code><br/>
+      Backend: <code>http://127.0.0.1:62080/lashup/key</code>
     </td>
   </tr>
 </table>
@@ -227,43 +227,43 @@
 <table>
   <tr>
     <td>
-      Path: `/dcos-metadata/`<br/>
-      File: `/opt/mesosphere/active/dcos-metadata/etc/`
+      Path: <code>/dcos-metadata/</code><br/>
+      File: <code>/opt/mesosphere/active/dcos-metadata/etc/</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/dcos-metadata/dcos-version.json`<br/>
-      File: `/opt/mesosphere/active/dcos-metadata/etc/dcos-version.json`
+      Path: <code>/dcos-metadata/dcos-version.json</code><br/>
+      File: <code>/opt/mesosphere/active/dcos-metadata/etc/dcos-version.json</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/dcos-metadata/ui-config.json`<br/>
-      Backend: `http://127.0.0.1:8101`
+      Path: <code>/dcos-metadata/ui-config.json</code><br/>
+      Backend: <code>http://127.0.0.1:8101</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/metadata`
+      Path: <code>/metadata</code>
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)`<br/>
-      Backend: `$agentaddr:61001/system/v1$type$url$is_args$query_string`<br/>Description: Proxy to DC/OS Agent
+      Path: <code>/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)</code><br/>
+      Backend: <code>$agentaddr:61001/system/v1$type$url$is_args$query_string</code><br/>Description: Proxy to DC/OS Agent
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/system/v1/leader/marathon(?<url>.*)`<br/>
-      Backend: `$mleader_host/system/v1$url$is_args$query_string`<br/>Description: Proxy to Marathon Leader
+      Path: <code>/system/v1/leader/marathon(?<url>.*)</code><br/>
+      Backend: <code>$mleader_host/system/v1$url$is_args$query_string</code><br/>Description: Proxy to Marathon Leader
     </td>
   </tr>
   <tr>
     <td>
-      Path: `/system/v1/leader/mesos(?<url>.*)`<br/>
-      Backend: `http://leader.mesos/system/v1$url$is_args$query_string`<br/>Description: Proxy to Mesos Leader API
+      Path: <code>/system/v1/leader/mesos(?<url>.*)</code><br/>
+      Backend: <code>http://leader.mesos/system/v1$url$is_args$query_string</code><br/>Description: Proxy to Mesos Leader API
     </td>
   </tr>
 </table>
