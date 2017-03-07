@@ -48,21 +48,21 @@ Config.prototype.toMarkdown = function() {
 		if (location.proxyPass) {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
-				location.metadata.Backend = "<code>" + match[1] + "</code>";
+				location.metadata.Backend = "<pre><code>" + match[1] + "</code></pre>";
 				if (match.length > 2) {
-					location.metadata.Socket = "<code>" + match[2] + "</code>";
+					location.metadata.Socket = "<pre><code>" + match[2] + "</code></pre>";
 				}
 			} else {
-				location.metadata.Backend = "<code>" + location.proxyPass + "</code>";
+				location.metadata.Backend = "<pre><code>" + location.proxyPass + "</code></pre>";
 			}
 		}
 
 		if (location.alias) {
-			location.metadata.File = "<code>" + location.alias + "</code>";
+			location.metadata.File = "<pre><code>" + location.alias + "</code></pre>";
 		}
 
 		if (location.path) {
-			location.metadata.Path = "<code>" + location.path + "</code>";
+			location.metadata.Path = "<pre><code>" + location.path + "</code></pre>";
 		}
 
 		if (!location.metadata.Group) {
