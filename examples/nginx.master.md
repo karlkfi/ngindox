@@ -6,13 +6,13 @@
 <table>
   <tr>
     <td>
-      Path: <code>/service/(?<serviceid>[0-9a-zA-Z-.]+)</code><br/>
+      Path: <code>/service/(?&lt;serviceid&gt;[0-9a-zA-Z-.]+)</code><br/>
       Redirect: `/service/<serviceid>/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: <code>/service/(?<serviceid>[0-9a-zA-Z-.]+)/(?<url>.*)</code><br/>
+      Path: <code>/service/(?&lt;serviceid&gt;[0-9a-zA-Z-.]+)/(?&lt;url&gt;.*)</code><br/>
       Backend: <code>$serviceurl</code><br/>Description: Proxy to Services running on DC/OS
     </td>
   </tr>
@@ -23,13 +23,13 @@
 <table>
   <tr>
     <td>
-      Path: <code>/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)</code><br/>
+      Path: <code>/(slave|agent)/(?&lt;agentid&gt;[0-9a-zA-Z-]+)</code><br/>
       Redirect: `/agent/<agentid>/`
     </td>
   </tr>
   <tr>
     <td>
-      Path: <code>/(slave|agent)/(?<agentid>[0-9a-zA-Z-]+)(?<url>.+)</code><br/>
+      Path: <code>/(slave|agent)/(?&lt;agentid&gt;[0-9a-zA-Z-]+)(?&lt;url&gt;.+)</code><br/>
       Backend: <code>$agentaddr:$agentport</code>
     </td>
   </tr>
@@ -82,7 +82,7 @@
   <tr>
     <td>
       Path: <code>/pkgpanda/</code><br/>
-      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/pkgpanda-api.sock</code>
+      Backend: <code>http://&lt;socket&gt;/</code><br/>Socket: <code>/run/dcos/pkgpanda-api.sock</code>
     </td>
   </tr>
   <tr>
@@ -121,7 +121,7 @@
   <tr>
     <td>
       Path: <code>/system/v1/logs/v1/</code><br/>
-      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/dcos-log.sock</code>
+      Backend: <code>http://&lt;socket&gt;/</code><br/>Socket: <code>/run/dcos/dcos-log.sock</code>
     </td>
   </tr>
 </table>
@@ -132,7 +132,7 @@
   <tr>
     <td>
       Path: <code>/system/v1/metrics/</code><br/>
-      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/dcos-metrics-master.sock</code>
+      Backend: <code>http://&lt;socket&gt;/</code><br/>Socket: <code>/run/dcos/dcos-metrics-master.sock</code>
     </td>
   </tr>
 </table>
@@ -250,19 +250,19 @@
   </tr>
   <tr>
     <td>
-      Path: <code>/system/v1/agent/(?<agentid>[0-9a-zA-Z-]+)(?<type>(/logs/v1|/metrics/v0))(?<url>.*)</code><br/>
+      Path: <code>/system/v1/agent/(?&lt;agentid&gt;[0-9a-zA-Z-]+)(?&lt;type&gt;(/logs/v1|/metrics/v0))(?&lt;url&gt;.*)</code><br/>
       Backend: <code>$agentaddr:61001/system/v1$type$url$is_args$query_string</code><br/>Description: Proxy to DC/OS Agent
     </td>
   </tr>
   <tr>
     <td>
-      Path: <code>/system/v1/leader/marathon(?<url>.*)</code><br/>
+      Path: <code>/system/v1/leader/marathon(?&lt;url&gt;.*)</code><br/>
       Backend: <code>$mleader_host/system/v1$url$is_args$query_string</code><br/>Description: Proxy to Marathon Leader
     </td>
   </tr>
   <tr>
     <td>
-      Path: <code>/system/v1/leader/mesos(?<url>.*)</code><br/>
+      Path: <code>/system/v1/leader/mesos(?&lt;url&gt;.*)</code><br/>
       Backend: <code>http://leader.mesos/system/v1$url$is_args$query_string</code><br/>Description: Proxy to Mesos Leader API
     </td>
   </tr>

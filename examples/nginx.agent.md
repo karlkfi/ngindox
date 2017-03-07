@@ -7,7 +7,7 @@
   <tr>
     <td>
       Path: <code>/pkgpanda/</code><br/>
-      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/pkgpanda-api.sock</code>
+      Backend: <code>http://&lt;socket&gt;/</code><br/>Socket: <code>/run/dcos/pkgpanda-api.sock</code>
     </td>
   </tr>
 </table>
@@ -18,7 +18,7 @@
   <tr>
     <td>
       Path: <code>/system/health/v1</code><br/>
-      Backend: <code>http://<socket></code><br/>Socket: <code>/run/dcos/3dt.sock</code>
+      Backend: <code>http://&lt;socket&gt;</code><br/>Socket: <code>/run/dcos/3dt.sock</code>
     </td>
   </tr>
 </table>
@@ -29,7 +29,7 @@
   <tr>
     <td>
       Path: <code>/system/v1/logs/v1/</code><br/>
-      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/dcos-log.sock</code>
+      Backend: <code>http://&lt;socket&gt;/</code><br/>Socket: <code>/run/dcos/dcos-log.sock</code>
     </td>
   </tr>
 </table>
@@ -40,7 +40,7 @@
   <tr>
     <td>
       Path: <code>/system/v1/metrics/</code><br/>
-      Backend: <code>http://<socket>/</code><br/>Socket: <code>/run/dcos/dcos-metrics-agent.sock</code>
+      Backend: <code>http://&lt;socket&gt;/</code><br/>Socket: <code>/run/dcos/dcos-metrics-agent.sock</code>
     </td>
   </tr>
 </table>

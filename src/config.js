@@ -1,4 +1,5 @@
-var YAML = require('yamljs');
+var YAML = require('yamljs'),
+	escapeHtml = require('escape-html');
 
 function Config() {
 	this.upstreams = []
@@ -48,21 +49,21 @@ Config.prototype.toMarkdown = function() {
 		if (location.proxyPass) {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
-				location.metadata.Backend = "<code>" + match[1] + "</code>";
+				location.metadata.Backend = "<code>" + escapeHtml(match[1]) + "</code>";
 				if (match.length > 2) {
-					location.metadata.Socket = "<code>" + match[2] + "</code>";
+					location.metadata.Socket = "<code>" + escapeHtml(match[2]) + "</code>";
 				}
 			} else {
-				location.metadata.Backend = "<code>" + location.proxyPass + "</code>";
+				location.metadata.Backend = "<code>" + escapeHtml(location.proxyPass) + "</code>";
 			}
 		}
 
 		if (location.alias) {
-			location.metadata.File = "<code>" + location.alias + "</code>";
+			location.metadata.File = "<code>" + escapeHtml(location.alias) + "</code>";
 		}
 
 		if (location.path) {
-			location.metadata.Path = "<code>" + location.path + "</code>";
+			location.metadata.Path = "<code>" + escapeHtml(location.path) + "</code>";
 		}
 
 		if (!location.metadata.Group) {
