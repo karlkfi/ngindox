@@ -178,7 +178,7 @@ function Location(path, proxyPass, alias, metadata) {
 	this.path = path || '';
 	this.proxyPass = proxyPass || '';
 	this.alias = alias || '';
-	this.metadata = metadata || YAML.parse('');
+	this.metadata = metadata || {};
 }
 
 exports.Config = Config;
