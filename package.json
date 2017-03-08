@@ -1,31 +1,37 @@
 {
-	"name": "ngindox",
-	"version": "0.1.0",
-	"description": "Documentation generator for NGINX configurations",
-	"license": "MIT",
-	"keywords": [ "nginx", "configuration", "documentation", "generator" ],
-	"author": "Karl Isenberg <karlkfi@gmail.com> (http://karl.isenberg.us/)",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/karlkfi/ngindox.git"
-	},
-	"directories": {
-		"lib": "src"
-	},
-	"files": [
-		"src",
-		"index.js",
-		"cli.js"
-	],
-	"scripts": {
-		"ngindox": "./cli.js"
-	},
-	"dependencies": {
-		"nginx-conf": "1.3.0",
-		"cli": "1.0.1",
-		"yamljs": "0.2.8",
-		"markdown-it": "8.3.1",
-		"github-slugger": "1.1.1",
-		"innertext": "1.0.1"
-	}
+  "name": "ngindox",
+  "version": "0.1.0",
+  "description": "Documentation generator for NGINX configurations",
+  "license": "MIT",
+  "keywords": [
+    "nginx",
+    "configuration",
+    "documentation",
+    "generator"
+  ],
+  "author": "Karl Isenberg <karlkfi@gmail.com> (http://karl.isenberg.us/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/karlkfi/ngindox.git"
+  },
+  "directories": {
+    "lib": "src"
+  },
+  "files": [
+    "src",
+    "index.js",
+    "cli.js"
+  ],
+  "scripts": {
+    "ngindox": "./cli.js"
+  },
+  "dependencies": {
+    "cli": "1.0.1",
+    "github-slugger": "1.1.1",
+    "innertext": "1.0.1",
+    "markdown-it": "8.3.1",
+    "nginx-conf": "1.3.0",
+    "single-trailing-newline": "1.0.0",
+    "yamljs": "0.2.8"
+  }
 }

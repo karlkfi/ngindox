@@ -1,9 +1,11 @@
 var NginxConf = require('nginx-conf'),
 	NgindoxConfig = require('./config'),
+	indentBlock = require('./indent').indentBlock,
 	util = require('util'),
 	YAML = require('yamljs'),
 	fs = require('fs'),
-	path = require('path');
+	path = require('path'),
+	singleTrailingNewline = require('single-trailing-newline');
 
 function Ngindox() {
 
@@ -47,16 +49,16 @@ function expandIncludes(source, rootPath) {
 
 		expanded += indent + "## Start Include: " + filePath + "\n";
 
-		// TODO: try block?
 		try {
 			var fileContent = fs.readFileSync(filePath, 'utf8');
 
 			// preserve indentation of the include line
-			var indentedContent = fileContent.replace(/^/gm, indent).trim() + "\n";
+			var indentedContent = singleTrailingNewline(indentBlock(fileContent, indent));
 
 			// recurse with relative path
 			expanded += expandIncludes(indentedContent, path.dirname(rootPath));
 		} catch (err) {
+			// file probably missing
 			expanded += indent + "## Error: " + err + "\n";
 		}
 

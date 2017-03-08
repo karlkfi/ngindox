@@ -1,14 +1,36 @@
 var YAML = require('yamljs'),
 	MarkdownIt = require('markdown-it'),
 	GithubSlugger = require('github-slugger'),
-	innertext = require('innertext');
+	indentBlock = require('./indent').indentBlock,
+	innertext = require('innertext'),
+	singleTrailingNewline = require('single-trailing-newline');
+
+var KnownFields = [
+	'Path',
+	'Redirect',
+	'File',
+	'Backend',
+	'Socket',
+	'Cache',
+	'Deprecated',
+	'Description'
+]
+
+var DisplayFields = [
+	'Redirect',
+	'File',
+	'Backend',
+	'Socket',
+	'Cache',
+	'Deprecated'
+]
 
 function Config() {
 	this.upstreams = []
 	this.locations = []
 }
 
-Config.prototype.toMarkdown = function(formatConfig) {
+Config.prototype.toHtml = function(formatConfig) {
 	formatConfig = formatConfig || {};
 
 	var locations = this.locations;
@@ -105,21 +127,58 @@ Config.prototype.toMarkdown = function(formatConfig) {
 			body += "\n";
 			body += header.toHtml() + "\n"
 			body += "\n";
-			body += "<table>\n";
+			body += '<ul class="route-table">\n';
 		}
 
-		body += "  <tr>\n";
-		body += "    <td>\n";
-		body += "      " + toHTML(location.metadata).replace("<br/>", "<br/>\n      ") + "\n";
-		body += "    </td>\n";
-		body += "  </tr>\n";
+		var type = routeType(location);
+
+		body += `  <li class="route-type-${type.toLowerCase()}">\n`;
+
+		// Route Type/Path/Description
+		body += '    <h3 class="route">\n';
+		body += `      <span class="route-type">${type}</span>\n`;
+		body += `      <span class="route-path">${renderHtml(location.metadata.Path)}</span>\n`;
+		if (location.metadata.Description) {
+			body += `    <span class="route-desc">${location.metadata.Description}</span>\n`;
+		}
+		body += "    </h3>\n";
+
+		// Route Metadata
+		if (hasAtLeastOne(location.metadata, DisplayFields)) {
+			body += '    <div class="route-meta">\n';
+			body += "      <table>\n";
+			for (var j = 0, jlen = DisplayFields.length; j < jlen; j++) {
+				var field = DisplayFields[j];
+				if (location.metadata[field]) {
+					body += "        <tr>\n";
+					body += "          <td>\n";
+					body += "            " + field + ":\n";
+					body += "          </td>\n";
+					body += "          <td>\n";
+					body += "            " + renderHtml(location.metadata[field]) + "\n";
+					body += "          </td>\n";
+					body += "        </tr>\n";
+				}
+			}
+			body += "      </table>\n";
+			body += "    </div>\n";
+		}
+
+		body += "  </li>\n";
 
 		if (i+1 == len || locations[i+1].metadata.Group != group) {
-			body += "</table>\n";
+			body += "</ul>\n";
 		}
 	}
 
 	var prefix = "";
+
+	if (formatConfig.style) {
+		prefix += "<style>\n";
+		prefix += singleTrailingNewline(indentBlock(formatConfig.style, "  "));
+		prefix += "</style>\n";
+		prefix += "\n";
+	}
 
 	if (formatConfig.title) {
 		prefix += (new Header("h2", formatConfig.title)).toHtml() + "\n"
@@ -139,6 +198,27 @@ Config.prototype.toMarkdown = function(formatConfig) {
 	}
 
 	return prefix + body;
+}
+
+function routeType(location) {
+	var types = ['Redirect', 'File', 'Backend'];
+	for (var i = 0, len = types.length; i < len; i++) {
+		var type = types[i];
+		if (location.metadata[type]) {
+			return type;
+		}
+	}
+	return 'Unknown';
+}
+
+function hasAtLeastOne(map, fields) {
+	for (var i = 0, len = fields.length; i < len; i++) {
+		var field = fields[i];
+		if (map[field]) {
+			return true;
+		}
+	}
+	return false;
 }
 
 function Header(headerTag, headerText) {
@@ -197,29 +277,11 @@ function findUpstream(upstreams, proxyPass) {
 	return null
 }
 
-function toHTML(metadata) {
-	var fields = [
-		'Path',
-		'Redirect',
-		'File',
-		'Backend',
-		'Socket',
-		'Cache',
-		'Deprecated',
-		'Description',
-	]
+function renderHtml(markdown) {
 	var md = new MarkdownIt({
 		html: false
 	});
-	var lines = []
-	for (var i = 0, len = fields.length; i < len; i++) {
-		var field = fields[i];
-		if (metadata[field]) {
-			// parse field values as markdown
-			lines.push(field + ": " + md.renderInline(metadata[field]));
-		}
-	}
-	return lines.join("<br/>");
+	return md.renderInline(markdown);
 }
 
 function Upstream(name, server, metadata) {

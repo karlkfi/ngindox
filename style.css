@@ -1,0 +1,136 @@
+body {
+  font-size: 16px;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+a {
+  color: black;
+  cursor: pointer;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h2, h3 {
+  margin: 0;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+h2 a, h3 a {
+  color: black;
+}
+
+table {
+  border: 1px solid rgba(0,0,0,0.1);
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+table tr:nth-child(odd) {
+  /*background-color: #fff;*/
+}
+table tr:nth-child(even) {
+  background-color: rgba(0,0,0,0.05);
+}
+table td {
+  padding: 1rem;
+  line-height: 125%;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+code {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  /*
+  background-color: #f6f8fa;
+  border-radius: 3px;
+  */
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+.route-table {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.route {
+  display: inline-block;
+  width: calc(100% - 2px); /* subtract 2x border-width */
+  margin: 0;
+  /*padding: 0.5rem 1rem;*/
+  line-height: 125%;
+  border: 1px solid #c3e8d1;
+  border-radius: 3px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+.route-type {
+  display: inline-block;
+  padding: 0.5rem;
+  width: 5rem;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 85%;
+  color: #fff;
+  border-radius: 3px;
+}
+
+.route-type-backend {
+  background-color: rgba(16, 165, 74, 0.1);
+}
+.route-type-redirect {
+  background-color: rgba(197, 134, 43, 0.1);
+}
+.route-type-file {
+  background-color: rgba(15, 106, 180, 0.1);
+}
+.route-type-unknown {
+  background-color: rgba(66, 66, 66, 0.1);
+}
+
+.route-type-backend .route-type {
+  background-color: rgba(16, 165, 74, 1.0);
+}
+.route-type-redirect .route-type {
+  background-color: rgba(197, 134, 43, 1.0);
+}
+.route-type-file .route-type {
+  background-color: rgba(15, 106, 180, 1.0);
+}
+.route-type-unknown .route-type {
+  background-color: rgba(66, 66, 66, 1.0);
+}
+
+.route-path {
+  display: inline-block;
+  padding: 0.5rem;
+}
+.route-desc {
+  color: rgba(16, 165, 74, 1.0);
+  right: 0;
+  display: block;
+  float: right;
+  padding: 0.5rem 1rem;
+  font-weight: 400;
+}
+.route-meta {
+  padding: 0.5rem;
+  border: 1px solid #c3e8d1;
+  border-top: 0;
+  border-radius: 3px;
+}
+.route-meta table {
+  width: 100%;
+}
+.route-meta table tr td:first-child {
+  width: 4rem;
+}
