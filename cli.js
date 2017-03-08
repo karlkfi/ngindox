@@ -6,7 +6,8 @@ var cli = require('cli'),
 
 cli.parse({
     file: [ 'f', 'Path to NGINX config file to parse', 'file'],
-    encoding: [ 'e', 'File encoding', 'as-is', 'utf8']
+    encoding: [ 'e', 'File encoding', 'string', 'utf8'],
+    title: [ 't', 'Page title', 'string', 'Locations']
 });
 
 cli.main(function (args, options) {
@@ -21,6 +22,10 @@ cli.main(function (args, options) {
 			return fatal(err);
 		}
 
-		process.stdout.write(config.toMarkdown());
+		process.stdout.write(
+			config.toMarkdown({
+				title: options.title
+			})
+		);
 	});
 });

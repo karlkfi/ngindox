@@ -1,12 +1,16 @@
 var YAML = require('yamljs'),
-	MarkdownIt = require('markdown-it');
+	MarkdownIt = require('markdown-it'),
+	GithubSlugger = require('github-slugger'),
+	innertext = require('innertext');
 
 function Config() {
 	this.upstreams = []
 	this.locations = []
 }
 
-Config.prototype.toMarkdown = function() {
+Config.prototype.toMarkdown = function(formatConfig) {
+	formatConfig = formatConfig || {};
+
 	var locations = this.locations;
 	var upstreams = this.upstreams;
 
@@ -87,32 +91,75 @@ Config.prototype.toMarkdown = function() {
 		return 0;
 	});
 
-	var out = "";
-	out += "## Locations\n\n";
-
+	var body = "";
 	var group = ''
+	var headers = [];
 
 	for (var i = 0, len = locations.length; i < len; i++) {
 		var location = locations[i];
 
 		if (location.metadata.Group != group) {
 			group = location.metadata.Group
-			out += "\n### " + group + "\n\n"
-			out += "<table>\n";
+			var header = new Header("h3", group)
+			headers.push(header);
+			body += "\n";
+			body += header.toHtml() + "\n"
+			body += "\n";
+			body += "<table>\n";
 		}
 
-		out += "  <tr>\n";
-		out += "    <td>\n";
-		out += "      " + toHTML(location.metadata).replace("<br/>", "<br/>\n      ") + "\n";
-		out += "    </td>\n";
-		out += "  </tr>\n";
+		body += "  <tr>\n";
+		body += "    <td>\n";
+		body += "      " + toHTML(location.metadata).replace("<br/>", "<br/>\n      ") + "\n";
+		body += "    </td>\n";
+		body += "  </tr>\n";
 
 		if (i+1 == len || locations[i+1].metadata.Group != group) {
-			out += "</table>\n";
+			body += "</table>\n";
 		}
 	}
 
-	return out;
+	var prefix = "";
+
+	if (formatConfig.title) {
+		prefix += (new Header("h2", formatConfig.title)).toHtml() + "\n"
+		prefix += "\n";
+	}
+
+	prefix += "<ul>\n";
+
+	for (var i = 0, len = headers.length; i < len; i++) {
+		var header = headers[i];
+		prefix += `  <li>${header.toLink()}</li>\n`;
+	}
+
+	prefix += "</ul>\n";
+
+	prefix += "\n";
+
+	return prefix + body;
+}
+
+function Header(headerTag, headerText) {
+	this.headerTag = headerTag;
+	var slugger = new GithubSlugger();
+	var md = new MarkdownIt({
+		html: false
+	});
+	this.content = md.renderInline(headerText);
+	this.anchor = slugger.slug(
+		innertext(this.content)
+			.replace(/[<>]/g, '') // In case the heading contains `<stuff>`
+			.toLowerCase() // because `slug` doesn't lowercase
+	)
+}
+
+Header.prototype.toHtml = function() {
+	return `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true">${this.content}</a></${this.headerTag}>`;
+}
+
+Header.prototype.toLink = function() {
+	return `<a href="#${this.anchor}">${this.content}</a>`;
 }
 
 // Find the Upstream that matches a Location's ProxyPass

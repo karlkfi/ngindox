@@ -1,7 +1,22 @@
-## Locations
+<ul>
+  <li><a href="#admin-router">Admin Router</a></li>
+  <li><a href="#apache-mesos">Apache Mesos</a></li>
+  <li><a href="#dcos-authentication-oauth">DC/OS Authentication (OAuth)</a></li>
+  <li><a href="#dcos-component-package-manager-pkgpanda">DC/OS Component Package Manager (Pkgpanda)</a></li>
+  <li><a href="#dcos-diagnostics-3dt">DC/OS Diagnostics (3DT)</a></li>
+  <li><a href="#dcos-history">DC/OS History</a></li>
+  <li><a href="#dcos-log">DC/OS Log</a></li>
+  <li><a href="#dcos-metrics">DC/OS Metrics</a></li>
+  <li><a href="#dcos-package-manager-cosmos">DC/OS Package Manager (Cosmos)</a></li>
+  <li><a href="#exhibitor-zookeeper">Exhibitor (Zookeeper)</a></li>
+  <li><a href="#marathon">Marathon</a></li>
+  <li><a href="#mesos-dns">Mesos DNS</a></li>
+  <li><a href="#navstar">Navstar</a></li>
+  <li><a href="#system">System</a></li>
+</ul>
 
 
-### Admin Router
+<h3><a id="admin-router" href="#admin-router" aria-hidden="true">Admin Router</a></h3>
 
 <table>
   <tr>
@@ -18,7 +33,7 @@
   </tr>
 </table>
 
-### Apache Mesos
+<h3><a id="apache-mesos" href="#apache-mesos" aria-hidden="true">Apache Mesos</a></h3>
 
 <table>
   <tr>
@@ -53,7 +68,7 @@
   </tr>
 </table>
 
-### DC/OS Authentication (OAuth)
+<h3><a id="dcos-authentication-oauth" href="#dcos-authentication-oauth" aria-hidden="true">DC/OS Authentication (OAuth)</a></h3>
 
 <table>
   <tr>
@@ -76,7 +91,7 @@
   </tr>
 </table>
 
-### DC/OS Component Package Manager (Pkgpanda)
+<h3><a id="dcos-component-package-manager-pkgpanda" href="#dcos-component-package-manager-pkgpanda" aria-hidden="true">DC/OS Component Package Manager (Pkgpanda)</a></h3>
 
 <table>
   <tr>
@@ -93,7 +108,7 @@
   </tr>
 </table>
 
-### DC/OS Diagnostics (3DT)
+<h3><a id="dcos-diagnostics-3dt" href="#dcos-diagnostics-3dt" aria-hidden="true">DC/OS Diagnostics (3DT)</a></h3>
 
 <table>
   <tr>
@@ -104,7 +119,7 @@
   </tr>
 </table>
 
-### DC/OS History
+<h3><a id="dcos-history" href="#dcos-history" aria-hidden="true">DC/OS History</a></h3>
 
 <table>
   <tr>
@@ -115,7 +130,7 @@
   </tr>
 </table>
 
-### DC/OS Log
+<h3><a id="dcos-log" href="#dcos-log" aria-hidden="true">DC/OS Log</a></h3>
 
 <table>
   <tr>
@@ -126,7 +141,7 @@
   </tr>
 </table>
 
-### DC/OS Metrics
+<h3><a id="dcos-metrics" href="#dcos-metrics" aria-hidden="true">DC/OS Metrics</a></h3>
 
 <table>
   <tr>
@@ -137,7 +152,7 @@
   </tr>
 </table>
 
-### DC/OS Package Manager (Cosmos)
+<h3><a id="dcos-package-manager-cosmos" href="#dcos-package-manager-cosmos" aria-hidden="true">DC/OS Package Manager (Cosmos)</a></h3>
 
 <table>
   <tr>
@@ -160,7 +175,7 @@
   </tr>
 </table>
 
-### Exhibitor (Zookeeper)
+<h3><a id="exhibitor-zookeeper" href="#exhibitor-zookeeper" aria-hidden="true">Exhibitor (Zookeeper)</a></h3>
 
 <table>
   <tr>
@@ -177,7 +192,7 @@
   </tr>
 </table>
 
-### Marathon
+<h3><a id="marathon" href="#marathon" aria-hidden="true">Marathon</a></h3>
 
 <table>
   <tr>
@@ -194,7 +209,7 @@
   </tr>
 </table>
 
-### Mesos DNS
+<h3><a id="mesos-dns" href="#mesos-dns" aria-hidden="true">Mesos DNS</a></h3>
 
 <table>
   <tr>
@@ -211,7 +226,7 @@
   </tr>
 </table>
 
-### Navstar
+<h3><a id="navstar" href="#navstar" aria-hidden="true">Navstar</a></h3>
 
 <table>
   <tr>
@@ -222,7 +237,7 @@
   </tr>
 </table>
 
-### System
+<h3><a id="system" href="#system" aria-hidden="true">System</a></h3>
 
 <table>
   <tr>
