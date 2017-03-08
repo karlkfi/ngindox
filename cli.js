@@ -7,7 +7,8 @@ var cli = require('cli'),
 cli.parse({
     file: [ 'f', 'Path to NGINX config file to parse', 'file'],
     encoding: [ 'e', 'File encoding', 'string', 'utf8'],
-    title: [ 't', 'Page title', 'string', 'Locations']
+    title: [ 't', 'Page title', 'string'],
+    toc: [ 'l', 'Table of contents', 'boolean', false]
 });
 
 cli.main(function (args, options) {
@@ -24,7 +25,8 @@ cli.main(function (args, options) {
 
 		process.stdout.write(
 			config.toMarkdown({
-				title: options.title
+				title: options.title,
+				toc: options.toc
 			})
 		);
 	});

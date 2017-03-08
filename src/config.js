@@ -126,16 +126,17 @@ Config.prototype.toMarkdown = function(formatConfig) {
 		prefix += "\n";
 	}
 
-	prefix += "<ul>\n";
+	if (formatConfig.toc) {
+		prefix += "<ul>\n";
 
-	for (var i = 0, len = headers.length; i < len; i++) {
-		var header = headers[i];
-		prefix += `  <li>${header.toLink()}</li>\n`;
+		for (var i = 0, len = headers.length; i < len; i++) {
+			var header = headers[i];
+			prefix += `  <li>${header.toLink()}</li>\n`;
+		}
+
+		prefix += "</ul>\n";
+		prefix += "\n";
 	}
-
-	prefix += "</ul>\n";
-
-	prefix += "\n";
 
 	return prefix + body;
 }

@@ -22,6 +22,7 @@ Options:
   -f, --file FILE        Path to NGINX config file to parse
   -e, --encoding [STRING]File encoding (Default is utf8)
   -t, --title [STRING]   Page title (Default is Locations)
+  -l, --toc BOOLEAN      Table of contents
   -h, --help             Display help and usage details
 ```
 
@@ -29,7 +30,7 @@ Options:
 ## Usage
 
 ```
-./cli.js -t '' -f examples/nginx.master.conf
+./cli.js -l -f examples/nginx.master.conf
 <ul>
   <li><a href="#admin-router">Admin Router</a></li>
 </ul>
@@ -59,10 +60,10 @@ Options:
 Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/adminrouter):
 
 - Master Config
-  - `./cli.js -t '' -f examples/nginx.master.conf > examples/nginx.master.md`
+  - `./cli.js -l -f examples/nginx.master.conf > examples/nginx.master.md`
   - Input: [examples/nginx.master.conf](examples/nginx.master.conf)
   - Output: [examples/nginx.master.md](examples/nginx.master.md)
 - Agent Config
-  - `./cli.js -t '' -f examples/nginx.agent.conf > examples/nginx.agent.md`
+  - `./cli.js -l -f examples/nginx.agent.conf > examples/nginx.agent.md`
   - Input: [examples/nginx.agent.conf](examples/nginx.agent.conf)
   - Output: [examples/nginx.agent.md](examples/nginx.agent.md)
