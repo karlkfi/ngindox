@@ -60,10 +60,10 @@ Options:
 Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/adminrouter):
 
 - Master Config
-  - `./cli.js -l -f examples/nginx.master.conf > examples/nginx.master.md`
+  - `./cli.js -l -f examples/nginx.master.conf > examples/nginx.master.html`
   - Input: [examples/nginx.master.conf](examples/nginx.master.conf)
-  - Output: [examples/nginx.master.md](examples/nginx.master.md)
+  - Output: [examples/nginx.master.md](examples/nginx.master.html)
 - Agent Config
-  - `./cli.js -l -f examples/nginx.agent.conf > examples/nginx.agent.md`
+  - `./cli.js -l -f examples/nginx.agent.conf > examples/nginx.agent.html`
   - Input: [examples/nginx.agent.conf](examples/nginx.agent.conf)
-  - Output: [examples/nginx.agent.md](examples/nginx.agent.md)
+  - Output: [examples/nginx.agent.md](examples/nginx.agent.html)
