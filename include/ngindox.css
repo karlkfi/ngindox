@@ -1,8 +1,4 @@
-body {
-  font-size: 16px;
-  padding: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-}
+/* Ngindox */
 
 a {
   color: inherit;
@@ -198,7 +194,9 @@ code {
   float: right;
   padding: 0.5rem 1rem;
   font-weight: 400;
+  font-size: 0.9rem;
   vertical-align: middle;
+  color: #aaa;
 }
 .route-meta {
   padding: 0.5rem;
