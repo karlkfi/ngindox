@@ -1,9 +1,5 @@
 <style>
-  body {
-    font-size: 16px;
-    padding: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  }
+  /* Ngindox */
   
   a {
     color: inherit;
@@ -221,7 +217,9 @@
     float: right;
     padding: 0.5rem 1rem;
     font-weight: 400;
+    font-size: 0.9rem;
     vertical-align: middle;
+    color: #aaa;
   }
   
   .route-meta {
@@ -241,25 +239,17 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script>
-  // requires jquery-3.1.1
-  window.Ngindox = {
-    init: function() {
-      $('.toggleEndpointList', this.el).click(function() {
-        var anchor = this.getAttribute('data-id');
-        if (anchor) {
-          Ngindox.toggleEndpointListForResource(anchor);
-        }
-      });
-    },
-    toggleEndpointListForResource: function(resource) {
-      $('#routes-' + resource).slideToggle("slow");
-    },
-    callDocs: function(fnName, e) {
-      e.preventDefault();
-      Ngindox[fnName](e.currentTarget.getAttribute('data-id'));
-    }
-  }
-  $(document).ready(Ngindox.init);
+  // Ngindox
+  // requires jquery
+  window.NgindoxInit = function() {
+    $('.toggleEndpointList').click(function() {
+      var resource = this.getAttribute('data-id');
+      if (resource) {
+        $('#routes-' + resource).slideToggle("slow");
+      }
+    });
+  };
+  $(document).ready(NgindoxInit);
 </script>
 <div id="ngindox">
   <ul class="resources">
@@ -277,6 +267,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/pkgpanda/</code></span> 
             </h3>
+            <span class="route-desc">DC/OS component package management</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -323,6 +314,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/health/v1</code></span> 
             </h3>
+            <span class="route-desc">Component service status</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -359,6 +351,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/logs/v1/</code></span> 
             </h3>
+            <span class="route-desc">Node, component service, and container (task) logs</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -395,6 +388,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/metrics/</code></span> 
             </h3>
+            <span class="route-desc">Node, container, and application metrics</span> 
           </div>
           <div class="route-meta">
             <table>

@@ -1,9 +1,5 @@
 <style>
-  body {
-    font-size: 16px;
-    padding: 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  }
+  /* Ngindox */
   
   a {
     color: inherit;
@@ -221,7 +217,9 @@
     float: right;
     padding: 0.5rem 1rem;
     font-weight: 400;
+    font-size: 0.9rem;
     vertical-align: middle;
+    color: #aaa;
   }
   
   .route-meta {
@@ -241,25 +239,17 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
 <script>
-  // requires jquery-3.1.1
-  window.Ngindox = {
-    init: function() {
-      $('.toggleEndpointList', this.el).click(function() {
-        var anchor = this.getAttribute('data-id');
-        if (anchor) {
-          Ngindox.toggleEndpointListForResource(anchor);
-        }
-      });
-    },
-    toggleEndpointListForResource: function(resource) {
-      $('#routes-' + resource).slideToggle("slow");
-    },
-    callDocs: function(fnName, e) {
-      e.preventDefault();
-      Ngindox[fnName](e.currentTarget.getAttribute('data-id'));
-    }
-  }
-  $(document).ready(Ngindox.init);
+  // Ngindox
+  // requires jquery
+  window.NgindoxInit = function() {
+    $('.toggleEndpointList').click(function() {
+      var resource = this.getAttribute('data-id');
+      if (resource) {
+        $('#routes-' + resource).slideToggle("slow");
+      }
+    });
+  };
+  $(document).ready(NgindoxInit);
 </script>
 <div id="ngindox">
   <ul class="resources">
@@ -297,6 +287,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/(slave|agent)/(?&lt;agentid&gt;[0-9a-zA-Z-]+)(?&lt;url&gt;.+)</code></span> 
             </h3>
+            <span class="route-desc">API proxy to a specific agent node</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -327,6 +318,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/acs/api/v1</code></span> 
             </h3>
+            <span class="route-desc">Access Control Service (authenticated)</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -355,6 +347,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/acs/api/v1/auth/</code></span> 
             </h3>
+            <span class="route-desc">Access Control Service (unauthenticated)</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -400,6 +393,84 @@
         </li>
       </ul>
     </li>
+    <li id="resource-capabilities" class="resource">
+      <div class="heading">
+        <h2>
+          <a id="capabilities" href="#capabilities" aria-hidden="true" class="toggleEndpointList" data-id="capabilities">Capabilities</a> 
+        </h2>
+        <span class="options"><a href="#capabilities" class="toggleEndpointList" data-id="capabilities">Show/Hide</a> </span> 
+      </div>
+      <ul id="routes-capabilities" class="routes" style="display:none;">
+        <li class="route route-type-proxy">
+          <div class="heading">
+            <h3>
+              <span class="route-type">Proxy</span> 
+              <span class="route-path"><code>/capabilities</code></span> 
+            </h3>
+            <span class="route-desc">List of capabilities supported by DC/OS</span> 
+          </div>
+          <div class="route-meta">
+            <table>
+              <tr>
+                <td>
+                  Proxy:
+                </td>
+                <td>
+                  <code>http://127.0.0.1:7070/capabilities</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Backend:
+                </td>
+                <td>
+                  <a href="https://dcos.io/docs/1.9/api/package-manager/">DC/OS Package Manager (Cosmos)</a> 
+                </td>
+              </tr>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </li>
+    <li id="resource-cosmos" class="resource">
+      <div class="heading">
+        <h2>
+          <a id="cosmos" href="#cosmos" aria-hidden="true" class="toggleEndpointList" data-id="cosmos">Cosmos</a> 
+        </h2>
+        <span class="options"><a href="#cosmos" class="toggleEndpointList" data-id="cosmos">Show/Hide</a> </span> 
+      </div>
+      <ul id="routes-cosmos" class="routes" style="display:none;">
+        <li class="route route-type-proxy">
+          <div class="heading">
+            <h3>
+              <span class="route-type">Proxy</span> 
+              <span class="route-path"><code>/cosmos/service/</code></span> 
+            </h3>
+            <span class="route-desc">Start a DC/OS service from a DC/OS package</span> 
+          </div>
+          <div class="route-meta">
+            <table>
+              <tr>
+                <td>
+                  Proxy:
+                </td>
+                <td>
+                  <code>http://127.0.0.1:7070/service/</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Backend:
+                </td>
+                <td>
+                  <a href="https://dcos.io/docs/1.9/api/package-manager/">DC/OS Package Manager (Cosmos)</a> 
+                </td>
+              </tr>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </li>
     <li id="resource-exhibitor" class="resource">
       <div class="heading">
         <h2>
@@ -434,6 +505,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/exhibitor/</code></span> 
             </h3>
+            <span class="route-desc">Manage Zookeeper</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -584,6 +656,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/cache/master/</code></span> 
             </h3>
+            <span class="route-desc">Cache of the Mesos master API</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -640,6 +713,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/mesos/</code></span> 
             </h3>
+            <span class="route-desc">Apache Mesos</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -736,6 +810,7 @@
               <span class="route-type">File</span> 
               <span class="route-path"><code>/dcos-metadata/</code></span> 
             </h3>
+            <span class="route-desc">DC/OS metadata</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -756,6 +831,7 @@
               <span class="route-type">File</span> 
               <span class="route-path"><code>/dcos-metadata/dcos-version.json</code></span> 
             </h3>
+            <span class="route-desc">DC/OS version</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -776,6 +852,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/dcos-metadata/ui-config.json</code></span> 
             </h3>
+            <span class="route-desc">DC/OS GUI configuration</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -846,76 +923,21 @@
         </li>
       </ul>
     </li>
-    <li id="resource-package-management" class="resource">
+    <li id="resource-package" class="resource">
       <div class="heading">
         <h2>
-          <a id="package-management" href="#package-management" aria-hidden="true" class="toggleEndpointList" data-id="package-management">Package Management</a> 
+          <a id="package" href="#package" aria-hidden="true" class="toggleEndpointList" data-id="package">Package</a> 
         </h2>
-        <span class="options"><a href="#package-management" class="toggleEndpointList" data-id="package-management">Show/Hide</a> </span> 
+        <span class="options"><a href="#package" class="toggleEndpointList" data-id="package">Show/Hide</a> </span> 
       </div>
-      <ul id="routes-package-management" class="routes" style="display:none;">
-        <li class="route route-type-proxy">
-          <div class="heading">
-            <h3>
-              <span class="route-type">Proxy</span> 
-              <span class="route-path"><code>/capabilities</code></span> 
-            </h3>
-          </div>
-          <div class="route-meta">
-            <table>
-              <tr>
-                <td>
-                  Proxy:
-                </td>
-                <td>
-                  <code>http://127.0.0.1:7070/capabilities</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/api/package-manager/">DC/OS Package Manager (Cosmos)</a> 
-                </td>
-              </tr>
-            </table>
-          </div>
-        </li>
-        <li class="route route-type-proxy">
-          <div class="heading">
-            <h3>
-              <span class="route-type">Proxy</span> 
-              <span class="route-path"><code>/cosmos/service/</code></span> 
-            </h3>
-          </div>
-          <div class="route-meta">
-            <table>
-              <tr>
-                <td>
-                  Proxy:
-                </td>
-                <td>
-                  <code>http://127.0.0.1:7070/service/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/api/package-manager/">DC/OS Package Manager (Cosmos)</a> 
-                </td>
-              </tr>
-            </table>
-          </div>
-        </li>
+      <ul id="routes-package" class="routes" style="display:none;">
         <li class="route route-type-proxy">
           <div class="heading">
             <h3>
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/package/</code></span> 
             </h3>
+            <span class="route-desc">Package Management</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -954,6 +976,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/pkgpanda/</code></span> 
             </h3>
+            <span class="route-desc">DC/OS component package management</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -990,6 +1013,7 @@
               <span class="route-type">File</span> 
               <span class="route-path"><code>/pkgpanda/active.buildinfo.full.json</code></span> 
             </h3>
+            <span class="route-desc">List the active Pkgpanda packages</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1040,7 +1064,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/service/(?&lt;serviceid&gt;[0-9a-zA-Z-.]+)/(?&lt;url&gt;.*)</code></span> 
             </h3>
-            <span class="route-desc">Proxy to Services running on DC/OS</span> 
+            <span class="route-desc">Proxy to services running on DC/OS</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1071,6 +1095,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/health/v1</code></span> 
             </h3>
+            <span class="route-desc">Component service status</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1099,7 +1124,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/agent/(?&lt;agentid&gt;[0-9a-zA-Z-]+)(?&lt;type&gt;(/logs/v1|/metrics/v0))(?&lt;url&gt;.*)</code></span> 
             </h3>
-            <span class="route-desc">Proxy to DC/OS Agent</span> 
+            <span class="route-desc">System proxy to a specific agent node</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1120,7 +1145,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/leader/marathon(?&lt;url&gt;.*)</code></span> 
             </h3>
-            <span class="route-desc">Proxy to Marathon Leader</span> 
+            <span class="route-desc">System proxy to the master node with the Marathon leader</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1141,7 +1166,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/leader/mesos(?&lt;url&gt;.*)</code></span> 
             </h3>
-            <span class="route-desc">Proxy to Mesos Leader API</span> 
+            <span class="route-desc">System proxy to the master node with the Mesos leader</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1162,6 +1187,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/logs/v1/</code></span> 
             </h3>
+            <span class="route-desc">Node, component service, and container (task) logs</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1198,6 +1224,7 @@
               <span class="route-type">Proxy</span> 
               <span class="route-path"><code>/system/v1/metrics/</code></span> 
             </h3>
+            <span class="route-desc">Node, container, and application metrics</span> 
           </div>
           <div class="route-meta">
             <table>
