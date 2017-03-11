@@ -6,10 +6,10 @@ var cli = require('cli'),
 
 cli.parse({
     file: [ 'f', 'Path to NGINX config file to parse', 'file'],
-    style: [ 's', 'Path to CSS file to include', 'file', 'style.css'],
+    css: [ 'c', 'Path to CSS file to include', 'file', 'include/ngindox.css'],
+    javascript: [ 'j', 'Path to JS file to include', 'file', 'include/ngindox.js'],
     encoding: [ 'e', 'File encoding', 'string', 'utf8'],
-    title: [ 't', 'Page title', 'string'],
-    toc: [ 'l', 'Table of contents', 'boolean', false]
+    title: [ 't', 'Page title', 'string']
 });
 
 cli.main(function (args, options) {
@@ -19,14 +19,23 @@ cli.main(function (args, options) {
 		return fatal('Must specify input file (-f)');
 	}
 
-	var style = '';
-	if (options.style) {
+	var css = '';
+	if (options.css) {
 		try {
-			style = fs.readFileSync(options.style, options.encoding);
+			css = fs.readFileSync(options.css, options.encoding);
 		} catch (err) {
 			return fatal(err);
 		}
 	}
+
+	var javascript = '';
+    if (options.javascript) {
+    	try {
+    		javascript = fs.readFileSync(options.javascript, options.encoding);
+    	} catch (err) {
+    		return fatal(err);
+    	}
+    }
 
     ngindox.parseFile(options.file, options.encoding, function(err, config) {
 		if (err) {
@@ -36,8 +45,8 @@ cli.main(function (args, options) {
 		process.stdout.write(
 			config.toHtml({
 				title: options.title,
-				toc: options.toc,
-				style: style
+				css: css,
+				javascript: javascript,
 			})
 		);
 	});

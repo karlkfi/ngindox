@@ -5,22 +5,12 @@ var YAML = require('yamljs'),
 	innertext = require('innertext'),
 	singleTrailingNewline = require('single-trailing-newline');
 
-var KnownFields = [
-	'Path',
-	'Redirect',
-	'File',
-	'Backend',
-	'Socket',
-	'Cache',
-	'Deprecated',
-	'Description'
-]
-
 var DisplayFields = [
 	'Redirect',
+	'Proxy',
 	'File',
-	'Backend',
 	'Socket',
+	'Backend',
 	'Cache',
 	'Deprecated'
 ]
@@ -35,6 +25,105 @@ Config.prototype.toHtml = function(formatConfig) {
 
 	var locations = this.locations;
 	var upstreams = this.upstreams;
+
+	processLocations(locations, upstreams);
+
+	var body = "";
+	var group = ''
+	var headers = [];
+
+	body += '<div id="ngindox">';
+	body += '<ul class="resources">';
+
+	for (var i = 0, len = locations.length; i < len; i++) {
+		var location = locations[i];
+
+		if (location.metadata.Group != group) {
+			group = location.metadata.Group
+			var header = new Header("h2", group)
+			headers.push(header);
+			body += "\n";
+			body += `<li id="resource-${header.anchor}" class="resource">\n`;
+			body += "\n";
+			body += header.resourceHtml() + "\n"
+			body += "\n";
+			body += `<ul id="routes-${header.anchor}" class="routes" style="display:none;">\n`;
+		}
+
+		var type = routeType(location);
+
+		body += `  <li class="route route-type-${type.toLowerCase()}">\n`;
+
+		// Route Type/Path/Description
+		body += '    <div class="heading">\n';
+		body += '      <h3>\n';
+		body += `        <span class="route-type">${type}</span>\n`;
+		body += `        <span class="route-path">${renderHtml(location.metadata.Path)}</span>\n`;
+		body += "      </h3>\n";
+		if (location.metadata.Description) {
+			body += `      <span class="route-desc">${location.metadata.Description}</span>\n`;
+		}
+		body += '    </div>\n';
+
+		// Route Metadata
+		if (hasAtLeastOne(location.metadata, DisplayFields)) {
+			body += '    <div class="route-meta">\n';
+			body += "      <table>\n";
+			for (var j = 0, jlen = DisplayFields.length; j < jlen; j++) {
+				var field = DisplayFields[j];
+				if (location.metadata[field]) {
+					body += "        <tr>\n";
+					body += "          <td>\n";
+					body += "            " + field + ":\n";
+					body += "          </td>\n";
+					body += "          <td>\n";
+					body += "            " + renderHtml(location.metadata[field]) + "\n";
+					body += "          </td>\n";
+					body += "        </tr>\n";
+				}
+			}
+			body += "      </table>\n";
+			body += "    </div>\n";
+		}
+
+		body += "  </li>\n";
+
+		if (i+1 == len || locations[i+1].metadata.Group != group) {
+			body += "</ul>\n";
+			body += "</li>\n";
+		}
+	}
+
+	body += '</ul>';
+	body += '</div>';
+
+	var prefix = "";
+
+	if (formatConfig.css) {
+		prefix += "<style>\n";
+		prefix += singleTrailingNewline(indentBlock(formatConfig.css, "  "));
+		prefix += "</style>\n";
+		prefix += "\n";
+	}
+
+	if (formatConfig.javascript) {
+		prefix += '<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>\n'
+
+		prefix += "<script>\n";
+		prefix += singleTrailingNewline(indentBlock(formatConfig.javascript, "  "));
+		prefix += "</script>\n";
+		prefix += "\n";
+	}
+
+	if (formatConfig.title) {
+		prefix += (new Header("h1", formatConfig.title)).titleHtml() + "\n"
+		prefix += "\n";
+	}
+
+	return prefix + body;
+}
+
+function processLocations(locations, upstreams) {
 
 	// sort upstreams by name (backwards)
 	// allows longer names to be matched first using findUpstream
@@ -75,12 +164,23 @@ Config.prototype.toHtml = function(formatConfig) {
 		if (location.proxyPass) {
 			var match = findUpstream(upstreams, location.proxyPass)
 			if (match) {
-				location.metadata.Backend = "`" + match[1] + "`";
+				var upstream = match[0];
+				location.metadata.Backend = upstream.name;
+				if (upstream.metadata.Name) {
+					location.metadata.Backend = upstream.metadata.Name;
+				}
+				if (upstream.metadata.Reference) {
+					// Turn Server into a reference link
+					location.metadata.Backend = "[" + location.metadata.Backend + "](" + upstream.metadata.Reference + ")";
+				}
+
+				var proxy = match[1];
+				location.metadata.Proxy = "`" + proxy + "`";
 				if (match.length > 2) {
 					location.metadata.Socket = "`" + match[2] + "`";
 				}
 			} else {
-				location.metadata.Backend = "`" + location.proxyPass + "`";
+				location.metadata.Proxy = "`" + location.proxyPass + "`";
 			}
 		}
 
@@ -112,96 +212,10 @@ Config.prototype.toHtml = function(formatConfig) {
 		}
 		return 0;
 	});
-
-	var body = "";
-	var group = ''
-	var headers = [];
-
-	for (var i = 0, len = locations.length; i < len; i++) {
-		var location = locations[i];
-
-		if (location.metadata.Group != group) {
-			group = location.metadata.Group
-			var header = new Header("h3", group)
-			headers.push(header);
-			body += "\n";
-			body += header.toHtml() + "\n"
-			body += "\n";
-			body += '<ul class="route-table">\n';
-		}
-
-		var type = routeType(location);
-
-		body += `  <li class="route-type-${type.toLowerCase()}">\n`;
-
-		// Route Type/Path/Description
-		body += '    <h3 class="route">\n';
-		body += `      <span class="route-type">${type}</span>\n`;
-		body += `      <span class="route-path">${renderHtml(location.metadata.Path)}</span>\n`;
-		if (location.metadata.Description) {
-			body += `    <span class="route-desc">${location.metadata.Description}</span>\n`;
-		}
-		body += "    </h3>\n";
-
-		// Route Metadata
-		if (hasAtLeastOne(location.metadata, DisplayFields)) {
-			body += '    <div class="route-meta">\n';
-			body += "      <table>\n";
-			for (var j = 0, jlen = DisplayFields.length; j < jlen; j++) {
-				var field = DisplayFields[j];
-				if (location.metadata[field]) {
-					body += "        <tr>\n";
-					body += "          <td>\n";
-					body += "            " + field + ":\n";
-					body += "          </td>\n";
-					body += "          <td>\n";
-					body += "            " + renderHtml(location.metadata[field]) + "\n";
-					body += "          </td>\n";
-					body += "        </tr>\n";
-				}
-			}
-			body += "      </table>\n";
-			body += "    </div>\n";
-		}
-
-		body += "  </li>\n";
-
-		if (i+1 == len || locations[i+1].metadata.Group != group) {
-			body += "</ul>\n";
-		}
-	}
-
-	var prefix = "";
-
-	if (formatConfig.style) {
-		prefix += "<style>\n";
-		prefix += singleTrailingNewline(indentBlock(formatConfig.style, "  "));
-		prefix += "</style>\n";
-		prefix += "\n";
-	}
-
-	if (formatConfig.title) {
-		prefix += (new Header("h2", formatConfig.title)).toHtml() + "\n"
-		prefix += "\n";
-	}
-
-	if (formatConfig.toc) {
-		prefix += "<ul>\n";
-
-		for (var i = 0, len = headers.length; i < len; i++) {
-			var header = headers[i];
-			prefix += `  <li>${header.toLink()}</li>\n`;
-		}
-
-		prefix += "</ul>\n";
-		prefix += "\n";
-	}
-
-	return prefix + body;
 }
 
 function routeType(location) {
-	var types = ['Redirect', 'File', 'Backend'];
+	var types = ['Redirect', 'Proxy', 'File'];
 	for (var i = 0, len = types.length; i < len; i++) {
 		var type = types[i];
 		if (location.metadata[type]) {
@@ -235,18 +249,25 @@ function Header(headerTag, headerText) {
 	)
 }
 
-Header.prototype.toHtml = function() {
+Header.prototype.resourceHtml = function() {
+    var heading = '';
+    heading += '<div class="heading">';
+    heading += `  <${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggleEndpointList" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>`;
+    heading += '  <span class="options">';
+    heading += `    <a href="#${this.anchor}" class="toggleEndpointList" data-id="${this.anchor}">Show/Hide</a>`;
+    heading += '  </span>';
+    heading += '</div>';
+	return heading
+}
+
+Header.prototype.titleHtml = function() {
 	return `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true">${this.content}</a></${this.headerTag}>`;
 }
 
-Header.prototype.toLink = function() {
-	return `<a href="#${this.anchor}">${this.content}</a>`;
-}
-
 // Find the Upstream that matches a Location's ProxyPass
-// and merge the ProxyPass with the Upstream Server into a "Backend".
-// Returns [upstream, backend] if found.
-// Returns [upstream, backend, socket] if found and server is a unix socket.
+// and merge the ProxyPass with the Upstream Server into a "Proxy".
+// Returns [upstream, proxy] if found.
+// Returns [upstream, proxy, socket] if found and server is a unix socket.
 // Returns null if not found.
 function findUpstream(upstreams, proxyPass) {
 	for (var i = 0, len = upstreams.length; i < len; i++) {
@@ -255,22 +276,22 @@ function findUpstream(upstreams, proxyPass) {
 		if (matches) {
 			var scheme = matches[1];
 			var path = matches[2];
-			var backend = scheme + upstream.server + path;
+			var proxy = scheme + upstream.server + path;
 
 			matches = upstream.server.match("^unix:(.*)$");
 			if (matches) {
-				backend = scheme + '<socket>' + path;
+				proxy = scheme + '<socket>' + path;
 				var socket = matches[1];
 				return [
 					upstream,
-					backend,
+					proxy,
 					socket
 				]
 			}
 
 			return [
 				upstream,
-				backend
+				proxy
 			]
 		}
 	}
@@ -287,7 +308,7 @@ function renderHtml(markdown) {
 function Upstream(name, server, metadata) {
 	this.name = name || '';
 	this.server = server || '';
-	this.metadata = metadata || YAML.parse('');
+	this.metadata = metadata || {};
 }
 
 function Location(path, proxyPass, alias, metadata) {

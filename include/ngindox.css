@@ -5,7 +5,7 @@ body {
 }
 
 a {
-  color: black;
+  color: inherit;
   cursor: pointer;
   text-decoration: none;
 }
@@ -48,30 +48,75 @@ code {
   padding-bottom: 0.2em;
   margin: 0;
   font-size: 85%;
-  /*
-  background-color: #f6f8fa;
-  border-radius: 3px;
-  */
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  background-color: inherit;
+  color: inherit;
+  border: 0;
+  word-break: break-word;
 }
 
-.route-table {
+
+.resources {
+  font-family: "Droid Sans",sans-serif;
+  font-size: .9em;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resource {
+  border-bottom: 1px solid #ddd;
+}
+
+.resource .heading {
+  display: block;
+  width: 100%;
+}
+
+.resource .heading h2 {
+  display: inline-block;
+  margin: 0;
+  line-height: 125%;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  vertical-align: middle;
+}
+.resource .heading .options {
+  right: 0;
+  display: block;
+  float: right;
+  line-height: 125%;
+  padding: 0.5rem 1rem;
+  font-weight: 400;
+  font-size: 0.9rem;
+  vertical-align: middle;
+  color: #aaa;
+}
+
+
+.routes {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.route {
+.route .heading {
   display: inline-block;
   width: calc(100% - 2px); /* subtract 2x border-width */
-  margin: 0;
-  /*padding: 0.5rem 1rem;*/
-  line-height: 125%;
-  border: 1px solid #c3e8d1;
+  border: 1px solid #000;
   border-radius: 3px;
-  font-weight: 600;
   font-size: 1rem;
+  line-height: 125%;
 }
-.route-type {
+.route .heading h3 {
+  display: inline-block;
+  margin: 0;
+  font-weight: 600;
+  font-size: inherit;
+  line-height: inherit;
+}
+.route .route-type {
   display: inline-block;
   padding: 0.5rem;
   width: 5rem;
@@ -81,10 +126,11 @@ code {
   font-weight: 300;
   font-size: 85%;
   color: #fff;
-  border-radius: 3px;
+  border-radius: 2px;
+  vertical-align: middle;
 }
 
-.route-type-backend {
+.route-type-proxy {
   background-color: rgba(16, 165, 74, 0.1);
 }
 .route-type-redirect {
@@ -97,7 +143,7 @@ code {
   background-color: rgba(66, 66, 66, 0.1);
 }
 
-.route-type-backend .route-type {
+.route-type-proxy .route-type {
   background-color: rgba(16, 165, 74, 1.0);
 }
 .route-type-redirect .route-type {
@@ -110,7 +156,7 @@ code {
   background-color: rgba(66, 66, 66, 1.0);
 }
 
-.route-type-backend .route-desc {
+.route-type-proxy .route-desc {
   color: rgba(16, 165, 74, 1.0);
 }
 .route-type-redirect .route-desc {
@@ -123,9 +169,28 @@ code {
   color: rgba(66, 66, 66, 1.0);
 }
 
+.route-type-proxy .heading,
+.route-type-proxy .route-meta {
+  border-color: rgba(16, 165, 74, 0.3);
+}
+.route-type-redirect .heading,
+.route-type-redirect .route-meta {
+  border-color: rgba(197, 134, 43, 0.3);
+}
+.route-type-file .heading,
+.route-type-file .route-meta {
+  border-color: rgba(15, 106, 180, 0.3);
+}
+.route-type-unknown .heading,
+.route-type-unknown .route-meta {
+  border-color: rgba(66, 66, 66, 0.3);
+}
+
+
 .route-path {
   display: inline-block;
   padding: 0.5rem;
+  vertical-align: middle;
 }
 .route-desc {
   right: 0;
@@ -133,10 +198,11 @@ code {
   float: right;
   padding: 0.5rem 1rem;
   font-weight: 400;
+  vertical-align: middle;
 }
 .route-meta {
   padding: 0.5rem;
-  border: 1px solid #c3e8d1;
+  border: 1px solid #000;
   border-top: 0;
   border-radius: 3px;
 }

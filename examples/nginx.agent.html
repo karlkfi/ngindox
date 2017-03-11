@@ -6,7 +6,7 @@
   }
 
   a {
-    color: black;
+    color: inherit;
     cursor: pointer;
     text-decoration: none;
   }
@@ -49,30 +49,73 @@
     padding-bottom: 0.2em;
     margin: 0;
     font-size: 85%;
-    /*
-    background-color: #f6f8fa;
-    border-radius: 3px;
-    */
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    background-color: inherit;
+    color: inherit;
+    border: 0;
+    word-break: break-word;
   }
 
-  .route-table {
+  .resources {
+    font-family: "Droid Sans",sans-serif;
+    font-size: .9em;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .resource {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .resource .heading {
+    display: block;
+    width: 100%;
+  }
+
+  .resource .heading h2 {
+    display: inline-block;
+    margin: 0;
+    line-height: 125%;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    font-size: 1rem;
+    vertical-align: middle;
+  }
+  .resource .heading .options {
+    right: 0;
+    display: block;
+    float: right;
+    line-height: 125%;
+    padding: 0.5rem 1rem;
+    font-weight: 400;
+    font-size: 0.9rem;
+    vertical-align: middle;
+    color: #aaa;
+  }
+
+  .routes {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
-  .route {
+  .route .heading {
     display: inline-block;
     width: calc(100% - 2px); /* subtract 2x border-width */
-    margin: 0;
-    /*padding: 0.5rem 1rem;*/
-    line-height: 125%;
-    border: 1px solid #c3e8d1;
+    border: 1px solid #000;
     border-radius: 3px;
-    font-weight: 600;
     font-size: 1rem;
+    line-height: 125%;
   }
-  .route-type {
+  .route .heading h3 {
+    display: inline-block;
+    margin: 0;
+    font-weight: 600;
+    font-size: inherit;
+    line-height: inherit;
+  }
+  .route .route-type {
     display: inline-block;
     padding: 0.5rem;
     width: 5rem;
@@ -82,10 +125,11 @@
     font-weight: 300;
     font-size: 85%;
     color: #fff;
-    border-radius: 3px;
+    border-radius: 2px;
+    vertical-align: middle;
   }
 
-  .route-type-backend {
+  .route-type-proxy {
     background-color: rgba(16, 165, 74, 0.1);
   }
   .route-type-redirect {
@@ -98,7 +142,7 @@
     background-color: rgba(66, 66, 66, 0.1);
   }
 
-  .route-type-backend .route-type {
+  .route-type-proxy .route-type {
     background-color: rgba(16, 165, 74, 1.0);
   }
   .route-type-redirect .route-type {
@@ -111,7 +155,7 @@
     background-color: rgba(66, 66, 66, 1.0);
   }
 
-  .route-type-backend .route-desc {
+  .route-type-proxy .route-desc {
     color: rgba(16, 165, 74, 1.0);
   }
   .route-type-redirect .route-desc {
@@ -124,9 +168,27 @@
     color: rgba(66, 66, 66, 1.0);
   }
 
+  .route-type-proxy .heading,
+  .route-type-proxy .route-meta {
+    border-color: rgba(16, 165, 74, 0.3);
+  }
+  .route-type-redirect .heading,
+  .route-type-redirect .route-meta {
+    border-color: rgba(197, 134, 43, 0.3);
+  }
+  .route-type-file .heading,
+  .route-type-file .route-meta {
+    border-color: rgba(15, 106, 180, 0.3);
+  }
+  .route-type-unknown .heading,
+  .route-type-unknown .route-meta {
+    border-color: rgba(66, 66, 66, 0.3);
+  }
+
   .route-path {
     display: inline-block;
     padding: 0.5rem;
+    vertical-align: middle;
   }
   .route-desc {
     right: 0;
@@ -134,10 +196,11 @@
     float: right;
     padding: 0.5rem 1rem;
     font-weight: 400;
+    vertical-align: middle;
   }
   .route-meta {
     padding: 0.5rem;
-    border: 1px solid #c3e8d1;
+    border: 1px solid #000;
     border-top: 0;
     border-radius: 3px;
   }
@@ -149,27 +212,51 @@
   }
 </style>
 
-<ul>
-  <li><a href="#dcos-component-package-manager-pkgpanda">DC/OS Component Package Manager (Pkgpanda)</a></li>
-  <li><a href="#dcos-diagnostics-3dt">DC/OS Diagnostics (3DT)</a></li>
-  <li><a href="#dcos-log">DC/OS Log</a></li>
-  <li><a href="#dcos-metrics">DC/OS Metrics</a></li>
-</ul>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script>
+  // requires jquery-3.1.1
+  window.Ngindox = {
 
+    init: function() {
+      $('.toggleEndpointList', this.el).click(function() {
+        var anchor = this.getAttribute('data-id');
+        if (anchor) {
+          Ngindox.toggleEndpointListForResource(anchor);
+        }
+      });
+    },
 
-<h3><a id="dcos-component-package-manager-pkgpanda" href="#dcos-component-package-manager-pkgpanda" aria-hidden="true">DC/OS Component Package Manager (Pkgpanda)</a></h3>
+    toggleEndpointListForResource: function(resource) {
+      $('#routes-' + resource).slideToggle("slow");
+    },
 
-<ul class="route-table">
-  <li class="route-type-backend">
-    <h3 class="route">
-      <span class="route-type">Backend</span>
-      <span class="route-path"><code>/pkgpanda/</code></span>
-    </h3>
+    callDocs: function(fnName, e) {
+      e.preventDefault();
+      Ngindox[fnName](e.currentTarget.getAttribute('data-id'));
+    }
+
+  }
+  $(document).ready(Ngindox.init);
+</script>
+
+<div id="ngindox"><ul class="resources">
+<li id="resource-pkgpanda" class="resource">
+
+<div class="heading">  <h2><a id="pkgpanda" href="#pkgpanda" aria-hidden="true" class="toggleEndpointList" data-id="pkgpanda">Pkgpanda</a></h2>  <span class="options">    <a href="#pkgpanda" class="toggleEndpointList" data-id="pkgpanda">Show/Hide</a>  </span></div>
+
+<ul id="routes-pkgpanda" class="routes" style="display:none;">
+  <li class="route route-type-proxy">
+    <div class="heading">
+      <h3>
+        <span class="route-type">Proxy</span>
+        <span class="route-path"><code>/pkgpanda/</code></span>
+      </h3>
+    </div>
     <div class="route-meta">
       <table>
         <tr>
           <td>
-            Backend:
+            Proxy:
           </td>
           <td>
             <code>http://&lt;socket&gt;/</code>
@@ -183,24 +270,37 @@
             <code>/run/dcos/pkgpanda-api.sock</code>
           </td>
         </tr>
+        <tr>
+          <td>
+            Backend:
+          </td>
+          <td>
+            <a href="https://dcos.io/docs/1.9/administration/component-management/">DC/OS Component Package Manager (Pkgpanda)</a>
+          </td>
+        </tr>
       </table>
     </div>
   </li>
 </ul>
+</li>
 
-<h3><a id="dcos-diagnostics-3dt" href="#dcos-diagnostics-3dt" aria-hidden="true">DC/OS Diagnostics (3DT)</a></h3>
+<li id="resource-system" class="resource">
 
-<ul class="route-table">
-  <li class="route-type-backend">
-    <h3 class="route">
-      <span class="route-type">Backend</span>
-      <span class="route-path"><code>/system/health/v1</code></span>
-    </h3>
+<div class="heading">  <h2><a id="system" href="#system" aria-hidden="true" class="toggleEndpointList" data-id="system">System</a></h2>  <span class="options">    <a href="#system" class="toggleEndpointList" data-id="system">Show/Hide</a>  </span></div>
+
+<ul id="routes-system" class="routes" style="display:none;">
+  <li class="route route-type-proxy">
+    <div class="heading">
+      <h3>
+        <span class="route-type">Proxy</span>
+        <span class="route-path"><code>/system/health/v1</code></span>
+      </h3>
+    </div>
     <div class="route-meta">
       <table>
         <tr>
           <td>
-            Backend:
+            Proxy:
           </td>
           <td>
             <code>http://&lt;socket&gt;</code>
@@ -214,24 +314,29 @@
             <code>/run/dcos/3dt.sock</code>
           </td>
         </tr>
+        <tr>
+          <td>
+            Backend:
+          </td>
+          <td>
+            <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">DC/OS Diagnostics (3DT)</a>
+          </td>
+        </tr>
       </table>
     </div>
   </li>
-</ul>
-
-<h3><a id="dcos-log" href="#dcos-log" aria-hidden="true">DC/OS Log</a></h3>
-
-<ul class="route-table">
-  <li class="route-type-backend">
-    <h3 class="route">
-      <span class="route-type">Backend</span>
-      <span class="route-path"><code>/system/v1/logs/v1/</code></span>
-    </h3>
+  <li class="route route-type-proxy">
+    <div class="heading">
+      <h3>
+        <span class="route-type">Proxy</span>
+        <span class="route-path"><code>/system/v1/logs/v1/</code></span>
+      </h3>
+    </div>
     <div class="route-meta">
       <table>
         <tr>
           <td>
-            Backend:
+            Proxy:
           </td>
           <td>
             <code>http://&lt;socket&gt;/</code>
@@ -245,24 +350,29 @@
             <code>/run/dcos/dcos-log.sock</code>
           </td>
         </tr>
+        <tr>
+          <td>
+            Backend:
+          </td>
+          <td>
+            <a href="https://dcos.io/docs/1.9/api/dcos-log/">DC/OS Log</a>
+          </td>
+        </tr>
       </table>
     </div>
   </li>
-</ul>
-
-<h3><a id="dcos-metrics" href="#dcos-metrics" aria-hidden="true">DC/OS Metrics</a></h3>
-
-<ul class="route-table">
-  <li class="route-type-backend">
-    <h3 class="route">
-      <span class="route-type">Backend</span>
-      <span class="route-path"><code>/system/v1/metrics/</code></span>
-    </h3>
+  <li class="route route-type-proxy">
+    <div class="heading">
+      <h3>
+        <span class="route-type">Proxy</span>
+        <span class="route-path"><code>/system/v1/metrics/</code></span>
+      </h3>
+    </div>
     <div class="route-meta">
       <table>
         <tr>
           <td>
-            Backend:
+            Proxy:
           </td>
           <td>
             <code>http://&lt;socket&gt;/</code>
@@ -276,7 +386,17 @@
             <code>/run/dcos/dcos-metrics-agent.sock</code>
           </td>
         </tr>
+        <tr>
+          <td>
+            Backend:
+          </td>
+          <td>
+            <a href="https://dcos.io/docs/1.9/api/dcos-metrics/">DC/OS Metrics</a>
+          </td>
+        </tr>
       </table>
     </div>
   </li>
 </ul>
+</li>
+</ul></div>
