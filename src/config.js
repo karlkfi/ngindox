@@ -3,7 +3,8 @@ var YAML = require('yamljs'),
 	GithubSlugger = require('github-slugger'),
 	indentBlock = require('./indent').indentBlock,
 	innertext = require('innertext'),
-	singleTrailingNewline = require('single-trailing-newline');
+	singleTrailingNewline = require('single-trailing-newline'),
+	pretty = require('pretty');
 
 var DisplayFields = [
 	'Redirect',
@@ -52,41 +53,41 @@ Config.prototype.toHtml = function(formatConfig) {
 
 		var type = routeType(location);
 
-		body += `  <li class="route route-type-${type.toLowerCase()}">\n`;
+		body += `<li class="route route-type-${type.toLowerCase()}">\n`;
 
 		// Route Type/Path/Description
-		body += '    <div class="heading">\n';
-		body += '      <h3>\n';
-		body += `        <span class="route-type">${type}</span>\n`;
-		body += `        <span class="route-path">${renderHtml(location.metadata.Path)}</span>\n`;
-		body += "      </h3>\n";
+		body += '<div class="heading">\n';
+		body += '<h3>\n';
+		body += `<span class="route-type">${type}</span>\n`;
+		body += `<span class="route-path">${renderHtml(location.metadata.Path)}</span>\n`;
+		body += "</h3>\n";
 		if (location.metadata.Description) {
-			body += `      <span class="route-desc">${location.metadata.Description}</span>\n`;
+			body += `<span class="route-desc">${location.metadata.Description}</span>\n`;
 		}
-		body += '    </div>\n';
+		body += '</div>\n';
 
 		// Route Metadata
 		if (hasAtLeastOne(location.metadata, DisplayFields)) {
-			body += '    <div class="route-meta">\n';
-			body += "      <table>\n";
+			body += '<div class="route-meta">\n';
+			body += "<table>\n";
 			for (var j = 0, jlen = DisplayFields.length; j < jlen; j++) {
 				var field = DisplayFields[j];
 				if (location.metadata[field]) {
-					body += "        <tr>\n";
-					body += "          <td>\n";
-					body += "            " + field + ":\n";
-					body += "          </td>\n";
-					body += "          <td>\n";
-					body += "            " + renderHtml(location.metadata[field]) + "\n";
-					body += "          </td>\n";
-					body += "        </tr>\n";
+					body += "<tr>\n";
+					body += "<td>\n";
+					body += field + ":\n";
+					body += "</td>\n";
+					body += "<td>\n";
+					body += renderHtml(location.metadata[field]) + "\n";
+					body += "</td>\n";
+					body += "</tr>\n";
 				}
 			}
-			body += "      </table>\n";
-			body += "    </div>\n";
+			body += "</table>\n";
+			body += "</div>\n";
 		}
 
-		body += "  </li>\n";
+		body += "</li>\n";
 
 		if (i+1 == len || locations[i+1].metadata.Group != group) {
 			body += "</ul>\n";
@@ -120,7 +121,7 @@ Config.prototype.toHtml = function(formatConfig) {
 		prefix += "\n";
 	}
 
-	return prefix + body;
+	return pretty(prefix + body);
 }
 
 function processLocations(locations, upstreams) {
@@ -251,11 +252,11 @@ function Header(headerTag, headerText) {
 
 Header.prototype.resourceHtml = function() {
     var heading = '';
-    heading += '<div class="heading">';
-    heading += `  <${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggleEndpointList" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>`;
-    heading += '  <span class="options">';
-    heading += `    <a href="#${this.anchor}" class="toggleEndpointList" data-id="${this.anchor}">Show/Hide</a>`;
-    heading += '  </span>';
+    heading += '<div class="heading">\n';
+    heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggleEndpointList" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>\n`;
+    heading += '<span class="options">';
+    heading += `<a href="#${this.anchor}" class="toggleEndpointList" data-id="${this.anchor}">Show/Hide</a>`;
+    heading += '</span>\n';
     heading += '</div>';
 	return heading
 }
