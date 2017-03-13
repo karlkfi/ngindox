@@ -4,10 +4,12 @@ var YAML = require('yamljs'),
 	indentBlock = require('./indent').indentBlock,
 	innertext = require('innertext'),
 	singleTrailingNewline = require('single-trailing-newline'),
-	pretty = require('pretty');
+	pretty = require('pretty'),
+	camelCase = require('camelcase');
 
 var DisplayFields = [
 	'Redirect',
+	'Rewrite',
 	'Proxy',
 	'File',
 	'Socket',
@@ -72,13 +74,22 @@ Config.prototype.toHtml = function(formatConfig) {
 			body += "<table>\n";
 			for (var j = 0, jlen = DisplayFields.length; j < jlen; j++) {
 				var field = DisplayFields[j];
-				if (location.metadata[field]) {
+				var value = location.metadata[field];
+				// any metadata field value may be an array (ex: Rewrite, Redirect)
+				var entries = [];
+				if (Array.isArray(value)) {
+					entries = value;
+				} else if (value) {
+					entries.push(value);
+				}
+				for (var k = 0, klen = entries.length; k < klen; k++) {
+					var entry = entries[k];
 					body += "<tr>\n";
 					body += "<td>\n";
 					body += field + ":\n";
 					body += "</td>\n";
 					body += "<td>\n";
-					body += renderHtml(location.metadata[field]) + "\n";
+					body += renderHtml(entry) + "\n";
 					body += "</td>\n";
 					body += "</tr>\n";
 				}
@@ -163,7 +174,7 @@ function processLocations(locations, upstreams) {
 		location.path = path;
 
 		if (location.proxyPass) {
-			var match = findUpstream(upstreams, location.proxyPass)
+			var match = findUpstream(upstreams, location)
 			if (match) {
 				var upstream = match[0];
 				location.metadata.Backend = upstream.name;
@@ -193,6 +204,23 @@ function processLocations(locations, upstreams) {
 			location.metadata.Path = "`" + location.path + "`";
 		}
 
+		if (location.rewrites) {
+			for (var j = 0, jlen = location.rewrites.length; j < jlen; j++) {
+				var rewrite = location.rewrites[j];
+				if (rewrite.flag == "redirect" || rewrite.flag == "permanent") {
+					if (!location.metadata.Redirect) {
+						location.metadata.Redirect = [];
+					}
+					location.metadata.Redirect.push(rewriteMarkdown(rewrite));
+				} else {
+					if (!location.metadata.Rewrite) {
+						location.metadata.Rewrite = [];
+					}
+					location.metadata.Rewrite.push(rewriteMarkdown(rewrite));
+				}
+			}
+		}
+
 		if (!location.metadata.Group) {
 			location.metadata.Group = 'Other';
 		}
@@ -215,8 +243,15 @@ function processLocations(locations, upstreams) {
 	});
 }
 
+function rewriteMarkdown(rewrite) {
+	var markdown = "Regex: `" + rewrite.regex + "`<br/>";
+	markdown += "Replacement: `" + rewrite.replacement + "`<br/>";
+	markdown += "Flag: `" + rewrite.flag + "`";
+	return markdown;
+}
+
 function routeType(location) {
-	var types = ['Redirect', 'Proxy', 'File'];
+	var types = ['Proxy', 'File', 'Redirect', 'Rewrite'];
 	for (var i = 0, len = types.length; i < len; i++) {
 		var type = types[i];
 		if (location.metadata[type]) {
@@ -240,7 +275,7 @@ function Header(headerTag, headerText) {
 	this.headerTag = headerTag;
 	var slugger = new GithubSlugger();
 	var md = new MarkdownIt({
-		html: false
+		html: true
 	});
 	this.content = md.renderInline(headerText);
 	this.anchor = slugger.slug(
@@ -270,14 +305,21 @@ Header.prototype.titleHtml = function() {
 // Returns [upstream, proxy] if found.
 // Returns [upstream, proxy, socket] if found and server is a unix socket.
 // Returns null if not found.
-function findUpstream(upstreams, proxyPass) {
+function findUpstream(upstreams, location) {
 	for (var i = 0, len = upstreams.length; i < len; i++) {
 		var upstream = upstreams[i];
-		var matches = proxyPass.match("^(https?://)" + upstream.name + "(.*)$");
+		var matches = location.proxyPass.match("^(https?://)" + upstream.name + "(.*)$");
 		if (matches) {
 			var scheme = matches[1];
 			var path = matches[2];
 			var proxy = scheme + upstream.server + path;
+			if (!path) {
+				// pass location path to upstream server
+				// TODO: indicate that path is pre-processed/unescaped?
+				// TODO: what if path is regex? doesn't start with slash?
+				// TODO: handle the path being processed by rewrites?
+				proxy += location.path;
+			}
 
 			matches = upstream.server.match("^unix:(.*)$");
 			if (matches) {
@@ -301,7 +343,7 @@ function findUpstream(upstreams, proxyPass) {
 
 function renderHtml(markdown) {
 	var md = new MarkdownIt({
-		html: false
+		html: true
 	});
 	return md.renderInline(markdown);
 }
@@ -312,13 +354,21 @@ function Upstream(name, server, metadata) {
 	this.metadata = metadata || {};
 }
 
-function Location(path, proxyPass, alias, metadata) {
+function Location(path, proxyPass, alias, rewrites, metadata) {
 	this.path = path || '';
 	this.proxyPass = proxyPass || '';
 	this.alias = alias || '';
+	this.rewrites = rewrites || [];
 	this.metadata = metadata || {};
+}
+
+function Rewrite(regex, replacement, flag) {
+	this.regex = regex || '';
+	this.replacement = replacement || '';
+	this.flag = flag || '';
 }
 
 exports.Config = Config;
 exports.Upstream = Upstream;
 exports.Location = Location;
+exports.Rewrite = Rewrite;

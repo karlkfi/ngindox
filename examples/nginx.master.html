@@ -145,6 +145,10 @@
     background-color: rgba(197, 134, 43, 0.1);
   }
   
+  .route-type-rewrite {
+    background-color: rgba(211, 128, 42, 0.1);
+  }
+  
   .route-type-file {
     background-color: rgba(15, 106, 180, 0.1);
   }
@@ -159,6 +163,10 @@
   
   .route-type-redirect .route-type {
     background-color: rgba(197, 134, 43, 1.0);
+  }
+  
+  .route-type-rewrite .route-type {
+    background-color: rgba(211, 128, 42, 1.0);
   }
   
   .route-type-file .route-type {
@@ -177,6 +185,10 @@
     color: rgba(197, 134, 43, 1.0);
   }
   
+  .route-type-rewrite .route-desc {
+    color: rgba(211, 128, 42, 1.0);
+  }
+  
   .route-type-file .route-desc {
     color: rgba(15, 106, 180, 1.0);
   }
@@ -193,6 +205,11 @@
   .route-type-redirect .heading,
   .route-type-redirect .route-meta {
     border-color: rgba(197, 134, 43, 0.3);
+  }
+  
+  .route-type-rewrite .heading,
+  .route-type-rewrite .route-meta {
+    border-color: rgba(211, 128, 42, 0.3);
   }
   
   .route-type-file .heading,
@@ -261,21 +278,24 @@
         <span class="options"><a href="#agent" class="toggleEndpointList" data-id="agent">Show/Hide</a> </span> 
       </div>
       <ul id="routes-agent" class="routes" style="display:none;">
-        <li class="route route-type-redirect">
+        <li class="route route-type-rewrite">
           <div class="heading">
             <h3>
-              <span class="route-type">Redirect</span> 
+              <span class="route-type">Rewrite</span> 
               <span class="route-path"><code>/(slave|agent)/(?&lt;agentid&gt;[0-9a-zA-Z-]+)</code></span> 
             </h3>
+            <span class="route-desc">Redirect to add trailing slash</span> 
           </div>
           <div class="route-meta">
             <table>
               <tr>
                 <td>
-                  Redirect:
+                  Rewrite:
                 </td>
                 <td>
-                  <code>/agent/&lt;agentid&gt;/</code>
+                  Regex: <code>^/(slave|agent)/(.*)$</code>
+                  <br/>Replacement: <code>/agent/$2/</code>
+                  <br/>Flag: <code>last</code>
                 </td>
               </tr>
             </table>
@@ -291,6 +311,16 @@
           </div>
           <div class="route-meta">
             <table>
+              <tr>
+                <td>
+                  Rewrite:
+                </td>
+                <td>
+                  Regex: <code>^/(slave|agent)/[0-9a-zA-Z-]+/.*$</code>
+                  <br/>Replacement: <code>$url</code>
+                  <br/>Flag: <code>break</code>
+                </td>
+              </tr>
               <tr>
                 <td>
                   Proxy:
@@ -327,7 +357,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8101</code>
+                  <code>http://127.0.0.1:8101/acs/api/v1</code>
                 </td>
               </tr>
               <tr>
@@ -356,7 +386,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8101</code>
+                  <code>http://127.0.0.1:8101/acs/api/v1/auth/</code>
                 </td>
               </tr>
               <tr>
@@ -376,7 +406,7 @@
               <span class="route-type">Redirect</span> 
               <span class="route-path"><code>/login</code></span> 
             </h3>
-            <span class="route-desc">User Login</span> 
+            <span class="route-desc">Redirect to OpenID Connect server for user login</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -385,7 +415,9 @@
                   Redirect:
                 </td>
                 <td>
-                  To OpenID Connect Server
+                  Regex: <code>^</code>
+                  <br/>Replacement: <code>$oauth_auth_redirector$uri?client=$oauth_client_id&amp;cluster_id=$cluster_id</code>
+                  <br/>Flag: <code>redirect</code>
                 </td>
               </tr>
             </table>
@@ -485,6 +517,7 @@
               <span class="route-type">Redirect</span> 
               <span class="route-path"><code>/exhibitor</code></span> 
             </h3>
+            <span class="route-desc">Redirect to add trailing slash</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -493,7 +526,9 @@
                   Redirect:
                 </td>
                 <td>
-                  <code>/exhibitor/</code>
+                  Regex: <code>^/exhibitor$</code>
+                  <br/>Replacement: <code>$scheme://$http_host/exhibitor/</code>
+                  <br/>Flag: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -582,6 +617,7 @@
               <span class="route-type">Redirect</span> 
               <span class="route-path"><code>/marathon</code></span> 
             </h3>
+            <span class="route-desc">Redirect to add trailing slash</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -590,7 +626,9 @@
                   Redirect:
                 </td>
                 <td>
-                  <code>/marathon/</code>
+                  Regex: <code>^/marathon$</code>
+                  <br/>Replacement: <code>$scheme://$http_host/marathon/</code>
+                  <br/>Flag: <code>permanent</code>
                 </td>
               </tr>
               <tr>
@@ -693,6 +731,7 @@
               <span class="route-type">Redirect</span> 
               <span class="route-path"><code>/mesos</code></span> 
             </h3>
+            <span class="route-desc">Redirect to add trailing slash</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -701,7 +740,9 @@
                   Redirect:
                 </td>
                 <td>
-                  <code>/mesos/</code>
+                  Regex: <code>^/mesos$</code>
+                  <br/>Replacement: <code>$scheme://$http_host/mesos/</code>
+                  <br/>Flag: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -752,6 +793,7 @@
               <span class="route-type">Redirect</span> 
               <span class="route-path"><code>/mesos_dns</code></span> 
             </h3>
+            <span class="route-desc">Redirect to add trailing slash</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -760,7 +802,9 @@
                   Redirect:
                 </td>
                 <td>
-                  <code>/mesos_dns/</code>
+                  Regex: <code>^/mesos_dns$</code>
+                  <br/>Replacement: <code>$scheme://$http_host/mesos_dns/</code>
+                  <br/>Flag: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -861,7 +905,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8101</code>
+                  <code>http://127.0.0.1:8101/dcos-metadata/ui-config.json</code>
                 </td>
               </tr>
               <tr>
@@ -1044,6 +1088,7 @@
               <span class="route-type">Redirect</span> 
               <span class="route-path"><code>/service/(?&lt;serviceid&gt;[0-9a-zA-Z-.]+)</code></span> 
             </h3>
+            <span class="route-desc">Redirect to add trailing slash</span> 
           </div>
           <div class="route-meta">
             <table>
@@ -1052,7 +1097,9 @@
                   Redirect:
                 </td>
                 <td>
-                  <code>/service/&lt;serviceid&gt;/</code>
+                  Regex: <code>^/service/(.*)$</code>
+                  <br/>Replacement: <code>/service/$1/</code>
+                  <br/>Flag: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -1068,6 +1115,16 @@
           </div>
           <div class="route-meta">
             <table>
+              <tr>
+                <td>
+                  Rewrite:
+                </td>
+                <td>
+                  Regex: <code>^/service/[0-9a-zA-Z-.]+/?.*$</code>
+                  <br/>Replacement: <code>/$url</code>
+                  <br/>Flag: <code>break</code>
+                </td>
+              </tr>
               <tr>
                 <td>
                   Proxy:
@@ -1104,7 +1161,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:1050</code>
+                  <code>http://127.0.0.1:1050/system/health/v1</code>
                 </td>
               </tr>
               <tr>
@@ -1128,6 +1185,16 @@
           </div>
           <div class="route-meta">
             <table>
+              <tr>
+                <td>
+                  Rewrite:
+                </td>
+                <td>
+                  Regex: <code>^/agent/[0-9a-zA-Z-]+(.*)$</code>
+                  <br/>Replacement: <code>$1</code>
+                  <br/>Flag: <code>break</code>
+                </td>
+              </tr>
               <tr>
                 <td>
                   Proxy:

@@ -147,6 +147,15 @@ function parseNginxConf(_config, callback) {
 			alias = _aliases[0].value;
 		}
 
+		// rewrite is optional
+		var rewrites = [];
+		var _rewrites = findChild('rewrite', _location);
+		for (var j = 0, lenj = _rewrites.length; j < lenj; j++) {
+			rewrites.push(parseRewrite(_rewrites[j].value))
+		}
+
+		// TODO: handle if blocks
+
 		// metadata is optional
 		var metadata = parseMetadata(_location);
 
@@ -155,6 +164,7 @@ function parseNginxConf(_config, callback) {
 				_location.value,
 				proxy_pass,
 				alias,
+				rewrites,
 				metadata
 			)
 		);
@@ -176,6 +186,51 @@ function findChild(name, node) {
 		}
 	}
 	return results;
+}
+
+function parseRewrite(rewrite) {
+	// extract optional flag
+	var flag = '';
+	var matches = rewrite.match("^(.+) (last|break|redirect|permanent)$");
+	if (matches) {
+		rewrite = matches[1];
+		flag = matches[2];
+	}
+	var regex = '';
+	var replacement = '';
+	var split = splitSpaceList(rewrite);
+	if (split.length == 2) {
+		// no spaces in the rewrite or replacement, yay!
+		regex = split[0];
+		replacement = split[1];
+	}
+
+	if (!flag) {
+		// default flag depends on replacement string
+		if (replacement.startsWith("https?://") || replacement.startsWith("$scheme")) {
+			flag = "redirect";
+		}
+	}
+
+	return new NgindoxConfig.Rewrite(regex, replacement, flag)
+}
+
+// Parses a list of strings delimited by whitespace, using optional double or single quote.
+// TODO: handle escaped quotes within quoted segments? Does nginx allow spaces in the regex or replacement?
+function splitSpaceList(source) {
+	var segments = [];
+	var matcher = new RegExp("\"([^\"]*)\"|'([^']*)'|(\\S+)", "g");
+	var match;
+	while (match = matcher.exec(source)) {
+		if (match[1] != null) {
+			segments.push(match[1]);
+		} else if (match[2] != null) {
+			segments.push(match[2]);
+		} else {
+			segments.push(match[3]);
+		}
+	}
+	return segments;
 }
 
 function parseMetadata(node) {

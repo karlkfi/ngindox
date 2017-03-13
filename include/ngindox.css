@@ -132,6 +132,9 @@ code {
 .route-type-redirect {
   background-color: rgba(197, 134, 43, 0.1);
 }
+.route-type-rewrite {
+  background-color: rgba(211, 128, 42, 0.1);
+}
 .route-type-file {
   background-color: rgba(15, 106, 180, 0.1);
 }
@@ -145,6 +148,9 @@ code {
 .route-type-redirect .route-type {
   background-color: rgba(197, 134, 43, 1.0);
 }
+.route-type-rewrite .route-type {
+  background-color: rgba(211, 128, 42, 1.0);
+}
 .route-type-file .route-type {
   background-color: rgba(15, 106, 180, 1.0);
 }
@@ -157,6 +163,9 @@ code {
 }
 .route-type-redirect .route-desc {
   color: rgba(197, 134, 43, 1.0);
+}
+.route-type-rewrite .route-desc {
+  color: rgba(211, 128, 42, 1.0);
 }
 .route-type-file .route-desc {
   color: rgba(15, 106, 180, 1.0);
@@ -172,6 +181,10 @@ code {
 .route-type-redirect .heading,
 .route-type-redirect .route-meta {
   border-color: rgba(197, 134, 43, 0.3);
+}
+.route-type-rewrite .heading,
+.route-type-rewrite .route-meta {
+  border-color: rgba(211, 128, 42, 0.3);
 }
 .route-type-file .heading,
 .route-type-file .route-meta {

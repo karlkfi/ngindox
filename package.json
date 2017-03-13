@@ -26,6 +26,7 @@
     "ngindox": "./cli.js"
   },
   "dependencies": {
+    "camelcase": "4.0.0",
     "cli": "1.0.1",
     "github-slugger": "1.1.1",
     "innertext": "1.0.1",
