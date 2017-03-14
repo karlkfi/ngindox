@@ -1,4 +1,8 @@
 /* Ngindox */
+#ngindox {
+  font-family: "Droid Sans",sans-serif;
+  font-size: 0.9rem;
+}
 
 a {
   color: inherit;
@@ -13,6 +17,8 @@ h2, h3 {
   margin: 0;
   margin-top: 2rem;
   margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 h2 a, h3 a {
   color: black;
@@ -53,8 +59,6 @@ code {
 
 
 .resources {
-  font-family: "Droid Sans",sans-serif;
-  font-size: .9em;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -75,8 +79,6 @@ code {
   margin: 0;
   line-height: 125%;
   padding: 0.5rem 1rem;
-  font-weight: 600;
-  font-size: 1rem;
   vertical-align: middle;
 }
 .resource .heading .options {
@@ -86,7 +88,6 @@ code {
   line-height: 125%;
   padding: 0.5rem 1rem;
   font-weight: 400;
-  font-size: 0.9rem;
   vertical-align: middle;
   color: #aaa;
 }
@@ -102,14 +103,11 @@ code {
   width: calc(100% - 2px); /* subtract 2x border-width */
   border: 1px solid #000;
   border-radius: 3px;
-  font-size: 1rem;
   line-height: 125%;
 }
 .route .heading h3 {
   display: inline-block;
   margin: 0;
-  font-weight: 600;
-  font-size: inherit;
   line-height: inherit;
 }
 .route .route-type {
@@ -119,8 +117,9 @@ code {
   text-align: center;
   text-transform: uppercase;
   text-decoration: none;
+  font-family: "Droid Sans", sans-serif;
   font-weight: 300;
-  font-size: 85%;
+  font-size: 0.8rem;
   color: #fff;
   border-radius: 2px;
   vertical-align: middle;
