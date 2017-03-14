@@ -87,7 +87,6 @@ code {
   float: right;
   line-height: 125%;
   padding: 0.5rem 1rem;
-  font-weight: 400;
   vertical-align: middle;
   color: #aaa;
 }
@@ -205,8 +204,6 @@ code {
   display: block;
   float: right;
   padding: 0.5rem 1rem;
-  font-weight: 400;
-  font-size: 0.9rem;
   vertical-align: middle;
   color: #aaa;
 }
