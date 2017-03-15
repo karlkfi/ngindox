@@ -4,6 +4,7 @@ var YAML = require('yamljs'),
 	indentBlock = require('./indent').indentBlock,
 	innertext = require('innertext'),
 	singleTrailingNewline = require('single-trailing-newline'),
+	removeTrailingSpaces = require("remove-trailing-spaces"),
 	pretty = require('pretty'),
 	camelCase = require('camelcase');
 
@@ -132,7 +133,7 @@ Config.prototype.toHtml = function(formatConfig) {
 		prefix += "\n";
 	}
 
-	return pretty(prefix + body);
+	return removeTrailingSpaces(pretty(prefix + body));
 }
 
 function processLocations(locations, upstreams) {

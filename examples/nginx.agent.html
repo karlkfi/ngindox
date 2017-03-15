@@ -1,21 +1,21 @@
 <style>
   /* Ngindox */
-  
+
   #ngindox {
     font-family: "Droid Sans", sans-serif;
     font-size: 0.9rem;
   }
-  
+
   a {
     color: inherit;
     cursor: pointer;
     text-decoration: none;
   }
-  
+
   a:hover {
     text-decoration: underline;
   }
-  
+
   h2,
   h3 {
     margin: 0;
@@ -24,35 +24,35 @@
     font-size: 1rem;
     font-weight: 600;
   }
-  
+
   h2 a,
   h3 a {
     color: black;
   }
-  
+
   table {
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-collapse: collapse;
     border-spacing: 0;
   }
-  
+
   table tr:nth-child(odd) {
     /*background-color: #fff;*/
   }
-  
+
   table tr:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.05);
   }
-  
+
   table td {
     padding: 1rem;
     line-height: 125%;
   }
-  
+
   li {
     margin: 0.5rem 0;
   }
-  
+
   code {
     padding: 0;
     padding-top: 0.2em;
@@ -65,23 +65,23 @@
     border: 0;
     word-break: break-word;
   }
-  
+
   .resources {
     width: 100%;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  
+
   .resource {
     border-bottom: 1px solid #ddd;
   }
-  
+
   .resource .heading {
     display: block;
     width: 100%;
   }
-  
+
   .resource .heading h2 {
     display: inline-block;
     margin: 0;
@@ -89,7 +89,7 @@
     padding: 0.5rem 1rem;
     vertical-align: middle;
   }
-  
+
   .resource .heading .options {
     right: 0;
     display: block;
@@ -99,13 +99,13 @@
     vertical-align: middle;
     color: #aaa;
   }
-  
+
   .routes {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
-  
+
   .route .heading {
     display: inline-block;
     width: calc(100% - 2px);
@@ -114,13 +114,13 @@
     border-radius: 3px;
     line-height: 125%;
   }
-  
+
   .route .heading h3 {
     display: inline-block;
     margin: 0;
     line-height: inherit;
   }
-  
+
   .route .route-type {
     display: inline-block;
     padding: 0.5rem;
@@ -135,98 +135,98 @@
     border-radius: 2px;
     vertical-align: middle;
   }
-  
+
   .route-type-proxy {
     background-color: rgba(16, 165, 74, 0.1);
   }
-  
+
   .route-type-redirect {
     background-color: rgba(197, 134, 43, 0.1);
   }
-  
+
   .route-type-rewrite {
     background-color: rgba(211, 128, 42, 0.1);
   }
-  
+
   .route-type-file {
     background-color: rgba(15, 106, 180, 0.1);
   }
-  
+
   .route-type-unknown {
     background-color: rgba(66, 66, 66, 0.1);
   }
-  
+
   .route-type-proxy .route-type {
     background-color: rgba(16, 165, 74, 1.0);
   }
-  
+
   .route-type-redirect .route-type {
     background-color: rgba(197, 134, 43, 1.0);
   }
-  
+
   .route-type-rewrite .route-type {
     background-color: rgba(211, 128, 42, 1.0);
   }
-  
+
   .route-type-file .route-type {
     background-color: rgba(15, 106, 180, 1.0);
   }
-  
+
   .route-type-unknown .route-type {
     background-color: rgba(66, 66, 66, 1.0);
   }
-  
+
   .route-type-proxy .route-desc {
     color: rgba(16, 165, 74, 1.0);
   }
-  
+
   .route-type-redirect .route-desc {
     color: rgba(197, 134, 43, 1.0);
   }
-  
+
   .route-type-rewrite .route-desc {
     color: rgba(211, 128, 42, 1.0);
   }
-  
+
   .route-type-file .route-desc {
     color: rgba(15, 106, 180, 1.0);
   }
-  
+
   .route-type-unknown .route-desc {
     color: rgba(66, 66, 66, 1.0);
   }
-  
+
   .route-type-proxy .heading,
   .route-type-proxy .route-meta {
     border-color: rgba(16, 165, 74, 0.3);
   }
-  
+
   .route-type-redirect .heading,
   .route-type-redirect .route-meta {
     border-color: rgba(197, 134, 43, 0.3);
   }
-  
+
   .route-type-rewrite .heading,
   .route-type-rewrite .route-meta {
     border-color: rgba(211, 128, 42, 0.3);
   }
-  
+
   .route-type-file .heading,
   .route-type-file .route-meta {
     border-color: rgba(15, 106, 180, 0.3);
   }
-  
+
   .route-type-unknown .heading,
   .route-type-unknown .route-meta {
     border-color: rgba(66, 66, 66, 0.3);
   }
-  
+
   .route-path {
     display: inline-block;
     padding: 0.5rem;
     vertical-align: middle;
   }
-  
+
   .route-desc {
     right: 0;
     display: block;
@@ -235,18 +235,18 @@
     vertical-align: middle;
     color: #aaa;
   }
-  
+
   .route-meta {
     padding: 0.5rem;
     border: 1px solid #000;
     border-top: 0;
     border-radius: 3px;
   }
-  
+
   .route-meta table {
     width: 100%;
   }
-  
+
   .route-meta table tr td:first-child {
     width: 4rem;
   }
@@ -270,18 +270,18 @@
     <li id="resource-pkgpanda" class="resource">
       <div class="heading">
         <h2>
-          <a id="pkgpanda" href="#pkgpanda" aria-hidden="true" class="toggleEndpointList" data-id="pkgpanda">Pkgpanda</a> 
+          <a id="pkgpanda" href="#pkgpanda" aria-hidden="true" class="toggleEndpointList" data-id="pkgpanda">Pkgpanda</a>
         </h2>
-        <span class="options"><a href="#pkgpanda" class="toggleEndpointList" data-id="pkgpanda">Show/Hide</a> </span> 
+        <span class="options"><a href="#pkgpanda" class="toggleEndpointList" data-id="pkgpanda">Show/Hide</a> </span>
       </div>
       <ul id="routes-pkgpanda" class="routes" style="display:none;">
         <li class="route route-type-proxy">
           <div class="heading">
             <h3>
-              <span class="route-type">Proxy</span> 
-              <span class="route-path"><code>/pkgpanda/</code></span> 
+              <span class="route-type">Proxy</span>
+              <span class="route-path"><code>/pkgpanda/</code></span>
             </h3>
-            <span class="route-desc">DC/OS component package management</span> 
+            <span class="route-desc">DC/OS component package management</span>
           </div>
           <div class="route-meta">
             <table>
@@ -306,7 +306,7 @@
                   Backend:
                 </td>
                 <td>
-                  <a href="https://dcos.io/docs/1.9/administration/component-management/">DC/OS Component Package Manager (Pkgpanda)</a> 
+                  <a href="https://dcos.io/docs/1.9/administration/component-management/">DC/OS Component Package Manager (Pkgpanda)</a>
                 </td>
               </tr>
             </table>
@@ -317,18 +317,18 @@
     <li id="resource-system" class="resource">
       <div class="heading">
         <h2>
-          <a id="system" href="#system" aria-hidden="true" class="toggleEndpointList" data-id="system">System</a> 
+          <a id="system" href="#system" aria-hidden="true" class="toggleEndpointList" data-id="system">System</a>
         </h2>
-        <span class="options"><a href="#system" class="toggleEndpointList" data-id="system">Show/Hide</a> </span> 
+        <span class="options"><a href="#system" class="toggleEndpointList" data-id="system">Show/Hide</a> </span>
       </div>
       <ul id="routes-system" class="routes" style="display:none;">
         <li class="route route-type-proxy">
           <div class="heading">
             <h3>
-              <span class="route-type">Proxy</span> 
-              <span class="route-path"><code>/system/health/v1</code></span> 
+              <span class="route-type">Proxy</span>
+              <span class="route-path"><code>/system/health/v1</code></span>
             </h3>
-            <span class="route-desc">Component service status</span> 
+            <span class="route-desc">Component service status</span>
           </div>
           <div class="route-meta">
             <table>
@@ -353,7 +353,7 @@
                   Backend:
                 </td>
                 <td>
-                  <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">DC/OS Diagnostics (3DT)</a> 
+                  <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">DC/OS Diagnostics (3DT)</a>
                 </td>
               </tr>
             </table>
@@ -362,10 +362,10 @@
         <li class="route route-type-proxy">
           <div class="heading">
             <h3>
-              <span class="route-type">Proxy</span> 
-              <span class="route-path"><code>/system/v1/logs/v1/</code></span> 
+              <span class="route-type">Proxy</span>
+              <span class="route-path"><code>/system/v1/logs/v1/</code></span>
             </h3>
-            <span class="route-desc">Node, component service, and container (task) logs</span> 
+            <span class="route-desc">Node, component service, and container (task) logs</span>
           </div>
           <div class="route-meta">
             <table>
@@ -390,7 +390,7 @@
                   Backend:
                 </td>
                 <td>
-                  <a href="https://dcos.io/docs/1.9/administration/logging/logging-api/">DC/OS Log</a> 
+                  <a href="https://dcos.io/docs/1.9/administration/logging/logging-api/">DC/OS Log</a>
                 </td>
               </tr>
             </table>
@@ -399,10 +399,10 @@
         <li class="route route-type-proxy">
           <div class="heading">
             <h3>
-              <span class="route-type">Proxy</span> 
-              <span class="route-path"><code>/system/v1/metrics/</code></span> 
+              <span class="route-type">Proxy</span>
+              <span class="route-path"><code>/system/v1/metrics/</code></span>
             </h3>
-            <span class="route-desc">Node, container, and application metrics</span> 
+            <span class="route-desc">Node, container, and application metrics</span>
           </div>
           <div class="route-meta">
             <table>
@@ -427,7 +427,7 @@
                   Backend:
                 </td>
                 <td>
-                  <a href="https://dcos.io/docs/1.9/administration/metrics/metrics-api/">DC/OS Metrics</a> 
+                  <a href="https://dcos.io/docs/1.9/administration/metrics/metrics-api/">DC/OS Metrics</a>
                 </td>
               </tr>
             </table>
