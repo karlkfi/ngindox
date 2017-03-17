@@ -13,10 +13,29 @@ var DisplayFields = [
 	'Rewrite',
 	'Proxy',
 	'File',
+	'Lua',
 	'Socket',
 	'Backend',
 	'Cache',
 	'Deprecated'
+]
+
+var RouteTypeDescription = {
+	'Proxy': 'retrieves resources from another address.',
+	'File': 'retrieves static files.',
+	'Lua': 'executes Lua code to generate response.',
+	'Redirect': 'redirects to another address.',
+	'Rewrite': 'retrieves resources from another route.',
+	'Unknown': 'unrecognized routing mechanism.',
+}
+
+var TypeFields =[
+	'Proxy',
+	'File',
+	'Lua',
+	'Redirect',
+	'Rewrite',
+	'Unknown'
 ]
 
 function Config() {
@@ -52,10 +71,10 @@ Config.prototype.toHtml = function(formatConfig) {
 			body += "\n";
 			body += header.resourceHtml() + "\n"
 			body += "\n";
-			body += `<ul id="routes-${header.anchor}" class="routes" style="display:none;">\n`;
+			body += `<ul id="routes-${header.anchor}" class="routes">\n`;
 		}
 
-		var type = routeType(location);
+		var type = location.routeType();
 
 		body += `<li class="route route-type-${type.toLowerCase()}">\n`;
 
@@ -140,42 +159,24 @@ Config.prototype.toHtml = function(formatConfig) {
 		legend += '<div class="heading">';
 		legend += (new Header("h2", "Legend")).legendHtml() + "\n"
 		legend += '</div>';
-
 		legend += '<ul>\n';
-		legend += '<li class="route route-type-proxy">';
-		legend += '<input type="checkbox" data-type="proxy" checked="checked">';
-		legend += '<label class="heading">';
-		legend += '<span class="route-type toggle-route-type">Proxy</span>';
-		legend += '<span class="route-desc">retrieves resources from another address.</span>';
-		legend += '</label>';
-		legend += '</input>';
-		legend += '</li>\n';
-		legend += '<li class="route route-type-file">';
-		legend += '<input type="checkbox" data-type="file" checked="checked">';
-		legend += '<label class="heading">';
-		legend += '<span class="route-type toggle-route-type">File</span>';
-		legend += '<span class="route-desc">retrieves static files.</span>';
-		legend += '</label>';
-		legend += '</input>';
-		legend += '</li>\n';
-		legend += '<li class="route route-type-redirect">';
-		legend += '<input type="checkbox" data-type="redirect" checked="checked">';
-		legend += '<label class="heading">';
-		legend += '<span class="route-type toggle-route-type">Redirect</span>';
-		legend += '<span class="route-desc">redirects to another address.</span>';
-		legend += '</label>';
-		legend += '</input>';
-		legend += '</li>\n';
-		legend += '<li class="route route-type-rewrite">';
-		legend += '<input type="checkbox" data-type="rewrite" checked="checked">';
-		legend += '<label class="heading">';
-		legend += '<span class="route-type toggle-route-type">Rewrite</span>';
-		legend += '<span class="route-desc">retrieves resources from another route.</span>';
-		legend += '</label>';
-		legend += '</input>';
-		legend += '</li>\n';
-		legend += '</ul>\n';
 
+		// only show the types used by this set of locations
+		var types = routeTypes(locations);
+
+		for (var i = 0, len = types.length; i < len; i++) {
+			var type = types[i];
+			legend += `<li class="route route-type-${type.toLowerCase()}">`;
+			legend += `<input type="checkbox" data-type="${type.toLowerCase()}" checked="checked">`;
+			legend += '<label class="heading">';
+			legend += `<span class="route-type toggle-route-type">${type}</span>`;
+			legend += `<span class="route-desc">${RouteTypeDescription[type]}</span>`;
+			legend += '</label>';
+			legend += '</input>';
+			legend += '</li>\n';
+		}
+
+		legend += '</ul>\n';
 		legend += '</div>\n';
 
 		// legend above the body
@@ -265,6 +266,14 @@ function processLocations(locations, upstreams, root) {
 			location.metadata.Path = "`" + location.path + "`";
 		}
 
+		if (location.lua) {
+			location.metadata.Lua = "```" + location.lua + "```";
+		}
+
+		if (location.luaFile) {
+			location.metadata.Lua = "`" + location.luaFile + "`";
+		}
+
 		if (location.rewrites) {
 			for (var j = 0, jlen = location.rewrites.length; j < jlen; j++) {
 				var rewrite = location.rewrites[j];
@@ -321,15 +330,23 @@ function rewriteMarkdown(rewrite) {
 	return markdown;
 }
 
-function routeType(location) {
-	var types = ['Proxy', 'File', 'Redirect', 'Rewrite'];
-	for (var i = 0, len = types.length; i < len; i++) {
-		var type = types[i];
-		if (location.metadata[type]) {
-			return type;
+// Get a list of route types found in the provided locations
+function routeTypes(locations) {
+	var typeSet = {};
+	for (var i = 0, len = locations.length; i < len; i++) {
+		var location = locations[i];
+		var type = location.routeType();
+		typeSet[type] = true;
+	}
+	// Use TypeFields ordering
+	var typeList = [];
+	for (var i = 0, len = TypeFields.length; i < len; i++) {
+		var type = TypeFields[i];
+		if (typeSet[type]) {
+			typeList.push(type)
 		}
 	}
-	return 'Unknown';
+	return typeList;
 }
 
 function hasAtLeastOne(map, fields) {
@@ -361,7 +378,7 @@ Header.prototype.titleHtml = function() {
 	heading += '<div class="heading">\n';
 	heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggle-route-group" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>\n`;
 	heading += '<span class="options">';
-	heading += `<a href="#${this.anchor}" class="toggle-route-groups" data-state="hidden">Show/Hide All</a>`;
+	heading += `<a href="#${this.anchor}" class="toggle-route-groups" data-state="visible">Show/Hide All</a>`;
 	heading += '</span>\n';
 	heading += '</div>';
 	return heading
@@ -376,13 +393,13 @@ Header.prototype.legendHtml = function() {
 }
 
 Header.prototype.resourceHtml = function() {
-    var heading = '';
-    heading += '<div class="heading">\n';
-    heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggle-route-group" data-id="${this.anchor}"><div class="arrow arrow-right"></div>${this.content}</a></${this.headerTag}>\n`;
-    heading += '<span class="options">';
-    heading += `<a href="#${this.anchor}" class="toggle-route-group" data-id="${this.anchor}">Show/Hide</a>`;
-    heading += '</span>\n';
-    heading += '</div>';
+	var heading = '';
+	heading += '<div class="heading">\n';
+	heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggle-route-group" data-id="${this.anchor}"><div class="arrow arrow-right"></div>${this.content}</a></${this.headerTag}>\n`;
+	heading += '<span class="options">';
+	heading += `<a href="#${this.anchor}" class="toggle-route-group" data-id="${this.anchor}">Show/Hide</a>`;
+	heading += '</span>\n';
+	heading += '</div>';
 	return heading
 }
 
@@ -440,12 +457,24 @@ function Upstream(name, server, metadata) {
 	this.metadata = metadata || {};
 }
 
-function Location(path, proxyPass, alias, rewrites, metadata) {
+function Location(path, metadata) {
 	this.path = path || '';
-	this.proxyPass = proxyPass || '';
-	this.alias = alias || '';
-	this.rewrites = rewrites || [];
 	this.metadata = metadata || {};
+	this.proxyPass = '';
+	this.alias = '';
+	this.rewrites = [];
+	this.lua = '';
+	this.luaFile = '';
+}
+
+Location.prototype.routeType = function() {
+	for (var i = 0, len = TypeFields.length; i < len; i++) {
+		var type = TypeFields[i];
+		if (this.metadata[type]) {
+			return type;
+		}
+	}
+	return 'Unknown';
 }
 
 function Rewrite(regex, replacement, flag) {

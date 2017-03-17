@@ -196,10 +196,13 @@ code {
   background-color: rgba(197, 134, 43, 0.1);
 }
 .route-type-rewrite {
-  background-color: rgba(211, 128, 42, 0.1);
+  background-color: rgba(234, 141, 6, 0.1);
 }
 .route-type-file {
   background-color: rgba(15, 106, 180, 0.1);
+}
+.route-type-lua {
+  background-color: rgba(107, 70, 102, 0.1);
 }
 .route-type-unknown {
   background-color: rgba(66, 66, 66, 0.1);
@@ -212,10 +215,13 @@ code {
   background-color: rgba(197, 134, 43, 1.0);
 }
 .route-type-rewrite .route-type {
-  background-color: rgba(211, 128, 42, 1.0);
+  background-color: rgba(234, 141, 6, 1.0);
 }
 .route-type-file .route-type {
   background-color: rgba(15, 106, 180, 1.0);
+}
+.route-type-lua .route-type {
+  background-color: rgba(107, 70, 102, 1.0);
 }
 .route-type-unknown .route-type {
   background-color: rgba(66, 66, 66, 1.0);
@@ -228,10 +234,13 @@ code {
   box-shadow: 0 0 5px rgba(197, 134, 43, 1.0), inset 0 0 10px rgba(197, 134, 43, 1.0);
 }
 .route-type-rewrite .route-type:hover {
-  box-shadow: 0 0 5px rgba(211, 128, 42, 1.0), inset 0 0 10px rgba(211, 128, 42, 1.0);
+  box-shadow: 0 0 5px rgba(234, 141, 6, 1.0), inset 0 0 10px rgba(234, 141, 6, 1.0);
 }
 .route-type-file .route-type:hover {
   box-shadow: 0 0 5px rgba(15, 106, 180, 1.0), inset 0 0 10px rgba(15, 106, 180, 1.0);
+}
+.route-type-lua .route-type:hover {
+  box-shadow: 0 0 5px rgba(107, 70, 102, 1.0), inset 0 0 10px rgba(107, 70, 102, 1.0);
 }
 .route-type-unknown .route-type:hover {
   box-shadow: 0 0 5px rgba(66, 66, 66, 1.0), inset 0 0 10px rgba(66, 66, 66, 1.0);
@@ -244,10 +253,13 @@ code {
   color: rgba(197, 134, 43, 1.0);
 }
 .route-type-rewrite .route-desc {
-  color: rgba(211, 128, 42, 1.0);
+  color: rgba(234, 141, 6, 1.0);
 }
 .route-type-file .route-desc {
   color: rgba(15, 106, 180, 1.0);
+}
+.route-type-lua .route-desc {
+  color: rgba(107, 70, 102, 1.0);
 }
 .route-type-unknown .route-desc {
   color: rgba(66, 66, 66, 1.0);
@@ -263,11 +275,15 @@ code {
 }
 .route-type-rewrite .heading,
 .route-type-rewrite .route-meta {
-  border-color: rgba(211, 128, 42, 0.3);
+  border-color: rgba(234, 141, 6, 0.3);
 }
 .route-type-file .heading,
 .route-type-file .route-meta {
   border-color: rgba(15, 106, 180, 0.3);
+}
+.route-type-lua .heading,
+.route-type-lua .route-meta {
+  border-color: rgba(107, 70, 102, 0.3);
 }
 .route-type-unknown .heading,
 .route-type-unknown .route-meta {

@@ -132,13 +132,8 @@ function parseNginxConf(_config, callback) {
 		// root metadata is optional
 		var metadata = parseMetadata(_root);
 
-		root = new NgindoxConfig.Location(
-			'/',
-			'',
-			_root.value,
-			[],
-			metadata
-		);
+		root = new NgindoxConfig.Location('/', metadata);
+		root.alias = _root.value;
 	}
 
 	var _locations = findChild('location', _server);
@@ -173,20 +168,32 @@ function parseNginxConf(_config, callback) {
 			rewrites.push(parseRewrite(_rewrites[j].value))
 		}
 
+		// content_by_lua is optional
+		var lua = '';
+		var _luas = findChild('content_by_lua', _location);
+		if (_luas.length > 0) {
+			lua = _luas[0].value;
+		}
+
+		// content_by_lua_file is optional
+		var luaFile = '';
+		_luaFiles = findChild('content_by_lua_file', _location);
+		if (_luaFiles.length > 0) {
+			luaFile = _luaFiles[0].value;
+		}
+
 		// TODO: handle if blocks
 
 		// metadata is optional
 		var metadata = parseMetadata(_location);
 
-		locations.push(
-			new NgindoxConfig.Location(
-				_location.value,
-				proxy_pass,
-				alias,
-				rewrites,
-				metadata
-			)
-		);
+		var location = new NgindoxConfig.Location(_location.value, metadata);
+		location.proxyPass = proxy_pass;
+		location.alias = alias;
+		location.rewrites = rewrites;
+		location.lua = lua;
+		location.luaFile = luaFile;
+		locations.push(location);
 	}
 
 	var config = new NgindoxConfig.Config()
