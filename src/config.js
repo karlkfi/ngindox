@@ -183,7 +183,13 @@ Config.prototype.toHtml = function(formatConfig) {
 	}
 
 	// wrap body with a unique ID for namespacing
-	return removeTrailingSpaces(pretty('<div id="ngindox">\n' + prefix + body + '</div>'));
+	return singleTrailingNewline(
+		removeTrailingSpaces(
+			pretty(
+				'<div id="ngindox">\n' + prefix + body + '</div>\n'
+			)
+		)
+	);
 }
 
 function processLocations(locations, upstreams, root) {
