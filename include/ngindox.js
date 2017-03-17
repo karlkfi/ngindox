@@ -11,10 +11,10 @@ window.NgindoxInit = function() {
     $('#ngindox .routes').each(function() {
       var route = $(this);
       if (visible) {
-        route.closest('.resource').find('.heading .arrow-down').addClass('arrow-right').removeClass('arrow-down');
+        route.closest('.resource').find('.heading .arrow-down').toggleClass('arrow-right arrow-down');
         route.slideUp('slow');
       } else {
-        route.closest('.resource').find('.heading .arrow-right').addClass('arrow-down').removeClass('arrow-right');
+        route.closest('.resource').find('.heading .arrow-right').toggleClass('arrow-down arrow-right');
         route.slideDown('slow');
       }
     })
@@ -28,10 +28,10 @@ window.NgindoxInit = function() {
     }
     var route = $('#routes-' + resource);
     if (route.is(':visible')) {
-      $(this).find('.arrow-down').addClass('arrow-right').removeClass('arrow-down');
+      $(this).find('.arrow-down').toggleClass('arrow-right arrow-down');
       route.slideUp('slow');
     } else {
-      $(this).find('.arrow-right').addClass('arrow-down').removeClass('arrow-right');
+      $(this).find('.arrow-right').toggleClass('arrow-down arrow-right');
       route.slideDown('slow');
     }
   });
