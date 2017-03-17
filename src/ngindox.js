@@ -122,6 +122,25 @@ function parseNginxConf(_config, callback) {
 
 	var _server = _servers[0];
 
+	var root = null;
+
+	var _roots = findChild('root', _server);
+	// root is optional
+	if (_roots.length > 0) {
+		var _root = _roots[0];
+
+		// root metadata is optional
+		var metadata = parseMetadata(_root);
+
+		root = new NgindoxConfig.Location(
+			'/',
+			'',
+			_root.value,
+			[],
+			metadata
+		);
+	}
+
 	var _locations = findChild('location', _server);
 	if (_locations.length == 0) {
 		callback('Directive not found: http.server.location');
@@ -173,6 +192,7 @@ function parseNginxConf(_config, callback) {
 	var config = new NgindoxConfig.Config()
 	config.upstreams = upstreams;
 	config.locations = locations;
+	config.root = root;
 
 	callback(null, config);
 }

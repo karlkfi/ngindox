@@ -1,6 +1,7 @@
 <div id="ngindox">
   <style>
     /* Ngindox */
+    /* Source: https://github.com/karlkfi/ngindox/blob/master/include/ngindox.css */
 
     #ngindox {
       font-family: "Droid Sans", sans-serif;
@@ -25,7 +26,7 @@
       border: 1px solid #ddd;
       border-radius: 5px;
       padding: 1rem;
-      margin: 1rem;
+      margin: 0;
     }
 
     .legend .heading {
@@ -58,6 +59,7 @@
     }
 
     .legend .route .heading {
+      display: inline;
       line-height: 80%;
       width: initial;
       border: 0;
@@ -68,13 +70,12 @@
     }
 
     .legend .route-desc {
-      display: inline-block;
+      display: inline;
       float: initial;
       padding: 0.2rem;
     }
 
     a {
-      /*: inherit;*/
       cursor: pointer;
       text-decoration: none;
     }
@@ -213,10 +214,6 @@
       vertical-align: middle;
       cursor: pointer;
       box-shadow: none;
-    }
-
-    .route-type:hover {
-      box-shadow: 0 0 5px #(color), inset 0 0 10px #(color of the glow you want);
     }
 
     .route-type-proxy {
@@ -375,7 +372,7 @@
       margin: 0 5px;
     }
   </style>
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
   <script>
     // Nginx
     // Source: https://github.com/karlkfi/ngindox/blob/master/include/ngindox.js
@@ -462,7 +459,7 @@
       </li>
       <li class="route route-type-redirect">
         <input type="checkbox" data-type="redirect" checked="checked">
-        <label class="heading"><span class="route-type toggle-route-type">Redirect</span> <span class="route-desc">redirects to another address, permanently (301) or temporarily (302).</span> </label>
+        <label class="heading"><span class="route-type toggle-route-type">Redirect</span> <span class="route-desc">redirects to another address.</span> </label>
         </input>
       </li>
       <li class="route route-type-rewrite">
@@ -473,6 +470,38 @@
     </ul>
   </div>
   <ul class="resources">
+    <li id="resource-root" class="resource">
+      <div class="heading">
+        <h2>
+          <a id="root" href="#root" aria-hidden="true" class="toggle-route-group" data-id="root">
+            <div class="arrow arrow-right"></div>Root</a>
+        </h2>
+        <span class="options"><a href="#root" class="toggle-route-group" data-id="root">Show/Hide</a> </span>
+      </div>
+      <ul id="routes-root" class="routes" style="display:none;">
+        <li class="route route-type-file">
+          <div class="heading">
+            <h3>
+              <span class="route-type">File</span>
+              <span class="route-path"><code>/</code></span>
+            </h3>
+            <span class="route-desc">DC/OS GUI</span>
+          </div>
+          <div class="route-meta" style="display:none">
+            <table>
+              <tr>
+                <td>
+                  File:
+                </td>
+                <td>
+                  <code>/opt/mesosphere/active/dcos-ui/usr</code>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </li>
+      </ul>
+    </li>
     <li id="resource-agent" class="resource">
       <div class="heading">
         <h2>
@@ -553,7 +582,7 @@
               <span class="route-type">Proxy</span>
               <span class="route-path"><code>/acs/api/v1</code></span>
             </h3>
-            <span class="route-desc">Access Control Service (authenticated)</span>
+            <span class="route-desc">Access Control Service</span>
           </div>
           <div class="route-meta" style="display:none">
             <table>
@@ -1088,7 +1117,7 @@
               <span class="route-type">File</span>
               <span class="route-path"><code>/dcos-metadata/dcos-version.json</code></span>
             </h3>
-            <span class="route-desc">DC/OS version</span>
+            <span class="route-desc">DC/OS version (unauthenticated)</span>
           </div>
           <div class="route-meta" style="display:none">
             <table>

@@ -20,8 +20,9 @@ var DisplayFields = [
 ]
 
 function Config() {
-	this.upstreams = []
-	this.locations = []
+	this.upstreams = [];
+	this.locations = [];
+	this.root = null;
 }
 
 Config.prototype.toHtml = function(formatConfig) {
@@ -29,8 +30,9 @@ Config.prototype.toHtml = function(formatConfig) {
 
 	var locations = this.locations;
 	var upstreams = this.upstreams;
+	var root = this.root;
 
-	processLocations(locations, upstreams);
+	processLocations(locations, upstreams, root);
 
 	var body = "";
 	var group = ''
@@ -118,7 +120,7 @@ Config.prototype.toHtml = function(formatConfig) {
 	}
 
 	if (formatConfig.javascript) {
-		prefix += '<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>\n'
+		prefix += '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>\n'
 
 		prefix += "<script>\n";
 		prefix += singleTrailingNewline(indentBlock(formatConfig.javascript, "  "));
@@ -160,7 +162,7 @@ Config.prototype.toHtml = function(formatConfig) {
 		legend += '<input type="checkbox" data-type="redirect" checked="checked">';
 		legend += '<label class="heading">';
 		legend += '<span class="route-type toggle-route-type">Redirect</span>';
-		legend += '<span class="route-desc">redirects to another address, permanently (301) or temporarily (302).</span>';
+		legend += '<span class="route-desc">redirects to another address.</span>';
 		legend += '</label>';
 		legend += '</input>';
 		legend += '</li>\n';
@@ -184,7 +186,7 @@ Config.prototype.toHtml = function(formatConfig) {
 	return removeTrailingSpaces(pretty('<div id="ngindox">\n' + prefix + body + '</div>'));
 }
 
-function processLocations(locations, upstreams) {
+function processLocations(locations, upstreams, root) {
 
 	// sort upstreams by name (backwards)
 	// allows longer names to be matched first using findUpstream
@@ -198,6 +200,10 @@ function processLocations(locations, upstreams) {
 		}
 		return 0;
 	});
+
+	if (root) {
+		locations.push(root);
+	}
 
 	// process fields prior to sorting
 	for (var i = 0, len = locations.length; i < len; i++) {
@@ -275,6 +281,11 @@ function processLocations(locations, upstreams) {
 		}
 	}
 
+	// exclude root from sorting
+	if (root) {
+		root = locations.pop();
+	}
+
 	locations.sort(function(a, b) {
 		if (a.metadata.Group < b.metadata.Group) {
 			return -1;
@@ -290,6 +301,11 @@ function processLocations(locations, upstreams) {
 		}
 		return 0;
 	});
+
+	// put root at the top
+	if (root) {
+		locations.unshift(root);
+	}
 }
 
 function rewriteMarkdown(rewrite) {
