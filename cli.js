@@ -9,7 +9,8 @@ cli.parse({
     css: [ 'c', 'Path to CSS file to include', 'file', 'include/ngindox.css'],
     javascript: [ 'j', 'Path to JS file to include', 'file', 'include/ngindox.js'],
     encoding: [ 'e', 'File encoding', 'string', 'utf8'],
-    title: [ 't', 'Page title', 'string']
+    title: [ 't', 'Page title', 'string', 'Routes' ],
+    legend: [ 'l', 'Route type legend', 'boolean', true ]
 });
 
 cli.main(function (args, options) {
@@ -45,6 +46,7 @@ cli.main(function (args, options) {
 		process.stdout.write(
 			config.toHtml({
 				title: options.title,
+				legend: options.legend,
 				css: css,
 				javascript: javascript,
 			})

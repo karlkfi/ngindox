@@ -36,8 +36,7 @@ Config.prototype.toHtml = function(formatConfig) {
 	var group = ''
 	var headers = [];
 
-	body += '<div id="ngindox">';
-	body += '<ul class="resources">';
+	body += '<ul class="resources">\n';
 
 	for (var i = 0, len = locations.length; i < len; i++) {
 		var location = locations[i];
@@ -71,7 +70,7 @@ Config.prototype.toHtml = function(formatConfig) {
 
 		// Route Metadata
 		if (hasAtLeastOne(location.metadata, DisplayFields)) {
-			body += '<div class="route-meta">\n';
+			body += '<div class="route-meta" style="display:none">\n';
 			body += "<table>\n";
 			for (var j = 0, jlen = DisplayFields.length; j < jlen; j++) {
 				var field = DisplayFields[j];
@@ -108,7 +107,6 @@ Config.prototype.toHtml = function(formatConfig) {
 	}
 
 	body += '</ul>';
-	body += '</div>';
 
 	var prefix = "";
 
@@ -133,7 +131,57 @@ Config.prototype.toHtml = function(formatConfig) {
 		prefix += "\n";
 	}
 
-	return removeTrailingSpaces(pretty(prefix + body));
+	if (formatConfig.legend || true) {
+		var legend = '';
+		legend += '<div class="legend">';
+
+		legend += '<div class="heading">';
+		legend += (new Header("h2", "Legend")).legendHtml() + "\n"
+		legend += '</div>';
+
+		legend += '<ul>\n';
+		legend += '<li class="route route-type-proxy">';
+		legend += '<input type="checkbox" data-type="proxy" checked="checked">';
+		legend += '<label class="heading">';
+		legend += '<span class="route-type toggle-route-type">Proxy</span>';
+		legend += '<span class="route-desc">retrieves resources from another address.</span>';
+		legend += '</label>';
+		legend += '</input>';
+		legend += '</li>\n';
+		legend += '<li class="route route-type-file">';
+		legend += '<input type="checkbox" data-type="file" checked="checked">';
+		legend += '<label class="heading">';
+		legend += '<span class="route-type toggle-route-type">File</span>';
+		legend += '<span class="route-desc">retrieves static files.</span>';
+		legend += '</label>';
+		legend += '</input>';
+		legend += '</li>\n';
+		legend += '<li class="route route-type-redirect">';
+		legend += '<input type="checkbox" data-type="redirect" checked="checked">';
+		legend += '<label class="heading">';
+		legend += '<span class="route-type toggle-route-type">Redirect</span>';
+		legend += '<span class="route-desc">redirects to another address, permanently (301) or temporarily (302).</span>';
+		legend += '</label>';
+		legend += '</input>';
+		legend += '</li>\n';
+		legend += '<li class="route route-type-rewrite">';
+		legend += '<input type="checkbox" data-type="rewrite" checked="checked">';
+		legend += '<label class="heading">';
+		legend += '<span class="route-type toggle-route-type">Rewrite</span>';
+		legend += '<span class="route-desc">retrieves resources from another route.</span>';
+		legend += '</label>';
+		legend += '</input>';
+		legend += '</li>\n';
+		legend += '</ul>\n';
+
+		legend += '</div>\n';
+
+		// legend above the body
+		body = legend + body;
+	}
+
+	// wrap body with a unique ID for namespacing
+	return removeTrailingSpaces(pretty('<div id="ngindox">\n' + prefix + body + '</div>'));
 }
 
 function processLocations(locations, upstreams) {
@@ -286,19 +334,34 @@ function Header(headerTag, headerText) {
 	)
 }
 
-Header.prototype.resourceHtml = function() {
-    var heading = '';
-    heading += '<div class="heading">\n';
-    heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggleEndpointList" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>\n`;
-    heading += '<span class="options">';
-    heading += `<a href="#${this.anchor}" class="toggleEndpointList" data-id="${this.anchor}">Show/Hide</a>`;
-    heading += '</span>\n';
-    heading += '</div>';
+Header.prototype.titleHtml = function() {
+	var heading = '';
+	heading += '<div class="heading">\n';
+	heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggle-route-group" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>\n`;
+	heading += '<span class="options">';
+	heading += `<a href="#${this.anchor}" class="toggle-route-groups" data-state="hidden">Show/Hide All</a>`;
+	heading += '</span>\n';
+	heading += '</div>';
 	return heading
 }
 
-Header.prototype.titleHtml = function() {
-	return `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true">${this.content}</a></${this.headerTag}>`;
+Header.prototype.legendHtml = function() {
+	var heading = '';
+	heading += '<div class="heading">\n';
+	heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggle-route-group" data-id="${this.anchor}">${this.content}</a></${this.headerTag}>\n`;
+	heading += '</div>';
+	return heading
+}
+
+Header.prototype.resourceHtml = function() {
+    var heading = '';
+    heading += '<div class="heading">\n';
+    heading += `<${this.headerTag}><a id="${this.anchor}" href="#${this.anchor}" aria-hidden="true" class="toggle-route-group" data-id="${this.anchor}"><div class="arrow arrow-right"></div>${this.content}</a></${this.headerTag}>\n`;
+    heading += '<span class="options">';
+    heading += `<a href="#${this.anchor}" class="toggle-route-group" data-id="${this.anchor}">Show/Hide</a>`;
+    heading += '</span>\n';
+    heading += '</div>';
+	return heading
 }
 
 // Find the Upstream that matches a Location's ProxyPass
