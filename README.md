@@ -16,33 +16,61 @@ npm install
 ```
 $ ./cli.js --help
 Usage:
-  cli.js [OPTIONS] [ARGS]
+  cli.js [OPTIONS] <command> [ARGS]
 
 Options:
-  -f, --file FILE        Path to NGINX config file to parse
+  -f, --file FILE        Path to input file
+  -e, --encoding [STRING]File encoding (Default is utf8)
   -c, --css [FILE]       Path to CSS file to include (Default is include/ngindox.css)
   -j, --javascript [FILE]Path to JS file to include (Default is include/ngindox.js)
-  -e, --encoding [STRING]File encoding (Default is utf8)
-  -t, --title STRING     Page title
+  -t, --title [STRING]   Page title (Default is Routes)
+  -l, --legend [BOOLEAN] Route type legend (Default is true)
   -h, --help             Display help and usage details
+
+Commands:
+  parse, ui
 ```
 
 
 ## Usage
 
-The CLI requires a file path to an nginx config and prints HTML to stdout.
+There are two CLI commands: `parse` and `ui`.
+
+Both commands can take input by file path (`--file`) or by STDIN.
+
+### Parse
+
+The `parse` command reads in an NGINX config and writes out Ngindox YAML to STDOUT.
 
 ```
-$ ./cli.js -f examples/nginx.master.conf > examples/nginx.master.html
+$ ./cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
 ```
 
-By default, the HTML output includes `<style>` and `<script>` sections, including [jquery](https://jquery.com/).
+### UI
+
+The `ui` command reads in an Ngindox YAML and writes out Ngindox UI HTML to STDOUT.
+
+```
+$ ./cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
+```
+
+By default, the HTML output embeds `<style>` and `<script>` sections, including [jquery](https://jquery.com/).
 
 Disable css and/or javascript by passing an empty string value to the respective option flags:
 
 ```
-./cli.js --css '' --javascript '' -f examples/nginx.agent.conf > examples/nginx.agent.html
+./cli.js ui --css '' --javascript '' -f examples/nginx.agent.yaml > examples/nginx.agent.html
 ```
+
+### Piping
+
+If no file is specified, input is expected on STDIN. This allows piping the intermediate Ngindox YAML without saving it to disk:
+
+```
+./cli.js parse -f examples/nginx.agent.conf | ./cli.js ui > examples/nginx.agent.html
+```
+
+Note: Using STDIN for parsing disables file include expansion.
 
 
 ## Examples
@@ -50,12 +78,20 @@ Disable css and/or javascript by passing an empty string value to the respective
 Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/adminrouter):
 
 - Master Config
-  - `./cli.js -f examples/nginx.master.conf > examples/nginx.master.html`
-  - Input: [examples/nginx.master.conf](examples/nginx.master.conf)
-  - Output: [examples/nginx.master.md](examples/nginx.master.html)
+  - ```
+    ./cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
+    ./cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
+    ```
+  - NGINX: [examples/nginx.master.conf](examples/nginx.master.conf)
+  - YAML: [examples/nginx.master.conf](examples/nginx.master.yaml)
+  - HMTL: [examples/nginx.master.md](examples/nginx.master.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.master.html>
 - Agent Config
-  - `./cli.js -f examples/nginx.agent.conf > examples/nginx.agent.html`
-  - Input: [examples/nginx.agent.conf](examples/nginx.agent.conf)
-  - Output: [examples/nginx.agent.md](examples/nginx.agent.html)
+  - ```
+    ./cli.js parse -f examples/nginx.agent.conf > examples/nginx.agent.yaml
+    ./cli.js ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
+    ```
+  - NGINX: [examples/nginx.agent.conf](examples/nginx.agent.conf)
+  - YAML: [examples/nginx.agent.conf](examples/nginx.agent.yaml)
+  - HMTL: [examples/nginx.agent.md](examples/nginx.agent.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.agent.html>

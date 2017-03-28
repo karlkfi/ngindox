@@ -554,7 +554,7 @@
                 <td>
                   Regex: <code>^/(slave|agent)/(.*)$</code>
                   <br/>Replacement: <code>/agent/$2/</code>
-                  <br/>Flag: <code>last</code>
+                  <br/>Type: <code>last</code>
                 </td>
               </tr>
             </table>
@@ -577,7 +577,7 @@
                 <td>
                   Regex: <code>^/(slave|agent)/[0-9a-zA-Z-]+/.*$</code>
                   <br/>Replacement: <code>$url</code>
-                  <br/>Flag: <code>break</code>
+                  <br/>Type: <code>break</code>
                 </td>
               </tr>
               <tr>
@@ -585,7 +585,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>$agentaddr:$agentport</code>
+                  Path: <code>$agentaddr:$agentport</code>
                 </td>
               </tr>
             </table>
@@ -617,15 +617,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8101/acs/api/v1</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/">DC/OS Authentication (OAuth)</a>
+                  Path: <code>http://$backend/acs/api/v1</code>
+                  <br/>Server: <code>127.0.0.1:8101</code>
+                  <br/>Backend: DC/OS Authentication (OAuth)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/">https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/</a>
                 </td>
               </tr>
             </table>
@@ -646,15 +642,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8101/acs/api/v1/auth/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/">DC/OS Authentication (OAuth)</a>
+                  Path: <code>http://$backend/acs/api/v1/auth/</code>
+                  <br/>Server: <code>127.0.0.1:8101</code>
+                  <br/>Backend: DC/OS Authentication (OAuth)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/">https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/</a>
                 </td>
               </tr>
             </table>
@@ -677,7 +669,7 @@
                 <td>
                   Regex: <code>^</code>
                   <br/>Replacement: <code>$oauth_auth_redirector$uri?client=$oauth_client_id&amp;cluster_id=$cluster_id</code>
-                  <br/>Flag: <code>redirect</code>
+                  <br/>Type: <code>redirect</code>
                 </td>
               </tr>
             </table>
@@ -709,15 +701,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:7070/capabilities</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/usage/managing-services/package-api/">DC/OS Package Manager (Cosmos)</a>
+                  Path: <code>http://$backend/capabilities</code>
+                  <br/>Server: <code>127.0.0.1:7070</code>
+                  <br/>Backend: DC/OS Package Manager (Cosmos)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/usage/managing-services/package-api/">https://dcos.io/docs/1.9/usage/managing-services/package-api/</a>
                 </td>
               </tr>
             </table>
@@ -749,15 +737,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:7070/service/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/usage/managing-services/package-api/">DC/OS Package Manager (Cosmos)</a>
+                  Path: <code>http://$backend/service/</code>
+                  <br/>Server: <code>127.0.0.1:7070</code>
+                  <br/>Backend: DC/OS Package Manager (Cosmos)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/usage/managing-services/package-api/">https://dcos.io/docs/1.9/usage/managing-services/package-api/</a>
                 </td>
               </tr>
             </table>
@@ -791,7 +775,7 @@
                 <td>
                   Regex: <code>^/exhibitor$</code>
                   <br/>Replacement: <code>$scheme://$http_host/exhibitor/</code>
-                  <br/>Flag: <code>permanent</code>
+                  <br/>Type: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -812,15 +796,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8181/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://github.com/soabase/exhibitor/wiki/REST-Introduction">Exhibitor (Zookeeper)</a>
+                  Path: <code>http://$backend/</code>
+                  <br/>Server: <code>127.0.0.1:8181</code>
+                  <br/>Backend: Exhibitor (Zookeeper)
+                  <br/>API Reference:
+                  <a href="https://github.com/soabase/exhibitor/wiki/REST-Introduction">https://github.com/soabase/exhibitor/wiki/REST-Introduction</a>
                 </td>
               </tr>
             </table>
@@ -851,15 +831,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://leader.mesos:15055/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://github.com/dcos/dcos/tree/master/packages/dcos-history/extra#api">DC/OS History</a>
+                  Path: <code>http://$backend/</code>
+                  <br/>Server: <code>leader.mesos:15055</code>
+                  <br/>Backend: DC/OS History
+                  <br/>API Reference:
+                  <a href="https://github.com/dcos/dcos/tree/master/packages/dcos-history/extra#api">https://github.com/dcos/dcos/tree/master/packages/dcos-history/extra#api</a>
                 </td>
               </tr>
             </table>
@@ -893,15 +869,7 @@
                 <td>
                   Regex: <code>^/marathon$</code>
                   <br/>Replacement: <code>$scheme://$http_host/marathon/</code>
-                  <br/>Flag: <code>permanent</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Deprecated:
-                </td>
-                <td>
-                  Use <code>/service/marathon/</code>
+                  <br/>Type: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -921,23 +889,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://master.mesos:8080/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/usage/managing-services/rest-api/">Marathon</a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Deprecated:
-                </td>
-                <td>
-                  Use <code>/service/marathon/</code>
+                  Path: <code>http://$backend/</code>
+                  <br/>Server: <code>master.mesos:8080</code>
+                  <br/>Backend: Marathon
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/usage/managing-services/rest-api/">https://dcos.io/docs/1.9/usage/managing-services/rest-api/</a>
                 </td>
               </tr>
             </table>
@@ -969,23 +925,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://leader.mesos:5050/master/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://mesos.apache.org/documentation/latest/endpoints/">Apache Mesos</a>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Cache:
-                </td>
-                <td>
-                  5 seconds
+                  Path: <code>http://$backend/master/</code>
+                  <br/>Server: <code>leader.mesos:5050</code>
+                  <br/>Backend: Apache Mesos
+                  <br/>API Reference:
+                  <a href="https://mesos.apache.org/documentation/latest/endpoints/">https://mesos.apache.org/documentation/latest/endpoints/</a>
                 </td>
               </tr>
             </table>
@@ -1008,7 +952,7 @@
                 <td>
                   Regex: <code>^/mesos$</code>
                   <br/>Replacement: <code>$scheme://$http_host/mesos/</code>
-                  <br/>Flag: <code>permanent</code>
+                  <br/>Type: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -1029,15 +973,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://leader.mesos:5050/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://mesos.apache.org/documentation/latest/endpoints/">Apache Mesos</a>
+                  Path: <code>http://$backend/</code>
+                  <br/>Server: <code>leader.mesos:5050</code>
+                  <br/>Backend: Apache Mesos
+                  <br/>API Reference:
+                  <a href="https://mesos.apache.org/documentation/latest/endpoints/">https://mesos.apache.org/documentation/latest/endpoints/</a>
                 </td>
               </tr>
             </table>
@@ -1071,7 +1011,7 @@
                 <td>
                   Regex: <code>^/mesos_dns$</code>
                   <br/>Replacement: <code>$scheme://$http_host/mesos_dns/</code>
-                  <br/>Flag: <code>permanent</code>
+                  <br/>Type: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -1091,15 +1031,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://master.mesos:8123/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/usage/service-discovery/mesos-dns/http-interface/">Mesos DNS</a>
+                  Path: <code>http://$backend/</code>
+                  <br/>Server: <code>master.mesos:8123</code>
+                  <br/>Backend: Mesos DNS
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/usage/service-discovery/mesos-dns/http-interface/">https://dcos.io/docs/1.9/usage/service-discovery/mesos-dns/http-interface/</a>
                 </td>
               </tr>
             </table>
@@ -1173,15 +1109,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:8101/dcos-metadata/ui-config.json</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/">DC/OS Authentication (OAuth)</a>
+                  Path: <code>http://$backend/dcos-metadata/ui-config.json</code>
+                  <br/>Server: <code>127.0.0.1:8101</code>
+                  <br/>Backend: DC/OS Authentication (OAuth)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/">https://dcos.io/docs/1.9/administration/id-and-access-mgt/iam-api/</a>
                 </td>
               </tr>
             </table>
@@ -1202,15 +1134,7 @@
                   Lua:
                 </td>
                 <td>
-                  <code>conf/master/metadata.lua</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  Admin Router
+                  File: <code>conf/master/metadata.lua</code>
                 </td>
               </tr>
             </table>
@@ -1241,15 +1165,9 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:62080/lashup/key</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  Navstar
+                  Path: <code>http://$backend/lashup/key</code>
+                  <br/>Server: <code>127.0.0.1:62080</code>
+                  <br/>Backend: Navstar
                 </td>
               </tr>
             </table>
@@ -1281,15 +1199,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:7070/package/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/usage/managing-services/package-api/">DC/OS Package Manager (Cosmos)</a>
+                  Path: <code>http://$backend/package/</code>
+                  <br/>Server: <code>127.0.0.1:7070</code>
+                  <br/>Backend: DC/OS Package Manager (Cosmos)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/usage/managing-services/package-api/">https://dcos.io/docs/1.9/usage/managing-services/package-api/</a>
                 </td>
               </tr>
             </table>
@@ -1321,23 +1235,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://&lt;socket&gt;/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Socket:
-                </td>
-                <td>
-                  <code>/run/dcos/pkgpanda-api.sock</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/component-management/">DC/OS Component Package Manager (Pkgpanda)</a>
+                  Path: <code>http://$backend</code>
+                  <br/>Server: <code>unix:/run/dcos/pkgpanda-api.sock</code>
+                  <br/>Backend: DC/OS Component Package Manager (Pkgpanda)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/component-management/">https://dcos.io/docs/1.9/administration/component-management/</a>
                 </td>
               </tr>
             </table>
@@ -1392,7 +1294,7 @@
                 <td>
                   Regex: <code>^/service/(.*)$</code>
                   <br/>Replacement: <code>/service/$1/</code>
-                  <br/>Flag: <code>permanent</code>
+                  <br/>Type: <code>permanent</code>
                 </td>
               </tr>
             </table>
@@ -1415,7 +1317,7 @@
                 <td>
                   Regex: <code>^/service/[0-9a-zA-Z-.]+/?.*$</code>
                   <br/>Replacement: <code>/$url</code>
-                  <br/>Flag: <code>break</code>
+                  <br/>Type: <code>break</code>
                 </td>
               </tr>
               <tr>
@@ -1423,7 +1325,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>$serviceurl</code>
+                  Path: <code>$serviceurl</code>
                 </td>
               </tr>
             </table>
@@ -1455,15 +1357,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://127.0.0.1:1050/system/health/v1</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">DC/OS Diagnostics (3DT)</a>
+                  Path: <code>http://$backend/system/health/v1</code>
+                  <br/>Server: <code>127.0.0.1:1050</code>
+                  <br/>Backend: DC/OS Diagnostics (3DT)
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint</a>
                 </td>
               </tr>
             </table>
@@ -1486,7 +1384,7 @@
                 <td>
                   Regex: <code>^/agent/[0-9a-zA-Z-]+(.*)$</code>
                   <br/>Replacement: <code>$1</code>
-                  <br/>Flag: <code>break</code>
+                  <br/>Type: <code>break</code>
                 </td>
               </tr>
               <tr>
@@ -1494,7 +1392,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>$agentaddr:61001/system/v1$type$url$is_args$query_string</code>
+                  Path: <code>$agentaddr:61001/system/v1$type$url$is_args$query_string</code>
                 </td>
               </tr>
             </table>
@@ -1515,7 +1413,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>$mleader_host/system/v1$url$is_args$query_string</code>
+                  Path: <code>$mleader_host/system/v1$url$is_args$query_string</code>
                 </td>
               </tr>
             </table>
@@ -1536,7 +1434,7 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://leader.mesos/system/v1$url$is_args$query_string</code>
+                  Path: <code>http://leader.mesos/system/v1$url$is_args$query_string</code>
                 </td>
               </tr>
             </table>
@@ -1557,23 +1455,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://&lt;socket&gt;/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Socket:
-                </td>
-                <td>
-                  <code>/run/dcos/dcos-log.sock</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/logging/logging-api/">DC/OS Log</a>
+                  Path: <code>http://$backend</code>
+                  <br/>Server: <code>unix:/run/dcos/dcos-log.sock</code>
+                  <br/>Backend: DC/OS Log
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/logging/logging-api/">https://dcos.io/docs/1.9/administration/logging/logging-api/</a>
                 </td>
               </tr>
             </table>
@@ -1594,23 +1480,11 @@
                   Proxy:
                 </td>
                 <td>
-                  <code>http://&lt;socket&gt;/</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Socket:
-                </td>
-                <td>
-                  <code>/run/dcos/dcos-metrics-master.sock</code>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  Backend:
-                </td>
-                <td>
-                  <a href="https://dcos.io/docs/1.9/administration/monitoring/metrics/metrics-api/">DC/OS Metrics</a>
+                  Path: <code>http://$backend</code>
+                  <br/>Server: <code>unix:/run/dcos/dcos-metrics-master.sock</code>
+                  <br/>Backend: DC/OS Metrics
+                  <br/>API Reference:
+                  <a href="https://dcos.io/docs/1.9/administration/monitoring/metrics/metrics-api/">https://dcos.io/docs/1.9/administration/monitoring/metrics/metrics-api/</a>
                 </td>
               </tr>
             </table>
