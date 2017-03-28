@@ -83,7 +83,7 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
     ./cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
     ```
   - NGINX: [examples/nginx.master.conf](examples/nginx.master.conf)
-  - YAML: [examples/nginx.master.conf](examples/nginx.master.yaml)
+  - YAML: [examples/nginx.master.yaml](examples/nginx.master.yaml)
   - HMTL: [examples/nginx.master.md](examples/nginx.master.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.master.html>
 - Agent Config
@@ -92,6 +92,6 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
     ./cli.js ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
     ```
   - NGINX: [examples/nginx.agent.conf](examples/nginx.agent.conf)
-  - YAML: [examples/nginx.agent.conf](examples/nginx.agent.yaml)
+  - YAML: [examples/nginx.agent.yaml](examples/nginx.agent.yaml)
   - HMTL: [examples/nginx.agent.md](examples/nginx.agent.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.agent.html>
