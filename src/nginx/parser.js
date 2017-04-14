@@ -1,6 +1,6 @@
 var NginxConf = require('nginx-conf'),
 	NginxConfig = require('./config'),
-	indentBlock = require('../indent').indentBlock,
+	NgindoxUtil = require('../util'),
 	Yaml = require('js-yaml'),
 	fs = require('fs'),
 	path = require('path'),
@@ -56,7 +56,7 @@ function expandIncludes(source, rootPath) {
 			var fileContent = fs.readFileSync(filePath, 'utf8');
 
 			// preserve indentation of the include line
-			var indentedContent = singleTrailingNewline(indentBlock(fileContent, indent));
+			var indentedContent = singleTrailingNewline(NgindoxUtil.indentBlock(fileContent, indent));
 
 			// recurse with relative path
 			expanded += expandIncludes(indentedContent, path.dirname(rootPath));

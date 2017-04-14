@@ -300,7 +300,7 @@ code {
   right: 0;
   display: block;
   float: right;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem 0.5rem 0rem;
   vertical-align: middle;
   color: #aaa;
 }
@@ -314,7 +314,8 @@ code {
   width: 100%;
 }
 .route-meta table tr td:first-child {
-  width: 4rem;
+  white-space: nowrap;
+  width: 20%;
 }
 
 .arrow {

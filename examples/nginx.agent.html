@@ -352,7 +352,7 @@
       right: 0;
       display: block;
       float: right;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 1rem 0.5rem 0rem;
       vertical-align: middle;
       color: #aaa;
     }
@@ -369,7 +369,8 @@
     }
 
     .route-meta table tr td:first-child {
-      width: 4rem;
+      white-space: nowrap;
+      width: 20%;
     }
 
     .arrow {
@@ -497,13 +498,34 @@
             <table>
               <tr>
                 <td>
-                  Proxy:
+                  Path:
                 </td>
                 <td>
-                  Path: <code>http://$backend</code>
-                  <br/>Server: <code>unix:/run/dcos/pkgpanda-api.sock</code>
-                  <br/>Backend: DC/OS Component Package Manager (Pkgpanda) (
-                  <a href="https://dcos.io/docs/1.9/administration/component-management/">API Reference</a> )
+                  <code>http://$backend</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Server:
+                </td>
+                <td>
+                  <code>unix:/run/dcos/pkgpanda-api.sock</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Backend:
+                </td>
+                <td>
+                  DC/OS Component Package Manager (Pkgpanda)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  API Reference:
+                </td>
+                <td>
+                  <a href="https://dcos.io/docs/1.9/administration/component-management/">https://dcos.io/docs/1.9/administration/component-management/</a>
                 </td>
               </tr>
             </table>
@@ -532,13 +554,34 @@
             <table>
               <tr>
                 <td>
-                  Proxy:
+                  Path:
                 </td>
                 <td>
-                  Path: <code>http://$backend</code>
-                  <br/>Server: <code>unix:/run/dcos/3dt.sock</code>
-                  <br/>Backend: DC/OS Diagnostics (3DT) (
-                  <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">API Reference</a> )
+                  <code>http://$backend</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Server:
+                </td>
+                <td>
+                  <code>unix:/run/dcos/3dt.sock</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Backend:
+                </td>
+                <td>
+                  DC/OS Diagnostics (3DT)
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  API Reference:
+                </td>
+                <td>
+                  <a href="https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint">https://dcos.io/docs/1.9/administration/monitoring/#system-health-http-api-endpoint</a>
                 </td>
               </tr>
             </table>
@@ -556,13 +599,34 @@
             <table>
               <tr>
                 <td>
-                  Proxy:
+                  Path:
                 </td>
                 <td>
-                  Path: <code>http://$backend</code>
-                  <br/>Server: <code>unix:/run/dcos/dcos-log.sock</code>
-                  <br/>Backend: DC/OS Log (
-                  <a href="https://dcos.io/docs/1.9/administration/logging/logging-api/">API Reference</a> )
+                  <code>http://$backend</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Server:
+                </td>
+                <td>
+                  <code>unix:/run/dcos/dcos-log.sock</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Backend:
+                </td>
+                <td>
+                  DC/OS Log
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  API Reference:
+                </td>
+                <td>
+                  <a href="https://dcos.io/docs/1.9/administration/logging/logging-api/">https://dcos.io/docs/1.9/administration/logging/logging-api/</a>
                 </td>
               </tr>
             </table>
@@ -580,13 +644,34 @@
             <table>
               <tr>
                 <td>
-                  Proxy:
+                  Path:
                 </td>
                 <td>
-                  Path: <code>http://$backend</code>
-                  <br/>Server: <code>unix:/run/dcos/dcos-metrics-agent.sock</code>
-                  <br/>Backend: DC/OS Metrics (
-                  <a href="https://dcos.io/docs/1.9/administration/monitoring/metrics/metrics-api/">API Reference</a> )
+                  <code>http://$backend</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Server:
+                </td>
+                <td>
+                  <code>unix:/run/dcos/dcos-metrics-agent.sock</code>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Backend:
+                </td>
+                <td>
+                  DC/OS Metrics
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  API Reference:
+                </td>
+                <td>
+                  <a href="https://dcos.io/docs/1.9/administration/monitoring/metrics/metrics-api/">https://dcos.io/docs/1.9/administration/monitoring/metrics/metrics-api/</a>
                 </td>
               </tr>
             </table>

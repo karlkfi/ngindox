@@ -1,13 +1,12 @@
 var MarkdownIt = require('markdown-it'),
 	GithubSlugger = require('github-slugger'),
-	indentBlock = require('./indent').indentBlock,
-	Ngindox = require('./ngindox'),
+	NgindoxUtil = require('./util'),
 	innertext = require('innertext'),
 	singleTrailingNewline = require('single-trailing-newline'),
 	removeTrailingSpaces = require("remove-trailing-spaces"),
 	pretty = require('pretty');
 
-var DisplayFields = {
+var RouteFieldNames = {
 	'redirects': 'Redirect',
 	'rewrites': 'Rewrite',
 	'proxy': 'Proxy',
@@ -17,7 +16,7 @@ var DisplayFields = {
 	'deprecated': 'Deprecated'
 }
 
-var DisplayTypes = {
+var RouteTypeNames = {
 	'proxy': 'Proxy',
 	'file': 'File',
 	'lua': 'Lua',
@@ -26,7 +25,7 @@ var DisplayTypes = {
 	'unknown': 'Unknown'
 }
 
-var RouteTypeDescription = {
+var RouteTypeDescriptions = {
 	'proxy': 'retrieves resources from another address.',
 	'file': 'retrieves static files.',
 	'lua': 'executes Lua code to generate response.',
@@ -42,52 +41,57 @@ function Generator(backends) {
 }
 
 Generator.prototype.redirects = function(field) {
-	var markdown = "Regex: `" + field.regex + "`";
-	markdown += "<br/>Replacement: `" + field.replacement + "`";
-	markdown += "<br/>Type: `" + field.type + "`";
-	return renderHtml(markdown);
+	return tableToHtml([
+		['Regex:', renderHtml("`" + field.regex + "`")],
+        ['Replacement:', renderHtml("`" + field.replacement + "`")],
+        ['Type:', renderHtml("`" + field.type + "`")]
+	]);
 };
 
 Generator.prototype.rewrites = function(field) {
-	var markdown = "Regex: `" + field.regex + "`";
-	markdown += "<br/>Replacement: `" + field.replacement + "`";
-	markdown += "<br/>Type: `" + field.type + "`";
-	return renderHtml(markdown);
+	return tableToHtml([
+		['Regex:', renderHtml("`" + field.regex + "`")],
+		['Replacement:', renderHtml("`" + field.replacement + "`")],
+		['Type:', renderHtml("`" + field.type + "`")]
+	]);
 };
 
 Generator.prototype.proxy = function(field) {
-	var markdown = "Path: `" + field.path + "`";
+	var table = [];
+	table.push(['Path:', renderHtml("`" + field.path + "`")]);
 	if (field.backend) {
 		var backend = this.backends[field.backend];
 		if (backend) {
-			markdown += "<br/>Server: `" + backend.server + "`";
+			table.push(['Server:', renderHtml("`" + backend.server + "`")]);
 			if (backend.name) {
-				markdown += `<br/>Backend: ${backend.name}`
+				table.push(['Backend:', backend.name]);
 			} else {
-				markdown += `<br/>Backend: ${field.backend}`;
+				table.push(['Backend:', field.backend]);
 			}
 			if (backend.reference) {
-				markdown += `<br/>API Reference: <${backend.reference}>`
+				table.push(['API Reference:', renderHtml("<" + backend.reference + ">")]);
 			}
 		} else {
-			markdown += `<br/>Backend: ${field.backend}`;
+			table.push(['Backend:', field.backend]);
 		}
 	}
-	return renderHtml(markdown);
+	return tableToHtml(table);
 };
 
 Generator.prototype.file = function(field) {
-	return renderHtml('`' + field + '`');
+	return tableToHtml([
+		['Path:', renderHtml("`" + field + "`")]
+	]);
 };
 
 Generator.prototype.lua = function(field) {
-	var markdown = '';
+	var table = [];
 	if (field.file) {
-		markdown += "File: `" + field.file + "`";
+		table.push(['Path:', renderHtml("`" + field.file + "`")]);
 	} else if (field.inline) {
-		markdown += "Inline";
+		table.push(['Inline', '<Code Not Shown>']);
 	}
-	return renderHtml(markdown);
+	return tableToHtml(table);
 };
 
 /*
@@ -106,7 +110,17 @@ function toHtml(ngindox, formatConfig) {
 	formatConfig = formatConfig || {};
 
 	var backends = ngindox.backends;
-	var routes = ngindox.routes;
+
+	// shallow copy routes - remove routes marked as hidden
+	var routes = {};
+	var paths = Object.keys(ngindox.routes);
+	for (var i = 0, len = paths.length; i < len; i++) {
+		var path = paths[i];
+		var route = ngindox.routes[path];
+		if (route['visibility'] != 'hidden') {
+			routes[path] = route;
+		}
+	}
 
 	var body = "";
 	var group = ''
@@ -133,14 +147,14 @@ function toHtml(ngindox, formatConfig) {
 			body += `<ul id="routes-${header.anchor}" class="routes">\n`;
 		}
 
-		var type = Ngindox.routeType(route);
+		var type = NgindoxUtil.routeType(route);
 
 		body += `<li class="route route-type-${type.toLowerCase()}">\n`;
 
 		// Route Type/Path/Description
 		body += '<div class="heading">\n';
 		body += '<h3>\n';
-		body += `<span class="route-type">${DisplayTypes[type]}</span>\n`;
+		body += `<span class="route-type">${RouteTypeNames[type]}</span>\n`;
 		body += `<span class="route-path">${renderHtml('`' + route.path + '`')}</span>\n`;
 		body += "</h3>\n";
 		if (route.description) {
@@ -149,33 +163,58 @@ function toHtml(ngindox, formatConfig) {
 		body += '</div>\n';
 
 		// Route Metadata
-		var displayFieldKeys = Object.keys(DisplayFields);
-		if (hasAtLeastOne(route, displayFieldKeys)) {
+		var typeKeys = Object.keys(RouteFieldNames);
+		if (hasAtLeastOne(route, typeKeys)) {
 			body += '<div class="route-meta" style="display:none">\n';
-			body += "<table>\n";
-			for (var j = 0, jlen = displayFieldKeys.length; j < jlen; j++) {
-				var field = displayFieldKeys[j];
-				var value = route[field];
-				// any metadata field value may be an array (ex: Rewrite, Redirect)
-				var entries = [];
-				if (Array.isArray(value)) {
-					entries = value;
-				} else if (value) {
-					entries.push(value);
-				}
-				for (var k = 0, klen = entries.length; k < klen; k++) {
-					var entry = entries[k];
-					body += "<tr>\n";
-					body += "<td>\n";
-					body += DisplayFields[field] + ":\n";
-					body += "</td>\n";
-					body += "<td>\n";
-					body += generator[field](entry) + "\n";
-					body += "</td>\n";
-					body += "</tr>\n";
+
+			// figure out which metadata fields to display
+			var foundTypeKeys = [];
+			for (var j = 0, jlen = typeKeys.length; j < jlen; j++) {
+				var typeKey = typeKeys[j];
+				var value = route[typeKey];
+				if (value) {
+					foundTypeKeys.push(typeKey);
 				}
 			}
-			body += "</table>\n";
+
+			if (foundTypeKeys.length > 1) {
+				// multi-field display mode
+				var table = [];
+				for (var j = 0, jlen = foundTypeKeys.length; j < jlen; j++) {
+					var typeKey = foundTypeKeys[j];
+					var value = route[typeKey];
+
+					//body += `<h4>${RouteFieldNames[typeKey]}</h4>\n`;
+
+					// any metadata typeKey value may be an array (ex: Rewrite, Redirect)
+					if (Array.isArray(value)) {
+						for (var k = 0, klen = value.length; k < klen; k++) {
+							table.push([RouteFieldNames[typeKey] + ':', generator[typeKey](value[k])]);
+							//body += generator[typeKey](value[k]);
+						}
+					} else if (value) {
+						table.push([RouteFieldNames[typeKey] + ':', generator[typeKey](value)]);
+						//body += generator[typeKey](value);
+					}
+
+				}
+
+				body += tableToHtml(table);
+
+			} else {
+				// single-field display mode
+				var typeKey = foundTypeKeys[0];
+				var value = route[typeKey];
+
+				if (Array.isArray(value)) {
+					for (var k = 0, klen = value.length; k < klen; k++) {
+						body += generator[typeKey](value[k]);
+					}
+				} else if (value) {
+					body += generator[typeKey](value);
+				}
+			}
+
 			body += "</div>\n";
 		}
 
@@ -193,7 +232,7 @@ function toHtml(ngindox, formatConfig) {
 
 	if (formatConfig.css) {
 		prefix += "<style>\n";
-		prefix += singleTrailingNewline(indentBlock(formatConfig.css, "  "));
+		prefix += singleTrailingNewline(NgindoxUtil.indentBlock(formatConfig.css, "  "));
 		prefix += "</style>\n";
 		prefix += "\n";
 	}
@@ -202,7 +241,7 @@ function toHtml(ngindox, formatConfig) {
 		prefix += '<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.0/jquery.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>\n'
 
 		prefix += "<script>\n";
-		prefix += singleTrailingNewline(indentBlock(formatConfig.javascript, "  "));
+		prefix += singleTrailingNewline(NgindoxUtil.indentBlock(formatConfig.javascript, "  "));
 		prefix += "</script>\n";
 		prefix += "\n";
 	}
@@ -222,15 +261,15 @@ function toHtml(ngindox, formatConfig) {
 		legend += '<ul>\n';
 
 		// only show the types used by this set of routes
-		var types = Ngindox.routeTypes(routes);
+		var types = NgindoxUtil.routeTypes(routes);
 
 		for (var i = 0, len = types.length; i < len; i++) {
 			var type = types[i];
 			legend += `<li class="route route-type-${type}">`;
 			legend += `<input type="checkbox" data-type="${type}" checked="checked">`;
 			legend += '<label class="heading">';
-			legend += `<span class="route-type toggle-route-type">${DisplayTypes[type]}</span>`;
-			legend += `<span class="route-desc">${RouteTypeDescription[type]}</span>`;
+			legend += `<span class="route-type toggle-route-type">${RouteTypeNames[type]}</span>`;
+			legend += `<span class="route-desc">${RouteTypeDescriptions[type]}</span>`;
 			legend += '</label>';
 			legend += '</input>';
 			legend += '</li>\n';
@@ -251,6 +290,24 @@ function toHtml(ngindox, formatConfig) {
 			)
 		)
 	);
+}
+
+function tableToHtml(table) {
+	var html = '';
+	html += "<table>\n";
+	for (var i = 0, len = table.length; i < len; i++) {
+		var row = table[i];
+		html += "<tr>\n";
+		for (var j = 0, jlen = row.length; j < jlen; j++) {
+			var column = row[j];
+			html += "<td>\n";
+			html += column + "\n";
+			html += "</td>\n";
+		}
+		html += "</tr>\n";
+	}
+	html += "</table>\n";
+	return html;
 }
 
 function hasAtLeastOne(map, fields) {

@@ -28,7 +28,7 @@
 }
 */
 
-var TypeFields = {
+var RouteTypeFields = {
 	'proxy': 'proxy',
 	'file': 'file',
 	'lua': 'lua',
@@ -37,13 +37,24 @@ var TypeFields = {
 	'unknown': 'unknown'
 };
 
+var RouteFields = {
+	'group': 'Group',
+	'description': 'Description',
+	'visibility': 'Visibility'
+};
+
+var RouteMetaFields = {
+	'cache': 'Cache',
+	'deprecated': 'Deprecated'
+};
+
 // Get the type of a route
 function routeType(route) {
-	var fields = Object.keys(TypeFields);
+	var fields = Object.keys(RouteTypeFields);
 	for (var i = 0, len = fields.length; i < len; i++) {
 		var field = fields[i];
 		if (route[field]) {
-			return TypeFields[field];
+			return RouteTypeFields[field];
 		}
 	}
 	return 'unknown';
@@ -60,11 +71,11 @@ function routeTypes(routeMap) {
 		typeSet[type] = true;
 	}
 
-	// Use TypeFields ordering
+	// Use RouteTypeFields ordering
 	var typeList = [];
-	var fields = Object.keys(TypeFields);
+	var fields = Object.keys(RouteTypeFields);
 	for (var i = 0, len = fields.length; i < len; i++) {
-		var type = TypeFields[fields[i]];
+		var type = RouteTypeFields[fields[i]];
 		if (typeSet[type]) {
 			typeList.push(type)
 		}
@@ -73,6 +84,14 @@ function routeTypes(routeMap) {
 	return typeList;
 }
 
-exports.TypeFields = TypeFields;
+// Indent all lines, then truncate lines that are all spaces
+function indentBlock(text, indent) {
+	return text.replace(/^/gm, indent).replace(/^\s+$/gm, '');
+}
+
+exports.RouteTypeFields = RouteTypeFields;
+exports.RouteFields = RouteFields;
+exports.RouteMetaFields = RouteMetaFields;
 exports.routeType = routeType;
 exports.routeTypes = routeTypes;
+exports.indentBlock = indentBlock;

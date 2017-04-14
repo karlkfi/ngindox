@@ -1,3 +1,5 @@
+var NgindoxUtil = require('../util');
+
 // Transforms Nginx Configuration object (from parser) into Ngindox Map
 function transform(config) {
 
@@ -55,13 +57,24 @@ function transform(config) {
 
 		var route = {};
 
-		route['group'] = location.metadata.Group || 'Other';
-		//route['path'] = transformPath(location.path);
+		// default (replaced by member of RouteFields)
+		route['group'] = 'Other';
+
 		route['matcher'] = transformMatcher(location.path);
 
-		if (location.metadata.Description) {
-			route['description'] = location.metadata.Description;
-		}
+		Object.keys(NgindoxUtil.RouteFields).forEach(function(key) {
+			var value = NgindoxUtil.RouteFields[key];
+			if (location.metadata[value]) {
+				route[key] = location.metadata[value];
+			}
+		});
+
+		Object.keys(NgindoxUtil.RouteMetaFields).forEach(function(key) {
+			var value = NgindoxUtil.RouteFields[key];
+			if (location.metadata[value]) {
+				route[key] = location.metadata[value];
+			}
+		});
 
 		if (location.proxyPass) {
 			var proxy = proxyTransformer.transform(location.proxyPass, location.path);

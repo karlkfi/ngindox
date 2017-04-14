@@ -59,6 +59,7 @@ routes:
     group: Agent
     matcher: regex
     description: Redirect to add trailing slash
+    visibility: hidden
     rewrites:
       - regex: ^/(slave|agent)/(.*)$
         replacement: /agent/$2/
@@ -121,6 +122,7 @@ routes:
     group: Exhibitor
     matcher: exact
     description: Redirect to add trailing slash
+    visibility: hidden
     redirects:
       - regex: ^/exhibitor$
         replacement: '$scheme://$http_host/exhibitor/'
@@ -145,6 +147,7 @@ routes:
     group: Marathon
     matcher: exact
     description: Redirect to add trailing slash
+    visibility: hidden
     redirects:
       - regex: ^/marathon$
         replacement: '$scheme://$http_host/marathon/'
@@ -169,6 +172,7 @@ routes:
     group: Mesos
     matcher: exact
     description: Redirect to add trailing slash
+    visibility: hidden
     redirects:
       - regex: ^/mesos$
         replacement: '$scheme://$http_host/mesos/'
@@ -186,6 +190,7 @@ routes:
     group: Mesos DNS
     matcher: exact
     description: Redirect to add trailing slash
+    visibility: hidden
     redirects:
       - regex: ^/mesos_dns$
         replacement: '$scheme://$http_host/mesos_dns/'
@@ -258,6 +263,7 @@ routes:
     group: Service
     matcher: regex
     description: Redirect to add trailing slash
+    visibility: hidden
     redirects:
       - regex: ^/service/(.*)$
         replacement: /service/$1/
