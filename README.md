@@ -78,7 +78,13 @@ Note: Using STDIN for parsing disables file include expansion.
 Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/adminrouter):
 
 - Master Config
-  - ```
+  - From docker:
+    ```
+    docker run -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.master.conf > examples/nginx.master.yaml
+    docker run -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.master.yaml > examples/nginx.master.html
+    ```
+  - From clone of repo:
+    ```
     ./cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
     ./cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
     ```
@@ -87,7 +93,13 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
   - HMTL: [examples/nginx.master.html](examples/nginx.master.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.master.html>
 - Agent Config
-  - ```
+  - From docker:
+    ```
+    docker run -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.agent.conf > examples/nginx.agent.yaml
+    docker run -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.agent.yaml > examples/nginx.agent.html
+    ```
+  - From clone of repo:
+    ```
     ./cli.js parse -f examples/nginx.agent.conf > examples/nginx.agent.yaml
     ./cli.js ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
     ```
