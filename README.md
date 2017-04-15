@@ -80,8 +80,8 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
 - Master Config
   - From docker:
     ```
-    docker run -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.master.conf > examples/nginx.master.yaml
-    docker run -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.master.yaml > examples/nginx.master.html
+    docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.master.conf > examples/nginx.master.yaml
+    docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.master.yaml > examples/nginx.master.html
     ```
   - From clone of repo:
     ```
@@ -95,8 +95,8 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
 - Agent Config
   - From docker:
     ```
-    docker run -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.agent.conf > examples/nginx.agent.yaml
-    docker run -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.agent.yaml > examples/nginx.agent.html
+    docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.agent.conf > examples/nginx.agent.yaml
+    docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.agent.yaml > examples/nginx.agent.html
     ```
   - From clone of repo:
     ```
