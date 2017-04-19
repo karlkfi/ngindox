@@ -5,16 +5,8 @@ var Ngindox = require('../lib/ngindox'),
 	Nginx = require('../lib/nginx'),
 	NginxTransformer = require('../lib/nginx-transformer'),
 	cli = require('cli'),
-	fs = require('fs');
-
-cli.parse({
-    file: [ 'f', 'Path to NGINX config file to parse', 'file'],
-    css: [ 'c', 'Path to CSS file to include', 'file', 'include/ngindox.css'],
-    javascript: [ 'j', 'Path to JS file to include', 'file', 'include/ngindox.js'],
-    encoding: [ 'e', 'File encoding', 'string', 'utf8'],
-    title: [ 't', 'Page title', 'string', 'Routes' ],
-    legend: [ 'l', 'Route type legend', 'boolean', true ]
-});
+	fs = require('fs'),
+	path = require('path');
 
 cli.parse(
 	{
@@ -22,8 +14,8 @@ cli.parse(
 		file: [ 'f', 'Path to input file', 'file'],
 		encoding: [ 'e', 'File encoding', 'string', 'utf8'],
 		// ui options
-		css: [ 'c', 'Path to CSS file to include', 'file', 'include/ngindox.css'],
-		javascript: [ 'j', 'Path to JS file to include', 'file', 'include/ngindox.js'],
+		css: [ 'c', 'Path to CSS file to include', 'file', path.join(__dirname, '../include/ngindox.css')],
+		javascript: [ 'j', 'Path to JS file to include', 'file', path.join(__dirname, '../include/ngindox.js')],
 		title: [ 't', 'Page title', 'string', 'Routes' ],
 		legend: [ 'l', 'Route type legend', 'boolean', true ]
 	},

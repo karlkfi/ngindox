@@ -19,6 +19,7 @@
   },
   "files": [
     "lib",
+    "include",
     "bin/cli.js"
   ],
   "main": "lib/ngindox.js",

@@ -18,8 +18,7 @@ From source:
 ```
 git clone https://github.com/karlkfi/ngindox
 cd ngindox
-npm install
-npm link
+npm install -g
 ```
 
 
