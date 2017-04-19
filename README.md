@@ -129,3 +129,19 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
   - YAML: [examples/nginx.agent.yaml](examples/nginx.agent.yaml)
   - HMTL: [examples/nginx.agent.html](examples/nginx.agent.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.agent.html>
+
+
+## License
+
+Copyright 2017 Karl Isenberg
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this repository except in compliance with the License.
+
+The contents of this repository are solely licensed under the terms described in the [LICENSE file](/LICENSE) included in this repository.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
