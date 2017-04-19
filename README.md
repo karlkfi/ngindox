@@ -5,16 +5,28 @@ Ngindox generates HTML documentation from NGINX configurations (nginx.conf).
 
 ## Install
 
+From npm:
+
 ```
-git clone https://github.com/karlkfi/ngindox/
+npm install -g ngindox
+```
+
+From docker: no install required
+
+From source:
+
+```
+git clone https://github.com/karlkfi/ngindox
+cd ngindox
 npm install
+npm link
 ```
 
 
 ## Options
 
 ```
-$ bin/cli.js --help
+$ ngindox --help
 Usage:
   cli.js [OPTIONS] <command> [ARGS]
 
@@ -43,7 +55,7 @@ Both commands can take input by file path (`--file`) or by STDIN.
 The `parse` command reads in an NGINX config and writes out Ngindox YAML to STDOUT.
 
 ```
-bin/cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
+ngindox parse -f examples/nginx.master.conf > examples/nginx.master.yaml
 ```
 
 ### UI
@@ -51,7 +63,7 @@ bin/cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
 The `ui` command reads in an Ngindox YAML and writes out Ngindox UI HTML to STDOUT.
 
 ```
-bin/cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
+ngindox ui -f examples/nginx.master.yaml > examples/nginx.master.html
 ```
 
 By default, the HTML output embeds `<style>` and `<script>` sections, including [jquery](https://jquery.com/).
@@ -59,7 +71,7 @@ By default, the HTML output embeds `<style>` and `<script>` sections, including 
 Disable css and/or javascript by passing an empty string value to the respective option flags:
 
 ```
-bin/cli.js ui --css '' --javascript '' -f examples/nginx.agent.yaml > examples/nginx.agent.html
+ngindox ui --css '' --javascript '' -f examples/nginx.agent.yaml > examples/nginx.agent.html
 ```
 
 ### Piping
@@ -67,7 +79,7 @@ bin/cli.js ui --css '' --javascript '' -f examples/nginx.agent.yaml > examples/n
 If no file is specified, input is expected on STDIN. This allows piping the intermediate Ngindox YAML without saving it to disk:
 
 ```
-bin/cli.js parse -f examples/nginx.agent.conf | ./cli.js ui > examples/nginx.agent.html
+ngindox parse -f examples/nginx.agent.conf | ./cli.js ui > examples/nginx.agent.html
 ```
 
 Note: Using STDIN for parsing disables file include expansion.
@@ -78,12 +90,17 @@ Note: Using STDIN for parsing disables file include expansion.
 Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/adminrouter):
 
 - Master Config
+  - From npm:
+    ```
+    ngindox parse -f examples/nginx.master.conf > examples/nginx.master.yaml
+    ngindox ui -f examples/nginx.master.yaml > examples/nginx.master.html
+    ```
   - From docker:
     ```
     docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.master.conf > examples/nginx.master.yaml
     docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.master.yaml > examples/nginx.master.html
     ```
-  - From clone of repo:
+  - From source:
     ```
     bin/cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
     bin/cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
@@ -93,12 +110,17 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
   - HMTL: [examples/nginx.master.html](examples/nginx.master.html)
   - Rendered: <https://rawgit.com/karlkfi/ngindox/master/examples/nginx.master.html>
 - Agent Config
+  - From npm:
+    ```
+    ngindox parse -f examples/nginx.agent.conf > examples/nginx.agent.yaml
+    ngindox ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
+    ```
   - From docker:
     ```
     docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox parse -f /examples/nginx.agent.conf > examples/nginx.agent.yaml
     docker run --rm -v "$PWD/examples:/examples" karlkfi/ngindox ui -f /examples/nginx.agent.yaml > examples/nginx.agent.html
     ```
-  - From clone of repo:
+  - From source:
     ```
     bin/cli.js parse -f examples/nginx.agent.conf > examples/nginx.agent.yaml
     bin/cli.js ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
