@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
-var cli = require('cli'),
-	fs = require('fs'),
-	NginxParser = require('./src/nginx/parser'),
-	NginxTransformer = require('./src/nginx/transformer'),
-	NgindoxParser = require('./src/parser'),
-	UiHtml = require('./src/ui'),
-	Yaml = require('js-yaml');
+var Ngindox = require('../lib/ngindox'),
+	NgindoxUi = require('../lib/ui'),
+	Nginx = require('../lib/nginx'),
+	NginxTransformer = require('../lib/nginx-transformer'),
+	cli = require('cli'),
+	fs = require('fs');
 
 cli.parse({
     file: [ 'f', 'Path to NGINX config file to parse', 'file'],
@@ -38,25 +37,35 @@ var handlers = {};
 
 handlers.parse = function(cli, args, options) {
 	if (options.file) {
-		NginxParser.parseFile(options.file, options.encoding, function(err, config) {
+		Nginx.parseFile(options.file, options.encoding, function(err, nginxConfig) {
 			if (err) {
 				return cli.fatal(err);
 			}
 
-			process.stdout.write(
-				Yaml.safeDump(NginxTransformer.transform(config))
-			);
-		});
-	} else {
-		cli.withStdin(options.encoding, function(fileString) {
-			NginxParser.parse(fileString, function(err, config) {
+			var ngindoxObj = NginxTransformer.fromNginxConfig(nginxConfig);
+			return Ngindox.write(ngindoxObj, function(err, fileString) {
 				if (err) {
 					return cli.fatal(err);
 				}
 
-				process.stdout.write(
-					Yaml.safeDump(NginxTransformer.transform(config))
-				);
+				return process.stdout.write(fileString);
+			});
+		});
+	} else {
+		cli.withStdin(options.encoding, function(fileString) {
+			Nginx.parse(fileString, function(err, nginxConfig) {
+				if (err) {
+					return cli.fatal(err);
+				}
+
+				var ngindoxObj = NginxTransformer.fromNginxConfig(nginxConfig);
+				return Ngindox.write(ngindoxObj, function(err, fileString) {
+					if (err) {
+						return cli.fatal(err);
+					}
+
+					return process.stdout.write(fileString);
+				});
 			});
 		});
 	}
@@ -82,13 +91,13 @@ handlers.ui = function(cli, args, options) {
 	}
 
 	if (options.file) {
-		NgindoxParser.parseFile(options.file, options.encoding, function(err, ngindox) {
+		Ngindox.parseFile(options.file, options.encoding, function(err, ngindox) {
 			if (err) {
 				return cli.fatal(err);
 			}
 
 			process.stdout.write(
-				UiHtml.toHtml(ngindox, {
+				NgindoxUi.toHtml(ngindox, {
 					'css': css,
 					'javascript': javascript,
 					'title': options.title,
@@ -98,13 +107,13 @@ handlers.ui = function(cli, args, options) {
 		});
 	} else {
 		cli.withStdin(options.encoding, function(fileString) {
-			NgindoxParser.parse(fileString, function(err, ngindox) {
+			Ngindox.parse(fileString, function(err, ngindox) {
 				if (err) {
 					return cli.fatal(err);
 				}
 
 				process.stdout.write(
-					UiHtml.toHtml(ngindox, {
+					NgindoxUi.toHtml(ngindox, {
 						'css': css,
 						'javascript': javascript,
 						'title': options.title,

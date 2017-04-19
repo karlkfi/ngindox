@@ -5,4 +5,4 @@ COPY src /app/src
 COPY include /app/include
 COPY *.js *.json /app/
 RUN npm install
-ENTRYPOINT ["./cli.js"]
+ENTRYPOINT ["bin/cli.js"]

@@ -2,7 +2,7 @@
   "name": "ngindox",
   "version": "0.1.0",
   "description": "Documentation generator for NGINX configurations",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "keywords": [
     "nginx",
     "configuration",
@@ -15,16 +15,14 @@
     "url": "https://github.com/karlkfi/ngindox.git"
   },
   "directories": {
-    "lib": "src"
+    "lib": "lib"
   },
   "files": [
-    "src",
-    "index.js",
-    "cli.js"
+    "lib",
+    "bin/cli.js"
   ],
-  "scripts": {
-    "ngindox": "./cli.js"
-  },
+  "main": "lib/ngindox.js",
+  "bin": "bin/cli.js",
   "dependencies": {
     "cli": "1.0.1",
     "github-slugger": "1.1.1",

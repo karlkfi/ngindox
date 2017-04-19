@@ -14,7 +14,7 @@ npm install
 ## Options
 
 ```
-$ ./cli.js --help
+$ bin/cli.js --help
 Usage:
   cli.js [OPTIONS] <command> [ARGS]
 
@@ -43,7 +43,7 @@ Both commands can take input by file path (`--file`) or by STDIN.
 The `parse` command reads in an NGINX config and writes out Ngindox YAML to STDOUT.
 
 ```
-$ ./cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
+bin/cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
 ```
 
 ### UI
@@ -51,7 +51,7 @@ $ ./cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
 The `ui` command reads in an Ngindox YAML and writes out Ngindox UI HTML to STDOUT.
 
 ```
-$ ./cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
+bin/cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
 ```
 
 By default, the HTML output embeds `<style>` and `<script>` sections, including [jquery](https://jquery.com/).
@@ -59,7 +59,7 @@ By default, the HTML output embeds `<style>` and `<script>` sections, including 
 Disable css and/or javascript by passing an empty string value to the respective option flags:
 
 ```
-./cli.js ui --css '' --javascript '' -f examples/nginx.agent.yaml > examples/nginx.agent.html
+bin/cli.js ui --css '' --javascript '' -f examples/nginx.agent.yaml > examples/nginx.agent.html
 ```
 
 ### Piping
@@ -67,7 +67,7 @@ Disable css and/or javascript by passing an empty string value to the respective
 If no file is specified, input is expected on STDIN. This allows piping the intermediate Ngindox YAML without saving it to disk:
 
 ```
-./cli.js parse -f examples/nginx.agent.conf | ./cli.js ui > examples/nginx.agent.html
+bin/cli.js parse -f examples/nginx.agent.conf | ./cli.js ui > examples/nginx.agent.html
 ```
 
 Note: Using STDIN for parsing disables file include expansion.
@@ -85,8 +85,8 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
     ```
   - From clone of repo:
     ```
-    ./cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
-    ./cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
+    bin/cli.js parse -f examples/nginx.master.conf > examples/nginx.master.yaml
+    bin/cli.js ui -f examples/nginx.master.yaml > examples/nginx.master.html
     ```
   - NGINX: [examples/nginx.master.conf](examples/nginx.master.conf)
   - YAML: [examples/nginx.master.yaml](examples/nginx.master.yaml)
@@ -100,8 +100,8 @@ Examples from [DC/OS](https://dcos.io)'s [Admin Router](https://github.com/dcos/
     ```
   - From clone of repo:
     ```
-    ./cli.js parse -f examples/nginx.agent.conf > examples/nginx.agent.yaml
-    ./cli.js ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
+    bin/cli.js parse -f examples/nginx.agent.conf > examples/nginx.agent.yaml
+    bin/cli.js ui -f examples/nginx.agent.yaml > examples/nginx.agent.html
     ```
   - NGINX: [examples/nginx.agent.conf](examples/nginx.agent.conf)
   - YAML: [examples/nginx.agent.yaml](examples/nginx.agent.yaml)
