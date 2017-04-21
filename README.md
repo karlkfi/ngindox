@@ -11,7 +11,7 @@ From npm:
 npm install -g ngindox
 ```
 
-From docker: no install required
+From docker: no install required. See [karlkfi/ngindox on DockerHub](https://hub.docker.com/r/karlkfi/ngindox/).
 
 From source:
 
