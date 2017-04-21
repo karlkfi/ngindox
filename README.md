@@ -57,6 +57,39 @@ The `parse` command reads in an NGINX config and writes out Ngindox YAML to STDO
 ngindox parse -f examples/nginx.master.conf > examples/nginx.master.yaml
 ```
 
+Ngindox pays close attention to three commands in NGINX configs:
+
+- `upstream`
+- `location`
+- `root`
+
+These commands are parsed for their content, but may also be commented to annotate metadata that will be included in the Ngindox YAML and rendered in the Ngindox UI. For example:
+
+```
+# Group: Root
+# Description: Static web content
+root /path/to/html/files;
+```
+
+All comments immediately prior to parsed commands are assumed to be Ngindox metadata in YAML format, unless prefixed with an additional `#`. For example:
+
+```
+## This comment is freeform and ignored by Ngindox
+# Group: Root
+# Description: Static web content
+root /path/to/html/files;
+```
+
+Another option for ignoring non-metadata is to use a YAML file delimiter (`---`) to prefix the metadata. For example:
+
+```
+# This comment is freeform and ignored by Ngindox
+# ---
+# Group: Root
+# Description: Static web content
+root /path/to/html/files;
+```
+
 ### UI
 
 The `ui` command reads in an Ngindox YAML and writes out Ngindox UI HTML to STDOUT.
