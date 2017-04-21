@@ -1,8 +1,9 @@
 FROM node:7.9-alpine
 RUN mkdir /app
 WORKDIR /app
-COPY src /app/src
+COPY bin /app/lib
 COPY include /app/include
+COPY lib /app/lib
 COPY *.js *.json /app/
-RUN npm install
-ENTRYPOINT ["bin/cli.js"]
+RUN npm install -g
+ENTRYPOINT ["ngindox"]
