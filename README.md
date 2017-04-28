@@ -1,4 +1,4 @@
-# Ngindox
+![Ngindox](/ngindox-logo.png)
 
 Ngindox generates HTML documentation from NGINX configurations (nginx.conf).
 
