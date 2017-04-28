@@ -1,6 +1,8 @@
-![Ngindox](/ngindox-logo.png)
+![Ngindox](/ngindox-logo-header.png)
 
-Ngindox generates HTML documentation from NGINX configurations (nginx.conf).
+1. Parse NGINX configurations
+2. Generate HTML documentation
+3. Profit!
 
 
 ## Install
