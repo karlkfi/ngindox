@@ -1,4 +1,4 @@
-![Ngindox](/ngindox-logo-header.png)
+![Ngindox](https://raw.githubusercontent.com/karlkfi/ngindox/master/ngindox-logo-header.png)
 
 1. Parse NGINX configurations
 2. Generate HTML documentation
